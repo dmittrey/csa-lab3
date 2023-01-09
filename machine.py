@@ -205,6 +205,41 @@ class MUXSrcA(FunctionalCircuitComponent):
         self.receive_signal('ALUSrcA')
 
 
+class MUXSrcB(FunctionalCircuitComponent):
+    def __init__(self) -> None:
+        registers: List[str] = ['In_00', 'In_01', 'In_10', 'Out']
+        inputs: List[str] = ['ALUSrcB']
+
+        super().__init__(registers, inputs)
+
+    # 0 - Данные со входа In_00
+    # 1 - Данные со входа In_01
+    # 2 - Данные со входа In_10
+    def do_tick(self) -> None:
+        self.__refresh_state()
+
+        match self.__get_signal('ALUSrcB'):
+            case 0:
+                self.set_value('Out', self.__get_value('In_00'))
+                pass
+            case 1:
+                self.set_value('Out', self.__get_value('In_01'))
+                pass
+            case 2:
+                self.set_value('Out', self.__get_value('In_10'))
+                pass
+            case _:
+                print("MUXSrcB operation not permitted: " +
+                      self.__get_signal('ALUSrcB'))
+
+    def __refresh_state(self) -> None:
+        self.receive_value('In_00')
+        self.receive_value('In_01')
+        self.receive_value('In_10')
+
+        self.receive_signal('ALUSrcB')
+
+
 class DataPath():
     def __init__(self) -> None:
         pass
