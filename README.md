@@ -56,7 +56,7 @@ Virtual machine and interpreter
 | Type R      | REM reg1, reg2, reg3 | reg1 = reg2 % reg3             | IMM[3:0] | reg3     | reg2  | reg1     | OPCODE |
 | Type I      | MOV reg1, IMM(reg2)  | reg1 = IMM + reg2              | IMM[6:3] | IMM[2:0] | reg2  | reg1     | OPCODE |
 | Type I      | LD reg1, IMM(reg2)   | reg1 = MEM(reg2 + IMM)         | IMM[6:3] | IMM[2:0] | reg2  | reg1     | OPCODE |
-| Type S/B    | SW reg1, IMM(reg2)   | MEM(reg2 + IMM) = reg1         | IMM[6:3] | reg2     | reg1  | IMM[2:0] | OPCODE |
+| Type S/B    | SW reg1, IMM(reg2)   | MEM(reg2 + IMM) = reg1         | IMM[6:3] | reg1     | reg2  | IMM[2:0] | OPCODE |
 
 # Описание регистров
 
