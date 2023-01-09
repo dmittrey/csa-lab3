@@ -1,8 +1,8 @@
 import sys
-from typing import Dict, List, Set, TypeVar, Generic, List
+from typing import Dict, List, List
 from abc import ABC, abstractmethod
-from numpy import int16, bitwise_and, binary_repr, invert
-from circuit import FunctionalCircuitComponent, WireCircuitComponent
+from numpy import int16, bitwise_and, binary_repr
+from circuit import FunctionalCircuitComponent
 
 
 class Triger(FunctionalCircuitComponent):
@@ -253,6 +253,7 @@ class DataPath():
 
 
 class ControlUnit():
+
     pass
 
 
