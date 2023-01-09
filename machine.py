@@ -264,7 +264,9 @@ class ControlUnit():
         self.__pipes: Dict[str, WireCircuitComponent[int16]] = dict()
         self.__signals: Dict[str, WireCircuitComponent[int8]] = dict()
 
-        self.__prev_op: None | int8 = None
+        # 1 - prev
+        # 2 - prev prev
+        self.__prev_ops: Dict[int8, int8] | None = None
 
     def do_tick(self) -> None:
         self.__refresh_state()
@@ -272,7 +274,7 @@ class ControlUnit():
         match self.__registers.get('OPCODE'):
             case 0:
                 # ADDI
-                if (self.__prev_op == 0):
+                if (self.__prev_ops[1] != 0):
                     # 1 tick
                     self.set_input('PCWrite', 0)
                     self.set_input('AdrSrc', 1)
@@ -284,11 +286,19 @@ class ControlUnit():
                     self.set_input('ALUSrcA', 0)
                     self.set_input('ALUSrcB', 1)
                     self.set_input('ALUControl', 0)
-                else:
+                elif (self.__prev_ops[1] == 0 and self.__prev_ops[2] != 0):
                     # 2 tick
                     self.set_input('IRWrite', 0)
                     self.set_input('WDSrc', 1)
                     self.set_input('RegWrite', 1)
+                else:
+                    # PC + 16 bit
+                    self.set_input('PCWrite', 1)
+                    self.set_input('ALUSrcA', 1)
+                    self.set_input('ALUSrcB', 3)
+                    pass
+
+                self.__update_prev_ops(0)
                 pass
             case 1:
                 # BEQ
@@ -358,6 +368,10 @@ class ControlUnit():
             self.__pipes[register_name].get_value(), mask
         )
         pass
+
+    def __update_prev_ops(self, op: int8) -> None:
+        self.__prev_ops[2] = self.__prev_ops[1]
+        self.__prev_ops[1] = op
 
 
 def main(args):
