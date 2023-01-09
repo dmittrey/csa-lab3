@@ -32,14 +32,9 @@ class FunctionalCircuitComponent(ABC):
     def do_tick(self) -> None:
         pass
 
-    def receive_value(self, register_name: str, value: int16) -> None:
-        assert register_name in self.__registers, 'Указанный регистр не существует'
-        self.__registers[register_name] = value
+    @abstractmethod
+    def __refresh_state(self) -> None:
         pass
-
-    def get_value(self, register_name: str) -> int16:
-        assert register_name in self.__registers, 'Указанный регистр не существует'
-        return self.__registers[register_name]
 
     def attach_pipe(self, register_name: str, pipe: WireCircuitComponent[int16]) -> None:
         assert register_name in self.__registers, 'Указанный регистр не существует'
@@ -50,3 +45,21 @@ class FunctionalCircuitComponent(ABC):
         assert input_name in self.__inputs, 'Указанный выход не существует'
         self.__signals[input_name] = signal
         pass
+
+    def receive_value(self, register_name: str, value: int16) -> None:
+        assert register_name in self.__registers, 'Указанный регистр не существует'
+        self.__pipes[register_name] = value
+        pass
+
+    def receive_signal(self, input_name: str, signal: bool) -> None:
+        assert input_name in self.__inputs, 'Указанный выход не существует'
+        self.__signals[input_name] = signal
+        pass
+
+    def __get_value(self, register_name: str) -> int16:
+        assert register_name in self.__registers, 'Указанный регистр не существует'
+        return self.__registers[register_name]
+
+    def __get_signal(self, input_name: str) -> bool:
+        assert input_name in self.__inputs, 'Указанный выход не существует'
+        return self.__inputs[input_name]
