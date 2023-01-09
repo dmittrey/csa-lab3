@@ -1,7 +1,7 @@
 import sys
 from typing import Dict, List, Set, TypeVar, Generic, List
 from abc import ABC, abstractmethod
-from numpy import int16, bitwise_and
+from numpy import int16, bitwise_and, binary_repr, invert
 from circuit import FunctionalCircuitComponent, WireCircuitComponent
 
 
@@ -50,7 +50,7 @@ class Memory(FunctionalCircuitComponent):
 
 
 class RegisterFile(FunctionalCircuitComponent):
-    def __init__(self, registers: List[str], inputs: List[str]) -> None:
+    def __init__(self) -> None:
         registers: List[str] = ['A1', 'A2', 'A3', 'RD1', 'RD2', 'WD']
         inputs: List[str] = ['WE3']
 
@@ -97,7 +97,7 @@ class RegisterFile(FunctionalCircuitComponent):
 
 
 class ALU(FunctionalCircuitComponent):
-    def __init__(self, registers: List[str], inputs: List[str]) -> None:
+    def __init__(self) -> None:
         registers: List[str] = ['srcA', 'srcB', 'Result']
         inputs: List[str] = ['ALUControl']
 
@@ -105,6 +105,9 @@ class ALU(FunctionalCircuitComponent):
 
         self.zeroFlag = False
 
+    # 0 - SUM
+    # 1 - SUB
+    # 2 - REM
     def do_tick(self) -> None:
         self.__refresh_state()
 
@@ -132,6 +135,46 @@ class ALU(FunctionalCircuitComponent):
         self.receive_signal('ALUControl')
 
 
+class SignExpand(FunctionalCircuitComponent):
+    def __init__(self) -> None:
+        registers: List[str] = ['In', 'Out']
+        inputs: List[str] = ['ImmSrc']
+
+        super().__init__(registers, inputs)
+
+    # 0 - Расширить значение из 9-15 бит команды
+    # 1 - Расширить значение из 12-15 бит команды
+    # 2 - Расширить значение из 12-15 и 3-5 бит команды
+    def do_tick(self) -> None:
+        match self.__get_signal('ImmSrc'):
+            case 0:
+                self.__refresh_state(65024)
+                pass
+            case 1:
+                self.__refresh_state(61440)
+                pass
+            case 2:
+                self.__refresh_state(61496)
+                pass
+            case _:
+                print("Expand operation not permitted: " +
+                      self.__get_signal('ImmSrc'))
+
+        self.set_value('Out', self.__get_value('In'))
+
+    def __refresh_state(self, imm_extension_mask: int16) -> None:
+        self.__receive_value('In', imm_extension_mask)
+
+        self.receive_signal('ImmSrc')
+
+    def __receive_value(self, register_name: str, mask: int16) -> None:
+        assert register_name in self.__registers.keys(), 'Указанный регистр не существует'
+        self.__registers[register_name] = bitwise_and(
+            self.__pipes[register_name].get_value(), mask
+        )
+        pass
+
+
 class DataPath():
     def __init__(self) -> None:
         pass
@@ -142,8 +185,17 @@ class ControlUnit():
 
 
 def main(args):
-    pc = ProgramCounter()
-    pc.do_tick()
+    val1: int16 = 49098
+    val2: int16 = -49098
+    # if (val2 < 0):
+    str1 = binary_repr(val1)
+
+    # str2 = binary_repr(invert(val2) + 1)
+    str2 = binary_repr(val2)
+
+    print(str1)
+    print("awdawd")
+    print(str2)
     pass
 
 
