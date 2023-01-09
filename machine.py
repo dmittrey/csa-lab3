@@ -322,7 +322,7 @@ class ControlUnit():
                         self.set_input('ALUSrcB', 1)
                         self.set_input('PCWrite', 1)
 
-                self.__update_prev_ops(0)
+                self.__update_prev_ops(1)
                 pass
             case 2:
                 # REM
