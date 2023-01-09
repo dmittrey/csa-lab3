@@ -35,7 +35,7 @@ class Memory(FunctionalCircuitComponent):
         super().__init__(registers, input)
 
         self.__memory_size = memory_size
-        self.__memory = [0] * self.__memory_size
+        self.__memory: List[int16] = [0] * self.__memory_size
 
     def do_tick(self) -> None:
         self.__refresh_state()
