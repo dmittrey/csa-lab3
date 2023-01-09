@@ -326,9 +326,59 @@ class ControlUnit():
                 pass
             case 2:
                 # REM
+                if (self.__prev_ops[1] != 2):
+                    # 1 tick
+                    self.set_input('PCWrite', 0)
+                    self.set_input('AdrSrc', 1)
+                    self.set_input('MemWrite', 0)
+                    self.set_input('IRWrite', 1)
+                    self.set_input('WDSrc', 0)
+                    self.set_input('ImmSrc', 1)
+                    self.set_input('RegWrite', 0)
+                    self.set_input('ALUSrcA', 0)
+                    self.set_input('ALUSrcB', 0)
+                    self.set_input('ALUControl', 2)
+                elif (self.__prev_ops[1] == 2 and self.__prev_ops[2] != 2):
+                    # 2 tick
+                    self.set_input('IRWrite', 0)
+                    self.set_input('WDSrc', 1)
+                    self.set_input('RegWrite', 1)
+                else:
+                    # PC + 16 bit
+                    self.set_input('PCWrite', 1)
+                    self.set_input('ALUSrcA', 1)
+                    self.set_input('ALUSrcB', 3)
+                    pass
+
+                self.__update_prev_ops(2)
                 pass
             case 3:
                 # MOV
+                if (self.__prev_ops[1] != 3):
+                    # 1 tick
+                    self.set_input('PCWrite', 0)
+                    self.set_input('AdrSrc', 1)
+                    self.set_input('MemWrite', 0)
+                    self.set_input('IRWrite', 1)
+                    self.set_input('WDSrc', 0)
+                    self.set_input('ImmSrc', 0)
+                    self.set_input('RegWrite', 0)
+                    self.set_input('ALUSrcA', 0)
+                    self.set_input('ALUSrcB', 1)
+                    self.set_input('ALUControl', 0)
+                elif (self.__prev_ops[1] == 3 and self.__prev_ops[2] != 3):
+                    # 2 tick
+                    self.set_input('IRWrite', 0)
+                    self.set_input('WDSrc', 1)
+                    self.set_input('RegWrite', 1)
+                else:
+                    # PC + 16 bit
+                    self.set_input('PCWrite', 1)
+                    self.set_input('ALUSrcA', 1)
+                    self.set_input('ALUSrcB', 3)
+                    pass
+
+                self.__update_prev_ops(3)
                 pass
             case 4:
                 # LD
