@@ -1,8 +1,8 @@
 import sys
 from typing import Dict, List, List
 from abc import ABC, abstractmethod
-from numpy import int16, bitwise_and, binary_repr
-from circuit import FunctionalCircuitComponent
+from numpy import int16, int8, bitwise_and, binary_repr
+from circuit import FunctionalCircuitComponent, WireCircuitComponent
 
 
 class Triger(FunctionalCircuitComponent):
@@ -253,8 +253,111 @@ class DataPath():
 
 
 class ControlUnit():
+    def __init__(self) -> None:
+        registers: List[str] = ['OPCODE']
+        inputs: List[str] = ['PCWrite', 'AdrSrc', 'MemWrite', 'IRWrite', 'WDSrc',
+                             'ImmSrc', 'ALUControl', 'ALUSrcB', 'ALUSrcA', 'RegWrite', 'Zero']
 
-    pass
+        self.__registers: Dict[str, int16] = {i: 0 for i in registers}
+        self.__inputs: Dict[str, int8] = {i: 0 for i in inputs}
+
+        self.__pipes: Dict[str, WireCircuitComponent[int16]] = dict()
+        self.__signals: Dict[str, WireCircuitComponent[int8]] = dict()
+
+        self.__prev_op: None | int8 = None
+
+    def do_tick(self) -> None:
+        self.__refresh_state()
+
+        match self.__registers.get('OPCODE'):
+            case 0:
+                # ADDI
+                if (self.__prev_op == 0):
+                    # 1 tick
+                    self.set_input('PCWrite', 0)
+                    self.set_input('AdrSrc', 1)
+                    self.set_input('MemWrite', 0)
+                    self.set_input('IRWrite', 1)
+                    self.set_input('WDSrc', 0)
+                    self.set_input('ImmSrc', 0)
+                    self.set_input('RegWrite', 0)
+                    self.set_input('ALUSrcA', 0)
+                    self.set_input('ALUSrcB', 1)
+                    self.set_input('ALUControl', 0)
+                else:
+                    # 2 tick
+                    self.set_input('IRWrite', 0)
+                    self.set_input('WDSrc', 1)
+                    self.set_input('RegWrite', 1)
+                pass
+            case 1:
+                # BEQ
+                pass
+            case 2:
+                # REM
+                pass
+            case 3:
+                # MOV
+                pass
+            case 4:
+                # LD
+                pass
+            case 5:
+                # SW
+                pass
+            case _:
+                print("Unsupported control unit operation: " +
+                      self.__registers.get('OPCODE'))
+                pass
+
+    def attach_pipe(self, register_name: str, pipe: WireCircuitComponent[int16]) -> None:
+        assert register_name in self.__registers.keys(), 'Указанный регистр не существует'
+        self.__pipes.update(register_name=pipe)
+        pass
+
+    def attach_signal(self, input_name: str, signal: WireCircuitComponent[bool]) -> None:
+        assert input_name in self.__inputs.keys(), 'Указанный выход не существует'
+        self.__signals.update(input_name=signal)
+        pass
+
+    def set_input(self, input_name: str, val: int8) -> None:
+        assert input_name in self.__inputs.keys(), 'Указанный выход не существует'
+        self.__registers.update(register_name=val)
+
+        signal = self.__signals.get(input_name)
+        if (signal != None):
+            signal.receive_value(val)
+        pass
+
+    def receive_value(self, register_name: str) -> None:
+        assert register_name in self.__registers.keys(), 'Указанный регистр не существует'
+
+        pipe = self.__pipes.get(register_name)
+        if (pipe != None):
+            self.__registers[register_name] = pipe.get_value()
+
+        pass
+
+    def receive_signal(self, input_name: str) -> None:
+        assert input_name in self.__inputs.keys(), 'Указанный выход не существует'
+
+        signal = self.__signals.get(input_name)
+        if (signal != None):
+            self.__inputs[self.__input] = signal.get_value()
+
+        pass
+
+    def __refresh_state(self) -> None:
+        self.__receive_value('OPCODE', 7)
+
+        self.receive_signal('Zero')
+
+    def __receive_value(self, register_name: str, mask: int16) -> None:
+        assert register_name in self.__registers.keys(), 'Указанный регистр не существует'
+        self.__registers[register_name] = bitwise_and(
+            self.__pipes[register_name].get_value(), mask
+        )
+        pass
 
 
 def main(args):
