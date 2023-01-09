@@ -30,6 +30,7 @@ class FunctionalCircuitComponent(ABC):
 
     @abstractmethod
     def do_tick(self) -> None:
+        self.__refresh_state()
         pass
 
     @abstractmethod
