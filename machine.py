@@ -5,30 +5,34 @@ from numpy import int16, bitwise_and, binary_repr, invert
 from circuit import FunctionalCircuitComponent, WireCircuitComponent
 
 
-class ProgramCounter(FunctionalCircuitComponent):
+class Triger(FunctionalCircuitComponent):
     def __init__(self) -> None:
-        registers: List[str] = ['PC', 'PCNext']
-        inputs: List[str] = ['EN']
+        registers: List[str] = ['In', 'Out']
+        input: str = 'EN'
 
-        super().__init__(registers, inputs)
+        super().__init__(registers, input)
+
+        self.__state: int16 = 0
 
     def do_tick(self) -> None:
         self.__refresh_state()
 
-        if (self.__get_signal('EN') == 1):
-            self.set_value('PC', self.__get_value('PCNext'))
+        if (self.get_signal('EN') == 1):
+            self.__state = self.get_value('In')
+
+        self.set_value('Out', self.__state)
 
     def __refresh_state(self) -> None:
-        self.receive_value('PCNext')
-        self.receive_signal('EN')
+        self.receive_value('In')
+        self.receive_signal()
 
 
 class Memory(FunctionalCircuitComponent):
     def __init__(self, memory_size: int16) -> None:
         registers: List[str] = ['A', 'RD', 'WD']
-        inputs: List[str] = ['WE']
+        input: str = 'WE'
 
-        super().__init__(registers, inputs)
+        super().__init__(registers, input)
 
         self.__memory_size = memory_size
         self.__memory = [0] * self.__memory_size
@@ -36,25 +40,25 @@ class Memory(FunctionalCircuitComponent):
     def do_tick(self) -> None:
         self.__refresh_state()
 
-        data_addr = self.__get_value('A')
+        data_addr = self.get_value('A')
 
-        if (self.__get_signal('WE') == 1):
-            self.__memory[data_addr] = self.__get_value('WD')
+        if (self.get_signal('WE') == 1):
+            self.__memory[data_addr] = self.get_value('WD')
         else:
             self.set_value('RD', self.__memory[data_addr])
 
     def __refresh_state(self) -> None:
         self.receive_value('A')
         self.receive_value('WD')
-        self.receive_signal('WE')
+        self.receive_signal()
 
 
 class RegisterFile(FunctionalCircuitComponent):
     def __init__(self) -> None:
         registers: List[str] = ['A1', 'A2', 'A3', 'RD1', 'RD2', 'WD']
-        inputs: List[str] = ['WE3']
+        input: str = 'WE3'
 
-        super().__init__(registers, inputs)
+        super().__init__(registers, input)
 
         self.__inner_registers: Dict[int, int16] = {
             0: 0,
@@ -70,10 +74,10 @@ class RegisterFile(FunctionalCircuitComponent):
     def do_tick(self) -> None:
         self.__refresh_state()
 
-        if (self.__get_signal('WE3') == 1):
-            if (self.__get_value('A3') != 0):
-                self.__inner_registers[self.__get_value(
-                    'A3')] = self.__get_value('WD')
+        if (self.get_signal('WE3') == 1):
+            if (self.get_value('A3') != 0):
+                self.__inner_registers[self.get_value(
+                    'A3')] = self.get_value('WD')
         else:
             self.set_value(
                 'RD1', self.__inner_registers[self.__registers['A1']])
@@ -86,7 +90,7 @@ class RegisterFile(FunctionalCircuitComponent):
         self.__receive_value('A3', 56)
         self.receive_value('WD')
 
-        self.receive_signal('WE3')
+        self.receive_signal()
 
     def __receive_value(self, register_name: str, mask: int16) -> None:
         assert register_name in self.__registers.keys(), 'Указанный регистр не существует'
@@ -99,9 +103,9 @@ class RegisterFile(FunctionalCircuitComponent):
 class ALU(FunctionalCircuitComponent):
     def __init__(self) -> None:
         registers: List[str] = ['srcA', 'srcB', 'Result']
-        inputs: List[str] = ['ALUControl']
+        input: str = ['ALUControl']
 
-        super().__init__(registers, inputs)
+        super().__init__(registers, input)
 
         self.zeroFlag = False
 
@@ -111,42 +115,42 @@ class ALU(FunctionalCircuitComponent):
     def do_tick(self) -> None:
         self.__refresh_state()
 
-        match self.__get_signal('ALUControl'):
+        match self.get_signal('ALUControl'):
             case 0:
-                self.set_value('Result', self.__get_value(
-                    'srcA') + self.__get_value('srcB'))
+                self.set_value('Result', self.get_value(
+                    'srcA') + self.get_value('srcB'))
                 pass
             case 1:
-                self.set_value('Result', self.__get_value(
-                    'srcA') - self.__get_value('srcB'))
+                self.set_value('Result', self.get_value(
+                    'srcA') - self.get_value('srcB'))
                 pass
             case 2:
-                self.set_value('Result', self.__get_value(
-                    'srcA') % self.__get_value('srcB'))
+                self.set_value('Result', self.get_value(
+                    'srcA') % self.get_value('srcB'))
                 pass
             case _:
                 print("ALU operation not permitted: " +
-                      self.__get_signal('ALUControl'))
+                      self.get_signal('ALUControl'))
 
     def __refresh_state(self) -> None:
         self.receive_value('srcA')
         self.receive_value('srcB')
 
-        self.receive_signal('ALUControl')
+        self.receive_signal()
 
 
 class SignExpand(FunctionalCircuitComponent):
     def __init__(self) -> None:
         registers: List[str] = ['In', 'Out']
-        inputs: List[str] = ['ImmSrc']
+        input: str = ['ImmSrc']
 
-        super().__init__(registers, inputs)
+        super().__init__(registers, input)
 
     # 0 - Расширить значение из 9-15 бит команды
     # 1 - Расширить значение из 12-15 бит команды
     # 2 - Расширить значение из 12-15 и 3-5 бит команды
     def do_tick(self) -> None:
-        match self.__get_signal('ImmSrc'):
+        match self.get_signal('ImmSrc'):
             case 0:
                 self.__refresh_state(65024)
                 pass
@@ -158,14 +162,14 @@ class SignExpand(FunctionalCircuitComponent):
                 pass
             case _:
                 print("Expand operation not permitted: " +
-                      self.__get_signal('ImmSrc'))
+                      self.get_signal('ImmSrc'))
 
-        self.set_value('Out', self.__get_value('In'))
+        self.set_value('Out', self.get_value('In'))
 
     def __refresh_state(self, imm_extension_mask: int16) -> None:
         self.__receive_value('In', imm_extension_mask)
 
-        self.receive_signal('ImmSrc')
+        self.receive_signal()
 
     def __receive_value(self, register_name: str, mask: int16) -> None:
         assert register_name in self.__registers.keys(), 'Указанный регистр не существует'
@@ -175,129 +179,72 @@ class SignExpand(FunctionalCircuitComponent):
         pass
 
 
-class MUXSrcA(FunctionalCircuitComponent):
-    def __init__(self) -> None:
+class MUX1Bits(FunctionalCircuitComponent):
+    def __init__(self, input: str) -> None:
         registers: List[str] = ['In_0', 'In_1', 'Out']
-        inputs: List[str] = ['ALUSrcA']
 
-        super().__init__(registers, inputs)
+        super().__init__(registers, input)
 
     # 0 - Данные со входа In_0
     # 1 - Данные со входа In_1
     def do_tick(self) -> None:
         self.__refresh_state()
 
-        match self.__get_signal('ALUSrcA'):
+        match self.get_signal(self.__input):
             case 0:
-                self.set_value('Out', self.__get_value('In_0'))
+                self.set_value('Out', self.get_value('In_0'))
                 pass
             case 1:
-                self.set_value('Out', self.__get_value('In_1'))
+                self.set_value('Out', self.get_value('In_1'))
                 pass
             case _:
-                print("MUXSrcA operation not permitted: " +
-                      self.__get_signal('ALUSrcA'))
+                print("MUX operation not permitted: " +
+                      self.get_signal(self.__input))
 
     def __refresh_state(self) -> None:
         self.receive_value('In_0')
         self.receive_value('In_1')
 
-        self.receive_signal('ALUSrcA')
+        self.receive_signal()
 
 
-class MUXSrcB(FunctionalCircuitComponent):
-    def __init__(self) -> None:
+class MUX2Bits(FunctionalCircuitComponent):
+    def __init__(self, input: str) -> None:
         registers: List[str] = ['In_00', 'In_01', 'In_10', 'Out']
-        inputs: List[str] = ['ALUSrcB']
 
-        super().__init__(registers, inputs)
+        super().__init__(registers, input)
 
     # 0 - Данные со входа In_00
     # 1 - Данные со входа In_01
     # 2 - Данные со входа In_10
+    # 3 - Данные со входа In_11
     def do_tick(self) -> None:
         self.__refresh_state()
 
-        match self.__get_signal('ALUSrcB'):
+        match self.get_signal(self.__input):
             case 0:
-                self.set_value('Out', self.__get_value('In_00'))
+                self.set_value('Out', self.get_value('In_00'))
                 pass
             case 1:
-                self.set_value('Out', self.__get_value('In_01'))
+                self.set_value('Out', self.get_value('In_01'))
                 pass
             case 2:
-                self.set_value('Out', self.__get_value('In_10'))
+                self.set_value('Out', self.get_value('In_10'))
+                pass
+            case 3:
+                self.set_value('Out', self.get_value('In_11'))
                 pass
             case _:
                 print("MUXSrcB operation not permitted: " +
-                      self.__get_signal('ALUSrcB'))
+                      self.get_signal('ALUSrcB'))
 
     def __refresh_state(self) -> None:
         self.receive_value('In_00')
         self.receive_value('In_01')
         self.receive_value('In_10')
+        self.receive_value('In_11')
 
-        self.receive_signal('ALUSrcB')
-
-
-class MUXMemoryAddr(FunctionalCircuitComponent):
-    def __init__(self) -> None:
-        registers: List[str] = ['In_0', 'In_1', 'Out']
-        inputs: List[str] = ['AdrSrc']
-
-        super().__init__(registers, inputs)
-
-    # 0 - Данные со входа In_0
-    # 1 - Данные со входа In_1
-    def do_tick(self) -> None:
-        self.__refresh_state()
-
-        match self.__get_signal('AdrSrc'):
-            case 0:
-                self.set_value('Out', self.__get_value('In_0'))
-                pass
-            case 1:
-                self.set_value('Out', self.__get_value('In_1'))
-                pass
-            case _:
-                print("MUXAdrSrc operation not permitted: " +
-                      self.__get_signal('AdrSrc'))
-
-    def __refresh_state(self) -> None:
-        self.receive_value('In_0')
-        self.receive_value('In_1')
-
-        self.receive_signal('AdrSrc')
-
-
-class MUXRegWriteSrc(FunctionalCircuitComponent):
-    def __init__(self) -> None:
-        registers: List[str] = ['In_0', 'In_1', 'Out']
-        inputs: List[str] = ['RegWriteSrc']
-
-        super().__init__(registers, inputs)
-
-    # 0 - Данные со входа In_0
-    # 1 - Данные со входа In_1
-    def do_tick(self) -> None:
-        self.__refresh_state()
-
-        match self.__get_signal('RegWriteSrc'):
-            case 0:
-                self.set_value('Out', self.__get_value('In_0'))
-                pass
-            case 1:
-                self.set_value('Out', self.__get_value('In_1'))
-                pass
-            case _:
-                print("MUXRegWriteSrc operation not permitted: " +
-                      self.__get_signal('RegWriteSrc'))
-
-    def __refresh_state(self) -> None:
-        self.receive_value('In_0')
-        self.receive_value('In_1')
-
-        self.receive_signal('RegWriteSrc')
+        self.receive_signal()
 
 
 class DataPath():
