@@ -19,9 +19,11 @@ class WireCircuitComponent(Generic[T]):
 
 
 class FunctionalCircuitComponent(ABC):
-    def __init__(self, registers: List[str], inputs: List[str]) -> None:
+    def __init__(self, registers: List[str], input: str) -> None:
+        self.__input = input
+
         self.__registers: Dict[str, int16] = {i: 0 for i in registers}
-        self.__inputs: Dict[str, int8] = {i: 0 for i in inputs}
+        self.__inputs: Dict[str, int8] = {input: 0}
 
         self.__pipes: Dict[str, WireCircuitComponent[int16]] = dict()
         self.__signals: Dict[str, WireCircuitComponent[int8]] = dict()
@@ -58,19 +60,17 @@ class FunctionalCircuitComponent(ABC):
             pipe.receive_value(val)
         pass
 
-    def receive_signal(self, input_name: str) -> None:
-        assert input_name in self.__inputs.keys(), 'Указанный выход не существует'
-
-        signal = self.__signals.get(input_name)
+    def receive_signal(self) -> None:
+        signal = self.__signals.get(self.__input)
         if (signal != None):
-            self.__inputs[input_name] = signal.get_value()
+            self.__inputs[self.__input] = signal.get_value()
 
         pass
 
-    def __get_value(self, register_name: str) -> int16:
+    def get_value(self, register_name: str) -> int16:
         assert register_name in self.__registers.keys(), 'Указанный регистр не существует'
         return self.__registers[register_name]
 
-    def __get_signal(self, input_name: str) -> int8:
+    def get_signal(self, input_name: str) -> int8:
         assert input_name in self.__inputs.keys(), 'Указанный выход не существует'
         return self.__inputs[input_name]
