@@ -1,3 +1,4 @@
+import sys
 from typing import Dict, List, Set, TypeVar, Generic, List
 from abc import ABC, abstractmethod
 from numpy import int16, bitwise_and
@@ -14,7 +15,7 @@ class ProgramCounter(FunctionalCircuitComponent):
     def do_tick(self) -> None:
         self.__refresh_state()
 
-        if (self.__get_signal('EN')):
+        if (self.__get_signal('EN') == 1):
             self.set_value('PC', self.__get_value('PCNext'))
 
     def __refresh_state(self) -> None:
@@ -37,7 +38,7 @@ class Memory(FunctionalCircuitComponent):
 
         data_addr = self.__get_value('A')
 
-        if (self.__get_signal('WE')):
+        if (self.__get_signal('WE') == 1):
             self.__memory[data_addr] = self.__get_value('WD')
         else:
             self.set_value('RD', self.__memory[data_addr])
@@ -55,7 +56,7 @@ class RegisterFile(FunctionalCircuitComponent):
 
         super().__init__(registers, inputs)
 
-        self.inner_registers: Dict[int, int16] = {
+        self.__inner_registers: Dict[int, int16] = {
             0: 0,
             1: 0,
             2: 0,
@@ -69,18 +70,23 @@ class RegisterFile(FunctionalCircuitComponent):
     def do_tick(self) -> None:
         self.__refresh_state()
 
-        data_addr = self.__get_value('A')
-
-        if (self.__get_signal('WE')):
-            self.__memory[data_addr] = self.__get_value('WD')
+        if (self.__get_signal('WE3') == 1):
+            if (self.__get_value('A3') != 0):
+                self.__inner_registers[self.__get_value(
+                    'A3')] = self.__get_value('WD')
         else:
-            self.set_value('RD', self.__memory[data_addr])
+            self.set_value(
+                'RD1', self.__inner_registers[self.__registers['A1']])
+            self.set_value(
+                'RD2', self.__inner_registers[self.__registers['A2']])
 
     def __refresh_state(self) -> None:
         self.__receive_value('A1', 448)
         self.__receive_value('A2', 3584)
-        self.receive_signal('A3', 56)
-        self.receive_signal('WD')
+        self.__receive_value('A3', 56)
+        self.receive_value('WD')
+
+        self.receive_signal('WE3')
 
     def __receive_value(self, register_name: str, mask: int16) -> None:
         assert register_name in self.__registers.keys(), 'Указанный регистр не существует'
@@ -88,6 +94,42 @@ class RegisterFile(FunctionalCircuitComponent):
             self.__pipes[register_name].get_value(), mask
         )
         pass
+
+
+class ALU(FunctionalCircuitComponent):
+    def __init__(self, registers: List[str], inputs: List[str]) -> None:
+        registers: List[str] = ['srcA', 'srcB', 'Result']
+        inputs: List[str] = ['ALUControl']
+
+        super().__init__(registers, inputs)
+
+        self.zeroFlag = False
+
+    def do_tick(self) -> None:
+        self.__refresh_state()
+
+        match self.__get_signal('ALUControl'):
+            case 0:
+                self.set_value('Result', self.__get_value(
+                    'srcA') + self.__get_value('srcB'))
+                pass
+            case 1:
+                self.set_value('Result', self.__get_value(
+                    'srcA') - self.__get_value('srcB'))
+                pass
+            case 2:
+                self.set_value('Result', self.__get_value(
+                    'srcA') % self.__get_value('srcB'))
+                pass
+            case _:
+                print("ALU operation not permitted: " +
+                      self.__get_signal('ALUControl'))
+
+    def __refresh_state(self) -> None:
+        self.receive_value('srcA')
+        self.receive_value('srcB')
+
+        self.receive_signal('ALUControl')
 
 
 class DataPath():
@@ -100,9 +142,10 @@ class ControlUnit():
 
 
 def main(args):
-
+    pc = ProgramCounter()
+    pc.do_tick()
     pass
 
 
 if __name__ == '__main__':
-    main()
+    main(sys.argv[1:])
