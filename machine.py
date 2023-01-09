@@ -302,6 +302,27 @@ class ControlUnit():
                 pass
             case 1:
                 # BEQ
+                if (self.__prev_ops[1] != 1):
+                    # 1 tick
+                    self.set_input('PCWrite', 0)
+                    self.set_input('AdrSrc', 1)
+                    self.set_input('MemWrite', 0)
+                    self.set_input('IRWrite', 1)
+                    self.set_input('WDSrc', 0)
+                    self.set_input('ImmSrc', 2)
+                    self.set_input('RegWrite', 0)
+                    self.set_input('ALUSrcA', 0)
+                    self.set_input('ALUSrcB', 0)
+                    self.set_input('ALUControl', 1)
+                elif (self.__prev_ops[1] == 1 and self.__prev_ops[2] != 1):
+                    # 2 tick
+                    if (self.__inputs['Zero'] == 1):
+                        self.set_input('IRWrite', 0)
+                        self.set_input('ALUSrcA', 1)
+                        self.set_input('ALUSrcB', 1)
+                        self.set_input('PCWrite', 1)
+
+                self.__update_prev_ops(0)
                 pass
             case 2:
                 # REM
@@ -353,7 +374,7 @@ class ControlUnit():
 
         signal = self.__signals.get(input_name)
         if (signal != None):
-            self.__inputs[self.__input] = signal.get_value()
+            self.__inputs[input_name] = signal.get_value()
 
         pass
 
