@@ -495,17 +495,7 @@ class ControlUnit():
 
 
 def main(args):
-    val1: int16 = 49098
-    val2: int16 = -49098
-    # if (val2 < 0):
-    str1 = binary_repr(val1)
 
-    # str2 = binary_repr(invert(val2) + 1)
-    str2 = binary_repr(val2)
-
-    print(str1)
-    print("awdawd")
-    print(str2)
     pass
 
 
