@@ -410,6 +410,30 @@ class ControlUnit():
                 pass
             case 5:
                 # SW
+                if (self.__prev_ops[1] != 5):
+                    # 1 tick
+                    self.set_input('PCWrite', 0)
+                    self.set_input('AdrSrc', 1)
+                    self.set_input('MemWrite', 0)
+                    self.set_input('IRWrite', 1)
+                    self.set_input('WDSrc', 0)
+                    self.set_input('ImmSrc', 2)
+                    self.set_input('RegWrite', 0)
+                    self.set_input('ALUSrcA', 0)
+                    self.set_input('ALUSrcB', 1)
+                    self.set_input('ALUControl', 0)
+                elif (self.__prev_ops[1] == 5 and self.__prev_ops[2] != 5):
+                    # 2 tick
+                    self.set_input('AdrSrc', 0)
+                    self.set_input('MemWrite', 1)
+                else:
+                    # PC + 16 bit
+                    self.set_input('PCWrite', 1)
+                    self.set_input('ALUSrcA', 1)
+                    self.set_input('ALUSrcB', 3)
+                    pass
+
+                self.__update_prev_ops(5)
                 pass
             case _:
                 print("Unsupported control unit operation: " +
