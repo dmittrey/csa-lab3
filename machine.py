@@ -260,14 +260,44 @@ class MUXMemoryAddr(FunctionalCircuitComponent):
                 self.set_value('Out', self.__get_value('In_1'))
                 pass
             case _:
-                print("MUXSrcA operation not permitted: " +
-                      self.__get_signal('ALUSrcA'))
+                print("MUXAdrSrc operation not permitted: " +
+                      self.__get_signal('AdrSrc'))
 
     def __refresh_state(self) -> None:
         self.receive_value('In_0')
         self.receive_value('In_1')
 
         self.receive_signal('AdrSrc')
+
+
+class MUXRegWriteSrc(FunctionalCircuitComponent):
+    def __init__(self) -> None:
+        registers: List[str] = ['In_0', 'In_1', 'Out']
+        inputs: List[str] = ['RegWriteSrc']
+
+        super().__init__(registers, inputs)
+
+    # 0 - Данные со входа In_0
+    # 1 - Данные со входа In_1
+    def do_tick(self) -> None:
+        self.__refresh_state()
+
+        match self.__get_signal('RegWriteSrc'):
+            case 0:
+                self.set_value('Out', self.__get_value('In_0'))
+                pass
+            case 1:
+                self.set_value('Out', self.__get_value('In_1'))
+                pass
+            case _:
+                print("MUXRegWriteSrc operation not permitted: " +
+                      self.__get_signal('RegWriteSrc'))
+
+    def __refresh_state(self) -> None:
+        self.receive_value('In_0')
+        self.receive_value('In_1')
+
+        self.receive_signal('RegWriteSrc')
 
 
 class DataPath():
