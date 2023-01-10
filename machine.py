@@ -28,14 +28,14 @@ class Triger(FunctionalCircuitComponent):
 
 
 class Memory(FunctionalCircuitComponent):
-    def __init__(self, memory_size: int16) -> None:
+    def __init__(self, memory_size: int16, ops: List[int16]) -> None:
         registers: List[str] = ['A', 'RD', 'WD']
         input: str = 'WE'
 
         super().__init__(registers, input)
 
         self.__memory_size = memory_size
-        self.__memory: List[int16] = [0] * self.__memory_size
+        self.memory: List[int16] = ops
 
     def do_tick(self) -> None:
         self.__refresh_state()
@@ -43,9 +43,9 @@ class Memory(FunctionalCircuitComponent):
         data_addr = self.get_value('A')
 
         if (self.get_signal('WE') == 1):
-            self.__memory[data_addr] = self.get_value('WD')
+            self.memory[data_addr] = self.get_value('WD')
         else:
-            self.set_value('RD', self.__memory[data_addr])
+            self.set_value('RD', self.memory[data_addr])
 
     def __refresh_state(self) -> None:
         self.receive_value('A')
@@ -268,6 +268,11 @@ class ControlUnit():
         # 2 - prev prev
         self.__prev_ops: Dict[int8, int8] | None = None
 
+    def prepare(self) -> None:
+        self.set_input('AdrSrc', 1)
+        self.set_input('IRWrite', 1)
+        pass
+
     def do_tick(self) -> None:
         self.__refresh_state()
 
@@ -445,7 +450,7 @@ class ControlUnit():
         self.__pipes.update(register_name=pipe)
         pass
 
-    def attach_signal(self, input_name: str, signal: WireCircuitComponent[bool]) -> None:
+    def attach_signal(self, input_name: str, signal: WireCircuitComponent[int8]) -> None:
         assert input_name in self.__inputs.keys(), 'Указанный выход не существует'
         self.__signals.update(input_name=signal)
         pass
@@ -494,8 +499,151 @@ class ControlUnit():
         self.__prev_ops[1] = op
 
 
-def main(args):
+class DataPath():
+    def __init__(self) -> None:
+        # Components
+        self.control_unit = ControlUnit()
 
+        self.pc_triger = Triger()
+        self.adr_src_mux = MUX1Bits('AdrSrc')
+        self.memory = Memory(256)  # 256 int16 cells
+        self.ir_triger = Triger()
+        self.wd_src_mux = MUX1Bits('WDSrc')
+        self.register_file = RegisterFile()
+        self.sign_expand = SignExpand()
+        self.alu_src_a_mux = MUX1Bits('ALUSrcA')
+        self.alu_src_b_mux = MUX2Bits('ALUSrcB')
+        self.alu = ALU()
+
+        # Pipes
+        alu_result_pipe = WireCircuitComponent[int16]()
+        pc_pipe = WireCircuitComponent[int16]()
+        adr_pipe = WireCircuitComponent[int16]()
+        rd_pipe = WireCircuitComponent[int16]()
+        wd_pipe = WireCircuitComponent[int16]()
+        instr_pipe = WireCircuitComponent[int16]()
+        rd1_pipe = WireCircuitComponent[int16]()
+        rd2_pipe = WireCircuitComponent[int16]()
+        ext_imm_pipe = WireCircuitComponent[int16]()
+        pc_inc_pipe = WireCircuitComponent[int16]()
+        pc_inc_pipe.receive_value(65535)
+        src_a_pipe = WireCircuitComponent[int16]()
+        src_b_pipe = WireCircuitComponent[int16]()
+
+        # Attach pipes
+        self.alu.attach_pipe('Result', alu_result_pipe)
+        self.pc_triger.attach_pipe('In', alu_result_pipe)
+        self.adr_src_mux.attach_pipe('In_0', alu_result_pipe)
+        self.wd_src_mux.attach_pipe('In_1', alu_result_pipe)
+
+        self.pc_triger.attach_pipe('Out', pc_pipe)
+        self.adr_src_mux.attach_pipe('In_1', pc_pipe)
+        self.alu_src_a_mux.attach_pipe('In_1', pc_pipe)
+
+        self.adr_src_mux.attach_pipe('Out', adr_pipe)
+        self.memory.attach_pipe('A', adr_pipe)
+
+        self.memory.attach_pipe('RD', rd_pipe)
+        self.ir_triger.attach_pipe('In', rd_pipe)
+        self.wd_src_mux.attach_pipe('In_0', rd_pipe)
+
+        self.wd_src_mux.attach_pipe('Out', wd_pipe)
+        self.register_file.attach_pipe('WD', wd_pipe)
+
+        self.ir_triger.attach_pipe('Out', instr_pipe)
+        self.register_file.attach_pipe('A1', instr_pipe)
+        self.register_file.attach_pipe('A2', instr_pipe)
+        self.register_file.attach_pipe('A3', instr_pipe)
+        self.sign_expand.attach_pipe('In', instr_pipe)
+        self.control_unit.attach_pipe('OPCODE', instr_pipe)
+
+        self.register_file.attach_pipe('RD1', rd1_pipe)
+        self.alu_src_a_mux.attach_pipe('In_0', rd1_pipe)
+
+        self.register_file.attach_pipe('RD2', rd2_pipe)
+        self.alu_src_b_mux.attach_pipe('In_00', rd2_pipe)
+        self.memory.attach_pipe('WD', rd2_pipe)
+
+        self.sign_expand.attach_pipe('Out', ext_imm_pipe)
+        self.alu_src_b_mux.attach_pipe('In_01', ext_imm_pipe)
+
+        self.alu_src_b_mux.attach_pipe('In_10', pc_inc_pipe)
+
+        self.alu_src_a_mux.attach_pipe('Out', src_a_pipe)
+        self.alu.attach_pipe('srcA', src_a_pipe)
+
+        self.alu_src_b_mux.attach_pipe('Out', src_b_pipe)
+        self.alu.attach_pipe('srcB', src_b_pipe)
+
+        # Signals
+        pc_write_signal = WireCircuitComponent[int8]()
+        adr_src_signal = WireCircuitComponent[int8]()
+        mem_write_signal = WireCircuitComponent[int8]()
+        ir_write_signal = WireCircuitComponent[int8]()
+        wd_src_signal = WireCircuitComponent[int8]()
+        imm_src_signal = WireCircuitComponent[int8]()
+        alu_control_signal = WireCircuitComponent[int8]()
+        alu_src_b_signal = WireCircuitComponent[int8]()
+        alu_src_a_signal = WireCircuitComponent[int8]()
+        reg_write_signal = WireCircuitComponent[int8]()
+        zero_signal = WireCircuitComponent[int8]()
+
+        # Attach signals
+        self.control_unit.attach_signal('PCWrite', pc_write_signal)
+        self.control_unit.attach_signal('AdrSrc', adr_src_signal)
+        self.control_unit.attach_signal('MemWrite', mem_write_signal)
+        self.control_unit.attach_signal('IRWrite', ir_write_signal)
+        self.control_unit.attach_signal('WDSrc', wd_src_signal)
+        self.control_unit.attach_signal('ImmSrc', imm_src_signal)
+        self.control_unit.attach_signal('ALUControl', alu_control_signal)
+        self.control_unit.attach_signal('ALUSrcB', alu_src_b_signal)
+        self.control_unit.attach_signal('ALUSrcA', alu_src_a_signal)
+        self.control_unit.attach_signal('RegWrite', reg_write_signal)
+        self.control_unit.attach_signal('Zero', zero_signal)
+
+        self.pc_triger.attach_signal(pc_write_signal)
+        self.adr_src_mux.attach_signal(adr_src_signal)
+        self.memory.attach_signal(mem_write_signal)
+        self.ir_triger.attach_signal(ir_write_signal)
+        self.wd_src_mux.attach_signal(wd_src_signal)
+        self.sign_expand.attach_signal(imm_src_signal)
+        self.register_file.attach_signal(reg_write_signal)
+        self.alu_src_a_mux.attach_signal(alu_src_a_signal)
+        self.alu_src_b_mux.attach_signal(alu_src_b_signal)
+        self.alu.attach_signal(alu_control_signal)
+        # remind zero flag in alu
+        pass
+
+    def prepare(self):
+        self.control_unit.prepare()
+
+    def do_tick(self):
+        self.pc_triger.do_tick()
+        self.adr_src_mux.do_tick()
+        self.memory.do_tick()
+        self.ir_triger.do_tick()
+        self.control_unit.do_tick()
+        self.wd_src_mux.do_tick()
+        self.register_file.do_tick()
+        self.sign_expand.do_tick()
+        self.alu_src_a_mux.do_tick()
+        self.alu_src_b_mux.do_tick()
+        self.alu.do_tick()
+        pass
+
+
+def simulation(opcodes: List[int16]) -> None:
+    data_path = DataPath()
+    data_path.prepare()
+
+    data_path.memory.memory = opcodes
+
+    for op in opcodes:
+        data_path.do_tick()
+
+
+def main(args):
+    simulation(args[0])
     pass
 
 
