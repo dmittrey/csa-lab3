@@ -37,9 +37,8 @@ class FunctionalCircuitComponent(ABC):
         self.__pipes.update(register_name=pipe)
         pass
 
-    def attach_signal(self, input_name: str, signal: WireCircuitComponent[bool]) -> None:
-        assert input_name in self.__inputs.keys(), 'Указанный выход не существует'
-        self.__signals.update(input_name=signal)
+    def attach_signal(self, signal: WireCircuitComponent[bool]) -> None:
+        self.__signals[self.__input] = signal
         pass
 
     def receive_value(self, register_name: str) -> None:
