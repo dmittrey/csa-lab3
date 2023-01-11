@@ -1,6 +1,6 @@
 from typing import Dict, List, Set, TypeVar, Generic, List
 from abc import ABC, abstractmethod
-from numpy import int16, int8
+from numpy import int16, int8, bitwise_and, binary_repr
 
 T = TypeVar('T', int16, int8)
 
@@ -22,7 +22,7 @@ class FunctionalCircuitComponent(ABC):
     def __init__(self, registers: List[str], input: str) -> None:
         self.__input = input
 
-        self.__registers: Dict[str, int16] = {i: 0 for i in registers}
+        self.registers: Dict[str, int16] = {i: 0 for i in registers}
         self.__inputs: Dict[str, int8] = {input: 0}
 
         self.__pipes: Dict[str, WireCircuitComponent[int16]] = dict()
@@ -33,8 +33,8 @@ class FunctionalCircuitComponent(ABC):
         pass
 
     def attach_pipe(self, register_name: str, pipe: WireCircuitComponent[int16]) -> None:
-        assert register_name in self.__registers.keys(), 'Указанный регистр не существует'
-        self.__pipes.update(register_name=pipe)
+        assert register_name in self.registers.keys(), 'Указанный регистр не существует'
+        self.__pipes[register_name] = pipe
         pass
 
     def attach_signal(self, signal: WireCircuitComponent[bool]) -> None:
@@ -42,17 +42,26 @@ class FunctionalCircuitComponent(ABC):
         pass
 
     def receive_value(self, register_name: str) -> None:
-        assert register_name in self.__registers.keys(), 'Указанный регистр не существует'
+        assert register_name in self.registers.keys(), 'Указанный регистр не существует'
 
         pipe = self.__pipes.get(register_name)
         if (pipe != None):
-            self.__registers[register_name] = pipe.get_value()
+            self.registers[register_name] = pipe.get_value()
 
         pass
 
+    def receive_mask_value(self, register_name: str, mask: int16, shift: int16) -> None:
+        assert register_name in self.registers.keys(), 'Указанный регистр не существует'
+
+        pipe = self.__pipes.get(register_name)
+        if (pipe != None):
+            self.registers[register_name] = bitwise_and(
+                self.__pipes[register_name].get_value(), mask) >> shift
+        pass
+
     def set_value(self, register_name: str, val: int16) -> None:
-        assert register_name in self.__registers.keys(), 'Указанный регистр не существует'
-        self.__registers.update(register_name=val)
+        assert register_name in self.registers.keys(), 'Указанный регистр не существует'
+        self.registers[register_name] = val
 
         pipe = self.__pipes.get(register_name)
         if (pipe != None):
@@ -67,9 +76,8 @@ class FunctionalCircuitComponent(ABC):
         pass
 
     def get_value(self, register_name: str) -> int16:
-        assert register_name in self.__registers.keys(), 'Указанный регистр не существует'
-        return self.__registers[register_name]
+        assert register_name in self.registers.keys(), 'Указанный регистр не существует'
+        return self.registers[register_name]
 
-    def get_signal(self, input_name: str) -> int8:
-        assert input_name in self.__inputs.keys(), 'Указанный выход не существует'
-        return self.__inputs[input_name]
+    def get_signal(self) -> int8:
+        return self.__inputs[self.__input]
