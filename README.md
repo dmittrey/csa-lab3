@@ -17,8 +17,6 @@ Virtual machine and interpreter
 
 ## Описание синтаксиса языка
 
-# Описание ISA
-
 ```ebnf
 <letter> ::= [a-z] | [A-Z]
 <digit> ::= [0-9]
@@ -27,6 +25,7 @@ Virtual machine and interpreter
 <digit_or_letter_list> ::= <sign> | <sign> <digit_or_letter_list>
 <identifier> ::= <letter> | <letter> <digit_or_letter_list>
 <sign> ::= "-" | "+"
+<comment> ::= ";" <digit_or_letter_list>
 
 <register> ::= "ZR" | "PC" | "ZF" | "TC" | x[3-6]
 <immediate> ::= <digit_list>
@@ -38,7 +37,7 @@ Virtual machine and interpreter
 <two_args_instr> ::= <two_arg_op> <register> <shift> | <two_arg_op> <register> <immediate>
 <three_args_instr> ::= <three_arg_op> <register> <register> <immediate> | <three_arg_op> <register> <register>
 
-<instruction> ::= <two_args_instr> | <three_args_instr>
+<instruction> ::= <two_args_instr> <comment> | <three_args_instr> <comment> | <comment>
 <label> ::= <identifier>
 <program_line> ::= <label> <instruction> | <label> | <instruction>
 <program_line_list> ::= <program_line> | <program_line> <program_line_list>
@@ -47,6 +46,8 @@ Virtual machine and interpreter
 <section_list> ::=  <section> | <section> <section_list>
 <program> ::= <section_list>
 ```
+
+# Описание ISA
 
 ## Типы команд
 
