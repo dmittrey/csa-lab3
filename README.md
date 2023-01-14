@@ -13,7 +13,40 @@ Virtual machine and interpreter
 - **_trap_** -- Ввод-вывод осуществляется токенами через систему прерываний.
 - **_mem_** -- memory mapped output
 
+# Язык программирования
+
+## Описание синтаксиса языка
+
 # Описание ISA
+
+```ebnf
+<letter> ::= [a-z] | [A-Z]
+<digit> ::= [0-9]
+<digit_list> ::= <digit> | <digit> <digit_list>
+<digit_or_letter> ::= <letter> | <digit>
+<digit_or_letter_list> ::= <sign> | <sign> <digit_or_letter_list>
+<identifier> ::= <letter> | <letter> <digit_or_letter_list>
+<sign> ::= "-" | "+"
+
+<register> ::= "ZR" | "PC" | "ZF" | "TC" | x[3-6]
+<immediate> ::= <digit_list>
+<shift> ::= <sign> <immediate> "(" <register> ")"
+
+<two_arg_op> ::= "mov" | "ld" | "sw" | "halt"
+<three_arg_op> ::= "addi" | "beq" | "rem"
+
+<two_args_instr> ::= <two_arg_op> <register> <shift> | <two_arg_op> <register> <immediate>
+<three_args_instr> ::= <three_arg_op> <register> <register> <immediate> | <three_arg_op> <register> <register>
+
+<instruction> ::= <two_args_instr> | <three_args_instr>
+<label> ::= <identifier>
+<program_line> ::= <label> <instruction> | <label> | <instruction>
+<program_line_list> ::= <program_line> | <program_line> <program_line_list>
+
+<section> ::= "section" <identifier> <program_line_list>
+<section_list> ::=  <section> | <section> <section_list>
+<program> ::= <section_list>
+```
 
 ## Типы команд
 
@@ -64,6 +97,6 @@ Virtual machine and interpreter
 | ----------------- | ----- | ----------------------------------------------------- |
 | x0                | ZR    | Регистр всегда хранит 0                               |
 | x1                | PC    | Регистр указывает на следующую исполняемую инструкцию |
-| zflag             | -     | Регистр хранит флаг состояния АЛУ                     |
-| trapcause         | -     | CSR регистр для сохранения причины прерывания         |
+| zflag             | ZF    | Регистр хранит флаг состояния АЛУ                     |
+| trapcause         | TC    | CSR регистр для сохранения причины прерывания         |
 | x3-x6             | -     | Регистры общего назначения                            |
