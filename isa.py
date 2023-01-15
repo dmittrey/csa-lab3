@@ -33,6 +33,8 @@
 import json
 from collections import namedtuple
 from enum import Enum
+from typing import List
+from numpy import int16, int8, bitwise_and, binary_repr
 
 
 class Opcode(str, Enum):
@@ -50,27 +52,49 @@ class Opcode(str, Enum):
     HALT = 'halt'
 
 
+class Register(str, Enum):
+    """Алиасы для регистров"""
+
+
 class Term(namedtuple('Term', 'line pos symbol')):
     """Описание выражения из исходного текста программы."""
 
 
-def write_code(filename, code):
+class Translate_Detail(namedtuple('Detail', 'bin_code term')):
+    """Детали трансляции для записи в журнал"""
+
+
+# def write_logs(filename, code: List[int16], terms: List[Term]):
+#     with open(filename, "w", encoding="utf-8") as file:
+#         file.write(json.dumps({
+#             'code': binary_repr(code, 16),
+#             'term': terms
+#         }, indent=4))
+
+def write_logs(filename, logs: List[Translate_Detail]):
     """Записать машинный код в файл."""
     with open(filename, "w", encoding="utf-8") as file:
-        file.write(json.dumps(code, indent=4))
+        file.write(json.dumps(logs, indent=4))
 
 
-def read_code(filename):
+def write_code(filename, code: List[int16]) -> None:
+    """Записать машинный код в файл."""
+    with open(filename, mode='wb') as file:
+        for instr in code:
+            instr_str = binary_repr(instr, 16)
+            file.write(instr_str.encode())
+
+
+def read_code(filename: str) -> List[int16]:
     """Прочесть машинный код из файла."""
+    codes: List[int16] = []
+
     with open(filename, encoding="utf-8") as file:
-        code = json.loads(file.read())
+        while True:
+            code_str = file.read(16)
+            if (code_str == ''):
+                break
 
-    for instr in code:
-        # Конвертация строки в Opcode
-        instr['opcode'] = Opcode(instr['opcode'])
-        # Конвертация списка из term в класс Term
-        if 'term' in instr:
-            instr['term'] = Term(
-                instr['term'][0], instr['term'][1], instr['term'][2])
+            codes.append(int(code_str.encode(), 2))
 
-    return code
+    return codes
