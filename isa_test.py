@@ -2,30 +2,34 @@
 import json
 import numpy as np
 from typing import List
-from isa import write_logs, write_code, read_code, Term, Translate_Detail
+from isa import write_logs, write_code, read_code, Term
 import sys
 
 
 def write_logs_test() -> bool:
     test_file = "test_journal.txt"
 
-    logs: List[Translate_Detail] = [
-        Translate_Detail(np.binary_repr(592, 16), Term(1, 1, 'addi')),
-        Translate_Detail(np.binary_repr(572, 16), Term(2, 1, 'addi'))
+    instrs: List[np.int16] = [
+        np.binary_repr(592, 16), np.binary_repr(572, 16)
     ]
 
-    write_logs(test_file, logs)
+    terms: List[Term] = [
+        Term(1, 1, 'addi'),
+        Term(2, 1, 'addi')
+    ]
+
+    write_logs(test_file, instrs, terms)
 
     with open(test_file, encoding="utf-8") as file:
         code = json.loads(file.read())
 
-    if (code[0][0] != logs[0].bin_code):
+    if (code[0]['instr'] != instrs[0]):
         return False
-    if (code[0][1] != list(logs[0].term)):
+    if (code[0]['term'] != list(terms[0])):
         return False
-    if (code[1][0] != logs[1].bin_code):
+    if (code[1]['instr'] != instrs[1]):
         return False
-    if (code[1][1] != list(logs[1].term)):
+    if (code[1]['term'] != list(terms[1])):
         return False
 
     return True

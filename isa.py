@@ -33,7 +33,7 @@
 import json
 from collections import namedtuple
 from enum import Enum
-from typing import List
+from typing import Dict, List
 from numpy import int16, int8, bitwise_and, binary_repr
 
 
@@ -60,10 +60,6 @@ class Term(namedtuple('Term', 'line pos symbol')):
     """Описание выражения из исходного текста программы."""
 
 
-class Translate_Detail(namedtuple('Detail', 'bin_code term')):
-    """Детали трансляции для записи в журнал"""
-
-
 # def write_logs(filename, code: List[int16], terms: List[Term]):
 #     with open(filename, "w", encoding="utf-8") as file:
 #         file.write(json.dumps({
@@ -71,8 +67,16 @@ class Translate_Detail(namedtuple('Detail', 'bin_code term')):
 #             'term': terms
 #         }, indent=4))
 
-def write_logs(filename, logs: List[Translate_Detail]):
+def write_logs(filename, instrs: List[str], terms: List[Term]):
     """Записать машинный код в файл."""
+    logs: List[Dict] = list()
+
+    for num in range(len(instrs)):
+        logs.append({
+            'instr': instrs[num],
+            'term': terms[num]
+        })
+
     with open(filename, "w", encoding="utf-8") as file:
         file.write(json.dumps(logs, indent=4))
 
