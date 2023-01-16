@@ -1,7 +1,6 @@
 import sys
 from typing import Dict, List, List
-from abc import ABC, abstractmethod
-from numpy import int16, int8, bitwise_and, binary_repr
+from numpy import int16, int8, bitwise_and
 from circuit import FunctionalCircuitComponent, WireCircuitComponent
 
 
