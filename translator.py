@@ -3,32 +3,24 @@ import json
 import sys
 import re
 
-from typing import List
+from typing import Dict, List
 import numpy as np
 from collections import namedtuple
 
 
 class TokenType(str, Enum):
-    COLON = 'colon',
-    SEMICOLON = 'semicolon',
+    SYMBOL = 'symbol'
 
-    LEFT_BRACKET = 'left_bracket',
-    RIGHT_BRACKET = 'right_bracket',
+    NUMBER_LITERAL = 'number',
+    STRING_LITERAL = 'string',
+    CHAR_LITERAL = 'char',
 
-    REGISTER = 'register',
-    NO_ARGS_OP = 'no_args_op',
-    TWO_ARGS_OP = 'two_args_op',
-    THREE_ARGS_OP = 'three_args_op',
+    EOL = 'end_of_line',
+    EOF = 'end_of_file',
 
-    LEXEM = 'lexem',
-    NUMBER = 'number',
-    STRING = 'string'
-
-    LABEL = 'label',
-
-    ENTRY_POINT = 'entry_point'
-
-    SHIFT = 'shift'
+    KEYWORD = 'keyword',
+    COMMENT = 'comment',
+    WHITESPACE = 'whitespace'
     pass
 
 
@@ -45,93 +37,52 @@ class Token(namedtuple('Token', 'TokenType value')):
 """
 
 
-def lexicalAnalysis(code: str) -> List[Token]:
+def lexical_analysis(code: str) -> List[Token]:
     tokens: List[Token] = list()
 
-    lexem_pattern = re.compile("^.?[A-Z]+$", re.IGNORECASE)
-    label_pattern = re.compile("^.?([A-Z]+):$", re.IGNORECASE)
-    number_pattern = re.compile("^([0-9]+)$")
-    string_pattern = re.compile("^'.*'$", re.IGNORECASE)
-    shift_pattern = re.compile("^[+-][0-9]+\([A-Z]+\)$")
+    patterns: Dict[TokenType, str] = {
+        TokenType.KEYWORD: r"section",
+        TokenType.COMMENT: r";.*$",
+        TokenType.SYMBOL: r"[\:\+\-\,\(\)]",
+        TokenType.NUMBER_LITERAL: r"[0-9]+",
+        TokenType.CHAR_LITERAL: r"'\s*[a-z]*'",
+        TokenType.STRING_LITERAL: r".?[a-z]+",
+        TokenType.EOL: r"\n",
+        TokenType.WHITESPACE: '\s+'
+    }
 
-    registers = ['x0', 'x1', 'zflag', 'trapcause', 'x3', 'x4', 'x5', 'x6']
-    alias_registers = ['ZR', 'PC', 'ZF', 'TC', 'DR', 'AC']
+    cur_pos = 0
+    while cur_pos < len(code):
+        found = False
 
-    no_args_ops = ['halt']
-    two_args_ops = ['mov', 'ld', 'sw']
-    three_args_ops = ['addi', 'beq', 'rem']
+        for lexem_type, lexem_re in patterns.items():
+            res = re.match(lexem_re, code[cur_pos:],
+                           re.MULTILINE | re.IGNORECASE)
 
-    text = code.split()
+            if (res != None):
+                found = True
+                end_pos = cur_pos + res.end()
+                if (lexem_type != TokenType.COMMENT and lexem_type != TokenType.WHITESPACE):
+                    tokens.append(Token(lexem_type, code[cur_pos:end_pos]))
+                break
 
-    for literal in text:
-        literal = literal.replace(',', '')
+        cur_pos = end_pos
+        assert found == True, 'Не распознало лексему'
 
-        match literal:
-            case ':':
-                tokens.append(Token(TokenType.COLON, literal))
-                continue
-            case ';':
-                tokens.append(Token(TokenType.SEMICOLON, literal))
-                continue
-            case '(':
-                tokens.append(Token(TokenType.LEFT_BRACKET, literal))
-                continue
-            case ')':
-                tokens.append(Token(TokenType.RIGHT_BRACKET, literal))
-                continue
-            case '_start':
-                tokens.append(Token(TokenType.ENTRY_POINT, literal))
-                continue
-
-        if ((literal in registers) or (literal in alias_registers)):
-            tokens.append(Token(TokenType.REGISTER, literal))
-            continue
-
-        if (literal in no_args_ops):
-            tokens.append(Token(TokenType.NO_ARGS_OP, literal))
-            continue
-
-        if (literal in two_args_ops):
-            tokens.append(Token(TokenType.TWO_ARGS_OP, literal))
-            continue
-
-        if (literal in three_args_ops):
-            tokens.append(Token(TokenType.THREE_ARGS_OP, literal))
-            continue
-
-        if (lexem_pattern.match(literal)):
-            tokens.append(Token(TokenType.LEXEM, literal))
-            continue
-
-        if (number_pattern.match(literal)):
-            tokens.append(Token(TokenType.NUMBER, literal))
-            continue
-
-        if (label_pattern.match(literal)):
-            tokens.append(Token(TokenType.LABEL, literal))
-            continue
-
-        if (shift_pattern.match(literal)):
-            tokens.append(Token(TokenType.SHIFT, literal))
-            continue
-
-        if (string_pattern.match(literal)):
-            tokens.append(Token(TokenType.STRING, literal))
-            continue
-
-    print(text)
-    with open('parsing.json', mode='w') as file:
-        file.write(json.dumps(tokens, indent=4))
+    return tokens
 
 
 def translate(code: str) -> List[np.int16]:
-    tokens: List[Token] = lexicalAnalysis(code)
+    tokens: List[Token] = lexical_analysis(code)
+    with open('parsing.json', mode='w') as file:
+        file.write(json.dumps(tokens, indent=4))
     pass
 
 
 def main(args):
     source, target = args
 
+    # ['examples/cat.asm', 'code.out']
     with open(source, mode='r') as file:
         code = file.read()
 
