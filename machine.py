@@ -6,6 +6,39 @@ from circuit import FunctionalCircuitComponent, WireCircuitComponent
 from isa import read_code, Opcode
 
 
+class IOHandler(FunctionalCircuitComponent):
+    def __init__(self) -> None:
+        registers: List[str] = ['In', 'WD', 'Out']
+        input: str = 'IOOp'
+
+        self.state = 0
+        self.saved_tokens = []
+        self.tick_timer = 0
+
+        super().__init__(registers, input)
+
+    def do_tick(self) -> None:
+        self.__refresh_state()
+
+        if (self.get_signal() == 1):
+            # If value exists
+            if (self.get_value('In') == 120):
+                self.set_value('Out', self.state)
+                print('Readed')
+            elif (self.get_value('In') == 121):
+                self.set_value('Out', self.state)
+                self.saved_tokens.append(self.get_value('WD'))
+                print('Saved:', chr(self.get_value('WD')))
+        else:
+            if (self.get_value('In') in [120, 121]):
+                raise Exception('Unsopported operation on memory cell')
+
+    def __refresh_state(self) -> None:
+        self.receive_value('In')
+        self.receive_value('WD')
+        self.receive_signal()
+
+
 class Triger(FunctionalCircuitComponent):
     def __init__(self) -> None:
         registers: List[str] = ['In', 'Out']
@@ -46,6 +79,13 @@ class Memory(FunctionalCircuitComponent):
             self.memory[data_addr] = self.get_value('WD')
         else:
             self.set_value('RD', self.memory[data_addr])
+
+    def load_program(self, program: List[int16]):
+        assert len(self.memory) > len(
+            program), 'Память не может вместить программу'
+
+        for num in range(len(program)):
+            self.memory[num] = program[num]
 
     def __refresh_state(self) -> None:
         self.receive_value('A')
@@ -153,7 +193,7 @@ class SignExpand(FunctionalCircuitComponent):
                 self.set_value('Out', (self.get_value('In') >> 12) & 15)
                 pass
             case 2:
-                left_part = (self.get_value('In') >> 12) & 15
+                left_part = (self.get_value('In') >> 9) & 120
                 right_part = (self.get_value('In') >> 3) & 7
 
                 self.set_value('Out', left_part + right_part)
@@ -243,6 +283,7 @@ class DataPath():
         # Components
         self.pc_triger = Triger()
         self.adr_src_mux = MUX1Bits('AdrSrc')
+
         self.memory = Memory(256)  # 256 int16 cells
         self.ir_triger = Triger()
         self.wd_src_mux = MUX1Bits('WDSrc')
@@ -251,7 +292,9 @@ class DataPath():
         self.alu_src_a_mux = MUX1Bits('ALUSrcA')
         self.alu_src_b_mux = MUX2Bits('ALUSrcB')
         self.alu = ALU()
+        self.io_handler = IOHandler()
 
+        # Exit wires for control_unit
         self.control_signals: Dict[str, WireCircuitComponent[int8]] = {}
         self.control_pipes: Dict[str, WireCircuitComponent[int16]] = {}
 
@@ -282,10 +325,12 @@ class DataPath():
 
         self.adr_src_mux.attach_pipe('Out', adr_pipe)
         self.memory.attach_pipe('A', adr_pipe)
+        self.io_handler.attach_pipe('In', adr_pipe)
 
         self.memory.attach_pipe('RD', rd_pipe)
         self.ir_triger.attach_pipe('In', rd_pipe)
         self.wd_src_mux.attach_pipe('In_0', rd_pipe)
+        self.io_handler.attach_pipe('Out', rd_pipe)
         self.control_pipes = {'OPCODE': rd_pipe}
 
         self.wd_src_mux.attach_pipe('Out', wd_pipe)
@@ -303,6 +348,7 @@ class DataPath():
         self.register_file.attach_pipe('RD2', rd2_pipe)
         self.alu_src_b_mux.attach_pipe('In_00', rd2_pipe)
         self.memory.attach_pipe('WD', rd2_pipe)
+        self.io_handler.attach_pipe('WD', rd2_pipe)
 
         self.sign_expand.attach_pipe('Out', ext_imm_pipe)
         self.alu_src_b_mux.attach_pipe('In_01', ext_imm_pipe)
@@ -327,6 +373,7 @@ class DataPath():
         alu_src_a_signal = WireCircuitComponent[int8]()
         reg_write_signal = WireCircuitComponent[int8]()
         zero_signal = WireCircuitComponent[int8]()
+        io_operation_signal = WireCircuitComponent[int8]()
 
         # Attach signals
         self.control_signals['PCWrite'] = pc_write_signal
@@ -341,6 +388,7 @@ class DataPath():
         self.control_signals['ALUSrcA'] = alu_src_a_signal
         self.control_signals['RegWrite'] = reg_write_signal
         self.control_signals['Zero'] = zero_signal
+        self.control_signals['IOOp'] = io_operation_signal
 
         self.pc_triger.attach_signal(pc_write_signal)
         self.adr_src_mux.attach_signal(adr_src_signal)
@@ -352,6 +400,7 @@ class DataPath():
         self.alu_src_a_mux.attach_signal(alu_src_a_signal)
         self.alu_src_b_mux.attach_signal(alu_src_b_signal)
         self.alu.attach_signal(alu_control_signal)
+        self.io_handler.attach_signal(io_operation_signal)
         # remind zero flag in alu
         pass
 
@@ -359,6 +408,7 @@ class DataPath():
         self.pc_triger.do_tick()
         self.adr_src_mux.do_tick()
         self.memory.do_tick()
+        self.io_handler.do_tick()
         self.ir_triger.do_tick()
         self.wd_src_mux.do_tick()
         self.register_file.do_tick()
@@ -377,7 +427,7 @@ class DataPath():
 class ControlUnit():
     def __init__(self) -> None:
         registers: List[str] = ['OPCODE']
-        inputs: List[str] = ['PCWrite', 'AdrSrc', 'MemWrite', 'IRWrite', 'WDSrc',
+        inputs: List[str] = ['PCWrite', 'AdrSrc', 'MemWrite', 'IRWrite', 'WDSrc', 'IOOp',
                              'ImmSrc', 'ALUControl', 'ALUSrcB', 'ALUSrcA', 'RegWrite', 'Zero']
 
         self.__registers: Dict[str, int16] = {i: 0 for i in registers}
@@ -424,7 +474,7 @@ class ControlUnit():
                     # 3 tick
                     self.__set_inputs({
                         # Write mem[reg+imm] in register
-                        'AdrSrc': 1, 'IRWrite': 0, 'RegWrite': 1,
+                        'AdrSrc': 1, 'IRWrite': 0, 'RegWrite': 1, 'IOOp': 1,
                         'ALUSrcA': 1, 'ALUSrcB': 2, 'ALUControl': 0  # Inc PC
                     })
                     data_path.do_tick()
@@ -432,7 +482,8 @@ class ControlUnit():
                     # 4 tick
                     self.__set_inputs({
                         'RegWrite': 0,  # Disable write to register file from prev tick
-                        'PCWrite': 1  # Update PC value
+                        'PCWrite': 1,  # Update PC value
+                        'IOOp': 0
                     })
                     data_path.do_tick()
                 case Opcode.SAVE:
@@ -445,7 +496,7 @@ class ControlUnit():
                     # 3 tick
                     self.__set_inputs({
                         # Write mem[reg+imm] in register
-                        'AdrSrc': 1, 'IRWrite': 0, 'MemWrite': 1,
+                        'AdrSrc': 1, 'IRWrite': 0, 'IOOp': 1,
                         'ALUSrcA': 1, 'ALUSrcB': 2, 'ALUControl': 0  # Inc PC
                     })
                     data_path.do_tick()
@@ -453,7 +504,8 @@ class ControlUnit():
                     # 4 tick
                     self.__set_inputs({
                         'MemWrite': 0,  # Disable write to register file from prev tick
-                        'PCWrite': 1  # Update PC value
+                        'PCWrite': 1,  # Update PC value
+                        'IOOp': 0
                     })
                     data_path.do_tick()
                 case Opcode.HALT:
@@ -521,7 +573,7 @@ def simulation(start_code: int16, codes: List[int16]) -> None:
     control_unit.attach_signals(data_path.control_signals)
     control_unit.attach_pipes(data_path.control_pipes)
 
-    data_path.memory.memory = codes
+    data_path.memory.load_program(codes)
     data_path.pc_triger.state = start_code
 
     control_unit.start(data_path)
