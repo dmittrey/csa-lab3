@@ -101,14 +101,16 @@ class RegisterFile(FunctionalCircuitComponent):
         super().__init__(registers, input)
 
         self.inner_registers: Dict[int, int16] = {
-            0: 0,
-            1: 0,
-            2: 0,
-            3: 0,
-            4: 0,
-            5: 0,
-            6: 0,
-            7: 0
+            0: 0,  # x0 | ZR
+            1: 0,  # x1 | PC
+            2: 0,  # x2 | TC
+            3: 0,  # x3 | DR
+            4: 0,  # x4
+            5: 0,  # x5
+            6: 0,  # x6 | AC
+            7: 0,  # mscratch(Save mem block for state) <= CSR
+            8: 0,  # mepc(Previous PC value)            <= CSR
+            9: 0   # mtvec(Interrupt vector address)    <= CSR
         }
 
     def do_tick(self) -> None:
