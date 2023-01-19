@@ -37,19 +37,19 @@ from typing import Dict, List
 from numpy import int16, int8, bitwise_and, binary_repr
 
 
-class Opcode(str, Enum):
+class Opcode(int, Enum):
     """Opcode для ISA."""
 
     # Коды операций, представленных на уровне языка.
-    ADD_IMM = 'ADDI'
-    BRANCH_IF_EQUALS = 'BEQ'
-    REM_OF_DIV = 'REM'
-    MOV = 'MOV'
-    LOAD = 'LD'
-    SAVE = 'SW'
+    ADD = 0
+    BNE = 1
+    REM = 2
+    MOV = 3
+    LOAD = 4
+    SAVE = 5
 
     # Операция остановки процессора
-    HALT = 'halt'
+    HALT = 6
 
 
 class Register(str, Enum):
