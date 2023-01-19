@@ -83,8 +83,11 @@ def lexical_analysis(code: str) -> List[Token]:
     return tokens
 
 
-def shift_and_mask(value: int, shift_length: int, mask: int) -> int:
-    return (value & mask) << shift_length
+def shift_and_mask(value: int, shift_length: int, mask: int, length: int) -> int:
+    masked_value = value & mask
+    while masked_value > (2 ** (length) - 1):
+        masked_value = masked_value >> 1
+    return masked_value << shift_length
 
 
 def generate(tokens: List[Token]) -> List[MemoryCell]:
@@ -193,12 +196,12 @@ def generate(tokens: List[Token]) -> List[MemoryCell]:
 
                             if (tokens[num].value in two_args_op):
                                 if (tokens[num + 1].TokenType != TokenType.STRING_LITERAL or
-                                            tokens[num + 2].value != ',' or
-                                            tokens[num + 3].value not in ['+', '-'] or
-                                            tokens[num + 4].TokenType not in [TokenType.STRING_LITERAL, TokenType.NUMBER_LITERAL] or
-                                            tokens[num + 5].value != '(' or
-                                            tokens[num + 6].TokenType != TokenType.STRING_LITERAL or
-                                            tokens[num + 7].value != ')'
+                                        tokens[num + 2].value != ',' or
+                                        tokens[num + 3].value not in ['+', '-'] or
+                                        tokens[num + 4].TokenType not in [TokenType.STRING_LITERAL, TokenType.NUMBER_LITERAL] or
+                                        tokens[num + 5].value != '(' or
+                                        tokens[num + 6].TokenType != TokenType.STRING_LITERAL or
+                                        tokens[num + 7].value != ')'
                                         ):
                                     raise Exception(
                                         'Unable to parse instruction ' + tokens[num:num+7])
@@ -216,28 +219,28 @@ def generate(tokens: List[Token]) -> List[MemoryCell]:
                                 match (tokens[num].value):
                                     case 'mov':
                                         res = int()
-                                        res += shift_and_mask(imm, 9, 127)
-                                        res += shift_and_mask(reg2, 6, 7)
-                                        res += shift_and_mask(reg1, 3, 7)
+                                        res += shift_and_mask(imm, 9, 127, 7)
+                                        res += shift_and_mask(reg2, 6, 7, 3)
+                                        res += shift_and_mask(reg1, 3, 7, 3)
                                         res += 3
                                         memory.append(MemoryCell(
                                             SectionType.CODE, reg1, reg2, None, imm, tokens[num].value, res))
                                         pass
                                     case 'ld':
                                         res = int()
-                                        res += shift_and_mask(imm, 9, 127)
-                                        res += shift_and_mask(reg2, 6, 7)
-                                        res += shift_and_mask(reg1, 3, 7)
+                                        res += shift_and_mask(imm, 9, 127, 7)
+                                        res += shift_and_mask(reg2, 6, 7, 3)
+                                        res += shift_and_mask(reg1, 3, 7, 3)
                                         res += 4
                                         memory.append(MemoryCell(
                                             SectionType.CODE, reg1, reg2, None, imm, tokens[num].value, res))
                                         pass
                                     case 'sw':
                                         res = int()
-                                        res += shift_and_mask(imm, 12, 120)
-                                        res += shift_and_mask(reg1, 9, 7)
-                                        res += shift_and_mask(reg2, 6, 7)
-                                        res += shift_and_mask(imm, 3, 7)
+                                        res += shift_and_mask(imm, 12, 120, 4)
+                                        res += shift_and_mask(reg1, 9, 7, 3)
+                                        res += shift_and_mask(reg2, 6, 7, 3)
+                                        res += shift_and_mask(imm, 3, 7, 3)
                                         res += 5
                                         memory.append(MemoryCell(
                                             SectionType.CODE, reg1, reg2, None, imm, tokens[num].value, res))
@@ -247,11 +250,11 @@ def generate(tokens: List[Token]) -> List[MemoryCell]:
 
                             if (tokens[num].value in three_args_op):
                                 if (tokens[num + 1].TokenType != TokenType.STRING_LITERAL or
-                                        tokens[num + 2].value != ',' or
-                                        tokens[num + 3].TokenType != TokenType.STRING_LITERAL or
-                                        tokens[num + 4].value != ',' or
-                                        tokens[num + 5].TokenType not in [
-                                        TokenType.STRING_LITERAL, TokenType.NUMBER_LITERAL]
+                                    tokens[num + 2].value != ',' or
+                                    tokens[num + 3].TokenType != TokenType.STRING_LITERAL or
+                                    tokens[num + 4].value != ',' or
+                                    tokens[num + 5].TokenType not in [
+                                    TokenType.STRING_LITERAL, TokenType.NUMBER_LITERAL]
                                     ):
                                     raise Exception(
                                         'Unable to parse instruction ' + tokens[num:num+6])
@@ -273,19 +276,19 @@ def generate(tokens: List[Token]) -> List[MemoryCell]:
                                 match (tokens[num].value):
                                     case 'addi':
                                         res = 0
-                                        res += shift_and_mask(imm, 9, 127)
-                                        res += shift_and_mask(reg2, 6, 7)
-                                        res += shift_and_mask(reg1, 3, 7)
+                                        res += shift_and_mask(imm, 9, 127, 7)
+                                        res += shift_and_mask(reg2, 6, 7, 3)
+                                        res += shift_and_mask(reg1, 3, 7, 3)
                                         res += 0
                                         memory.append(MemoryCell(
                                             SectionType.CODE, reg1, reg2, None, imm, tokens[num].value, res))
                                         pass
                                     case 'bne':
                                         res = int()
-                                        res += shift_and_mask(imm, 12, 120)
-                                        res += shift_and_mask(reg2, 9, 7)
-                                        res += shift_and_mask(reg1, 6, 7)
-                                        res += shift_and_mask(imm, 3, 7)
+                                        res += shift_and_mask(imm, 12, 120, 4)
+                                        res += shift_and_mask(reg2, 9, 7, 3)
+                                        res += shift_and_mask(reg1, 6, 7, 3)
+                                        res += shift_and_mask(imm, 3, 7, 3)
                                         res += 1
                                         memory.append(MemoryCell(
                                             SectionType.CODE, reg1, reg2, None, imm, tokens[num].value, res))
@@ -294,10 +297,10 @@ def generate(tokens: List[Token]) -> List[MemoryCell]:
                                         reg3 = registers[tokens[num + 5].value]
 
                                         res = int()
-                                        res += shift_and_mask(imm, 12, 120)
-                                        res += shift_and_mask(reg2, 9, 7)
-                                        res += shift_and_mask(reg1, 6, 7)
-                                        res += shift_and_mask(imm, 3, 7)
+                                        res += shift_and_mask(imm, 12, 120, 4)
+                                        res += shift_and_mask(reg2, 9, 7, 3)
+                                        res += shift_and_mask(reg1, 6, 7, 3)
+                                        res += shift_and_mask(imm, 3, 7, 3)
                                         res += 2
                                         memory.append(MemoryCell(
                                             SectionType.CODE, reg1, reg2, reg3, imm, tokens[num].value, res))
