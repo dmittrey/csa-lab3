@@ -3,6 +3,8 @@ from typing import Dict, List, List
 from numpy import int16, int8, bitwise_and
 from circuit import FunctionalCircuitComponent, WireCircuitComponent
 
+from isa import Opcode
+
 
 class Triger(FunctionalCircuitComponent):
     def __init__(self) -> None:
@@ -11,22 +13,22 @@ class Triger(FunctionalCircuitComponent):
 
         super().__init__(registers, input)
 
-        self.__state: int16 = 0
+        self.state: int16 = 0
 
     def do_tick(self) -> None:
         self.__refresh_state()
 
         if (self.get_signal() == 1):
-            self.__state = self.get_value('In')
+            self.state = self.get_value('In')
 
-        self.set_value('Out', self.__state)
+        self.set_value('Out', self.state)
 
     def __refresh_state(self) -> None:
         self.receive_value('In')
         self.receive_signal()
 
     def show_state(self) -> int16:
-        print(self.__state)
+        print(self.state)
 
 
 class Memory(FunctionalCircuitComponent):
@@ -63,7 +65,7 @@ class RegisterFile(FunctionalCircuitComponent):
 
         self.__inner_registers: Dict[int, int16] = {
             0: 0,
-            1: 5,
+            1: 0,
             2: 0,
             3: 0,
             4: 0,
@@ -250,265 +252,7 @@ class MUX2Bits(FunctionalCircuitComponent):
 
 class DataPath():
     def __init__(self) -> None:
-        pass
-
-
-class ControlUnit():
-    def __init__(self) -> None:
-        registers: List[str] = ['OPCODE']
-        inputs: List[str] = ['PCWrite', 'AdrSrc', 'MemWrite', 'IRWrite', 'WDSrc',
-                             'ImmSrc', 'ALUControl', 'ALUSrcB', 'ALUSrcA', 'RegWrite', 'Zero']
-
-        self.__registers: Dict[str, int16] = {i: 0 for i in registers}
-        self.__inputs: Dict[str, int8] = {i: 0 for i in inputs}
-
-        self.__pipes: Dict[str, WireCircuitComponent[int16]] = dict()
-        self.__signals: Dict[str, WireCircuitComponent[int8]] = dict()
-
-        # 1 - prev
-        # 2 - prev prev
-        self.__prev_ops: Dict[int8, int8 | None] = {1: None, 2: None}
-
-    def prepare(self) -> None:
-        self.set_input('AdrSrc', 1)
-        self.set_input('IRWrite', 1)
-        pass
-
-    def do_tick(self) -> bool:
-        self.__refresh_state()
-
-        match self.__registers.get('OPCODE'):
-            case 0:
-                # ADDI
-                if (self.__prev_ops[1] != 0):
-                    # 1 tick
-                    self.set_input('PCWrite', 0)
-                    self.set_input('AdrSrc', 1)
-                    self.set_input('MemWrite', 0)
-                    self.set_input('IRWrite', 1)
-                    self.set_input('WDSrc', 0)
-                    self.set_input('ImmSrc', 0)
-                    self.set_input('RegWrite', 0)
-                    self.set_input('ALUSrcA', 0)
-                    self.set_input('ALUSrcB', 1)
-                    self.set_input('ALUControl', 0)
-
-                    self.__update_prev_ops(0)
-
-                    return False
-                elif (self.__prev_ops[1] == 0 and self.__prev_ops[2] != 0):
-                    # 2 tick
-                    self.set_input('IRWrite', 0)
-                    self.set_input('WDSrc', 1)
-                    self.set_input('RegWrite', 1)
-                    self.set_input('PCWrite', 1)
-                    self.set_input('ALUSrcA', 1)
-                    self.set_input('ALUSrcB', 2)
-
-                    self.__update_prev_ops(0)
-
-                    return False
-                else:
-                    return True
-            case 1:
-                # BEQ
-                if (self.__prev_ops[1] != 1):
-                    # 1 tick
-                    self.set_input('PCWrite', 0)
-                    self.set_input('AdrSrc', 1)
-                    self.set_input('MemWrite', 0)
-                    self.set_input('IRWrite', 1)
-                    self.set_input('WDSrc', 0)
-                    self.set_input('ImmSrc', 2)
-                    self.set_input('RegWrite', 0)
-                    self.set_input('ALUSrcA', 0)
-                    self.set_input('ALUSrcB', 0)
-                    self.set_input('ALUControl', 1)
-                elif (self.__prev_ops[1] == 1 and self.__prev_ops[2] != 1):
-                    # 2 tick
-                    if (self.__inputs['Zero'] == 1):
-                        self.set_input('IRWrite', 0)
-                        self.set_input('ALUSrcA', 1)
-                        self.set_input('ALUSrcB', 1)
-                        self.set_input('PCWrite', 1)
-
-                self.__update_prev_ops(1)
-                pass
-            case 2:
-                # REM
-                if (self.__prev_ops[1] != 2):
-                    # 1 tick
-                    self.set_input('PCWrite', 0)
-                    self.set_input('AdrSrc', 1)
-                    self.set_input('MemWrite', 0)
-                    self.set_input('IRWrite', 1)
-                    self.set_input('WDSrc', 0)
-                    self.set_input('ImmSrc', 1)
-                    self.set_input('RegWrite', 0)
-                    self.set_input('ALUSrcA', 0)
-                    self.set_input('ALUSrcB', 0)
-                    self.set_input('ALUControl', 2)
-                elif (self.__prev_ops[1] == 2 and self.__prev_ops[2] != 2):
-                    # 2 tick
-                    self.set_input('IRWrite', 0)
-                    self.set_input('WDSrc', 1)
-                    self.set_input('RegWrite', 1)
-                else:
-                    # PC + 16 bit
-                    self.set_input('PCWrite', 1)
-                    self.set_input('ALUSrcA', 1)
-                    self.set_input('ALUSrcB', 3)
-                    pass
-
-                self.__update_prev_ops(2)
-                pass
-            case 3:
-                # MOV
-                if (self.__prev_ops[1] != 3):
-                    # 1 tick
-                    self.set_input('PCWrite', 0)
-                    self.set_input('AdrSrc', 1)
-                    self.set_input('MemWrite', 0)
-                    self.set_input('IRWrite', 1)
-                    self.set_input('WDSrc', 0)
-                    self.set_input('ImmSrc', 0)
-                    self.set_input('RegWrite', 0)
-                    self.set_input('ALUSrcA', 0)
-                    self.set_input('ALUSrcB', 1)
-                    self.set_input('ALUControl', 0)
-                elif (self.__prev_ops[1] == 3 and self.__prev_ops[2] != 3):
-                    # 2 tick
-                    self.set_input('IRWrite', 0)
-                    self.set_input('WDSrc', 1)
-                    self.set_input('RegWrite', 1)
-                else:
-                    # PC + 16 bit
-                    self.set_input('PCWrite', 1)
-                    self.set_input('ALUSrcA', 1)
-                    self.set_input('ALUSrcB', 3)
-                    pass
-
-                self.__update_prev_ops(3)
-                pass
-            case 4:
-                # LD
-                if (self.__prev_ops[1] != 4):
-                    # 1 tick
-                    self.set_input('PCWrite', 0)
-                    self.set_input('AdrSrc', 1)
-                    self.set_input('MemWrite', 0)
-                    self.set_input('IRWrite', 1)
-                    self.set_input('WDSrc', 0)
-                    self.set_input('ImmSrc', 0)
-                    self.set_input('RegWrite', 0)
-                    self.set_input('ALUSrcA', 0)
-                    self.set_input('ALUSrcB', 1)
-                    self.set_input('ALUControl', 0)
-                elif (self.__prev_ops[1] == 4 and self.__prev_ops[2] != 4):
-                    # 2 tick
-                    self.set_input('AdrSrc', 0)
-                    self.set_input('IRWrite', 0)
-                    self.set_input('RegWrite', 1)
-                else:
-                    # PC + 16 bit
-                    self.set_input('PCWrite', 1)
-                    self.set_input('ALUSrcA', 1)
-                    self.set_input('ALUSrcB', 3)
-                    pass
-
-                self.__update_prev_ops(4)
-                pass
-            case 5:
-                # SW
-                if (self.__prev_ops[1] != 5):
-                    # 1 tick
-                    self.set_input('PCWrite', 0)
-                    self.set_input('AdrSrc', 1)
-                    self.set_input('MemWrite', 0)
-                    self.set_input('IRWrite', 1)
-                    self.set_input('WDSrc', 0)
-                    self.set_input('ImmSrc', 2)
-                    self.set_input('RegWrite', 0)
-                    self.set_input('ALUSrcA', 0)
-                    self.set_input('ALUSrcB', 1)
-                    self.set_input('ALUControl', 0)
-                elif (self.__prev_ops[1] == 5 and self.__prev_ops[2] != 5):
-                    # 2 tick
-                    self.set_input('AdrSrc', 0)
-                    self.set_input('MemWrite', 1)
-                else:
-                    # PC + 16 bit
-                    self.set_input('PCWrite', 1)
-                    self.set_input('ALUSrcA', 1)
-                    self.set_input('ALUSrcB', 3)
-                    pass
-
-                self.__update_prev_ops(5)
-                pass
-            case _:
-                print("Unsupported control unit operation: " +
-                      self.__registers.get('OPCODE'))
-                pass
-
-    def attach_pipe(self, register_name: str, pipe: WireCircuitComponent[int16]) -> None:
-        assert register_name in self.__registers.keys(), 'Указанный регистр не существует'
-        self.__pipes[register_name] = pipe
-        pass
-
-    def attach_signal(self, input_name: str, signal: WireCircuitComponent[int8]) -> None:
-        assert input_name in self.__inputs.keys(), 'Указанный выход не существует'
-        self.__signals[input_name] = signal
-        pass
-
-    def set_input(self, input_name: str, val: int8) -> None:
-        assert input_name in self.__inputs.keys(), 'Указанный выход не существует'
-        self.__inputs[input_name] = val
-
-        signal = self.__signals.get(input_name)
-        if (signal != None):
-            signal.receive_value(val)
-        pass
-
-    def receive_value(self, register_name: str) -> None:
-        assert register_name in self.__registers.keys(), 'Указанный регистр не существует'
-
-        pipe = self.__pipes.get(register_name)
-        if (pipe != None):
-            self.__registers[register_name] = pipe.get_value()
-
-        pass
-
-    def receive_signal(self, input_name: str) -> None:
-        assert input_name in self.__inputs.keys(), 'Указанный выход не существует'
-
-        signal = self.__signals.get(input_name)
-        if (signal != None):
-            self.__inputs[input_name] = signal.get_value()
-
-        pass
-
-    def __refresh_state(self) -> None:
-        self.__receive_value('OPCODE', 7)
-
-        self.receive_signal('Zero')
-
-    def __receive_value(self, register_name: str, mask: int16) -> None:
-        assert register_name in self.__registers.keys(), 'Указанный регистр не существует'
-        self.__registers[register_name] = bitwise_and(
-            self.__pipes[register_name].get_value(), mask
-        )
-        pass
-
-    def __update_prev_ops(self, op: int8) -> None:
-        self.__prev_ops[2] = self.__prev_ops[1]
-        self.__prev_ops[1] = op
-
-
-class DataPath():
-    def __init__(self) -> None:
         # Components
-        self.control_unit = ControlUnit()
-
         self.pc_triger = Triger()
         self.adr_src_mux = MUX1Bits('AdrSrc')
         self.memory = Memory(256)  # 256 int16 cells
@@ -519,6 +263,9 @@ class DataPath():
         self.alu_src_a_mux = MUX1Bits('ALUSrcA')
         self.alu_src_b_mux = MUX2Bits('ALUSrcB')
         self.alu = ALU()
+
+        self.control_signals: Dict[str, WireCircuitComponent[int8]] = {}
+        self.control_pipes: Dict[str, WireCircuitComponent[int16]] = {}
 
         # Pipes
         alu_result_pipe = WireCircuitComponent[int16]()
@@ -538,11 +285,11 @@ class DataPath():
         # Attach pipes
         self.alu.attach_pipe('Result', alu_result_pipe)
         self.pc_triger.attach_pipe('In', alu_result_pipe)
-        self.adr_src_mux.attach_pipe('In_0', alu_result_pipe)
+        self.adr_src_mux.attach_pipe('In_1', alu_result_pipe)
         self.wd_src_mux.attach_pipe('In_1', alu_result_pipe)
 
         self.pc_triger.attach_pipe('Out', pc_pipe)
-        self.adr_src_mux.attach_pipe('In_1', pc_pipe)
+        self.adr_src_mux.attach_pipe('In_0', pc_pipe)
         self.alu_src_a_mux.attach_pipe('In_1', pc_pipe)
 
         self.adr_src_mux.attach_pipe('Out', adr_pipe)
@@ -551,6 +298,7 @@ class DataPath():
         self.memory.attach_pipe('RD', rd_pipe)
         self.ir_triger.attach_pipe('In', rd_pipe)
         self.wd_src_mux.attach_pipe('In_0', rd_pipe)
+        self.control_pipes = {'OPCODE': rd_pipe}
 
         self.wd_src_mux.attach_pipe('Out', wd_pipe)
         self.register_file.attach_pipe('WD', wd_pipe)
@@ -560,7 +308,6 @@ class DataPath():
         self.register_file.attach_pipe('A2', instr_pipe)
         self.register_file.attach_pipe('A3', instr_pipe)
         self.sign_expand.attach_pipe('In', instr_pipe)
-        self.control_unit.attach_pipe('OPCODE', instr_pipe)
 
         self.register_file.attach_pipe('RD1', rd1_pipe)
         self.alu_src_a_mux.attach_pipe('In_0', rd1_pipe)
@@ -594,17 +341,18 @@ class DataPath():
         zero_signal = WireCircuitComponent[int8]()
 
         # Attach signals
-        self.control_unit.attach_signal('PCWrite', pc_write_signal)
-        self.control_unit.attach_signal('AdrSrc', adr_src_signal)
-        self.control_unit.attach_signal('MemWrite', mem_write_signal)
-        self.control_unit.attach_signal('IRWrite', ir_write_signal)
-        self.control_unit.attach_signal('WDSrc', wd_src_signal)
-        self.control_unit.attach_signal('ImmSrc', imm_src_signal)
-        self.control_unit.attach_signal('ALUControl', alu_control_signal)
-        self.control_unit.attach_signal('ALUSrcB', alu_src_b_signal)
-        self.control_unit.attach_signal('ALUSrcA', alu_src_a_signal)
-        self.control_unit.attach_signal('RegWrite', reg_write_signal)
-        self.control_unit.attach_signal('Zero', zero_signal)
+        self.control_signals['PCWrite'] = pc_write_signal
+        self.control_signals['PCWrite'] = pc_write_signal
+        self.control_signals['AdrSrc'] = adr_src_signal
+        self.control_signals['MemWrite'] = mem_write_signal
+        self.control_signals['IRWrite'] = ir_write_signal
+        self.control_signals['WDSrc'] = wd_src_signal
+        self.control_signals['ImmSrc'] = imm_src_signal
+        self.control_signals['ALUControl'] = alu_control_signal
+        self.control_signals['ALUSrcB'] = alu_src_b_signal
+        self.control_signals['ALUSrcA'] = alu_src_a_signal
+        self.control_signals['RegWrite'] = reg_write_signal
+        self.control_signals['Zero'] = zero_signal
 
         self.pc_triger.attach_signal(pc_write_signal)
         self.adr_src_mux.attach_signal(adr_src_signal)
@@ -619,62 +367,129 @@ class DataPath():
         # remind zero flag in alu
         pass
 
-    def prepare(self):
-        self.control_unit.prepare()
-
     def do_tick(self):
-        tick = 0
+        self.pc_triger.do_tick()
+        self.adr_src_mux.do_tick()
+        self.memory.do_tick()
+        self.ir_triger.do_tick()
+        self.wd_src_mux.do_tick()
+        self.register_file.do_tick()
+        self.sign_expand.do_tick()
+        self.alu_src_a_mux.do_tick()
+        self.alu_src_b_mux.do_tick()
+        self.alu.do_tick()
 
-        while (True):
-            self.pc_triger.do_tick()
-            self.adr_src_mux.do_tick()
-            self.memory.do_tick()
-            self.ir_triger.do_tick()
-            if (self.control_unit.do_tick()):
-                break
-            self.wd_src_mux.do_tick()
-            self.register_file.do_tick()
-            self.sign_expand.do_tick()
-            self.alu_src_a_mux.do_tick()
-            self.alu_src_b_mux.do_tick()
-            self.alu.do_tick()
 
-            print('Tick ', tick)
+class ControlUnit():
+    def __init__(self) -> None:
+        registers: List[str] = ['OPCODE']
+        inputs: List[str] = ['PCWrite', 'AdrSrc', 'MemWrite', 'IRWrite', 'WDSrc',
+                             'ImmSrc', 'ALUControl', 'ALUSrcB', 'ALUSrcA', 'RegWrite', 'Zero']
 
-            print('Registers:')
-            self.register_file.show_registers()
+        self.__registers: Dict[str, int16] = {i: 0 for i in registers}
+        self.__inputs: Dict[str, int8] = {i: 0 for i in inputs}
 
-            print('PC:', end=" ")
-            self.pc_triger.show_state()
-            print()
+        self.__pipes: Dict[str, WireCircuitComponent[int16]] = dict()
+        self.__signals: Dict[str, WireCircuitComponent[int8]] = dict()
 
-            tick += 1
-            pass
+    def start(self, data_path: DataPath) -> bool:
+        # 0 tick
+        data_path.do_tick()
+        self.__refresh_state()
 
-        print('Tick ', tick)
+        match self.__registers.get('OPCODE'):
+            case Opcode.MOV:
+                # 1 tick
+                self.__set_inputs({
+                    'IRWrite': 1, 'ALUSrcB': 1  # Sum reg and imm_ext
+                })
+                data_path.do_tick()
 
-        print('Registers:')
-        self.register_file.show_registers()
+                # 2 tick
+                self.__set_inputs({
+                    'IRWrite': 0, 'WDSrc': 1, 'RegWrite': 1,  # Write ALU result in register
+                    'ALUSrcA': 1, 'ALUSrcB': 2, 'ALUControl': 0  # Inc PC
+                })
+                data_path.do_tick()
 
-        print('PC:', end=" ")
-        self.pc_triger.show_state()
-        print()
+                # 3 tick
+                self.__set_inputs({
+                    'RegWrite': 0,  # Disable write to register file from prev tick
+                    'PCWrite': 1  # Update PC value
+                })
+                data_path.do_tick()
+            case _:
+                print("Unsupported control unit operation: " +
+                      self.__registers.get('OPCODE'))
+                pass
+
+    def attach_pipes(self, pipes: Dict[str, WireCircuitComponent[int16]]) -> None:
+        for register_name, pipe in pipes.items():
+            if register_name in self.__registers.keys():
+                self.__pipes[register_name] = pipe
+        pass
+
+    def attach_signals(self, signals: Dict[str, WireCircuitComponent[int8]]) -> None:
+        for input_name, signal in signals.items():
+            if input_name in self.__inputs.keys():
+                self.__signals[input_name] = signal
+        pass
+
+    def __set_inputs(self, inputs: Dict[str, int8]):
+        for input_name, input_val in inputs:
+            self.__set_input(input_name, input_val)
+
+    def __set_input(self, input_name: str, val: int8) -> None:
+        assert input_name in self.__inputs.keys(), 'Указанный выход не существует'
+        self.__inputs[input_name] = val
+
+        signal = self.__signals.get(input_name)
+        if (signal != None):
+            signal.receive_value(val)
+        pass
+
+    def __receive_signal(self, input_name: str) -> None:
+        assert input_name in self.__inputs.keys(), 'Указанный выход не существует'
+
+        signal = self.__signals.get(input_name)
+        if (signal != None):
+            self.__inputs[input_name] = signal.get_value()
+
+        pass
+
+    def __refresh_state(self) -> None:
+        self.__receive_value('OPCODE', 7)
+
+        self.__receive_signal('Zero')
+
+    def __receive_value(self, register_name: str, mask: int16) -> None:
+        assert register_name in self.__registers.keys(), 'Указанный регистр не существует'
+        self.__registers[register_name] = bitwise_and(
+            self.__pipes[register_name].get_value(), mask
+        )
         pass
 
 
-def simulation(opcodes: List[int16]) -> None:
+def simulation(start_code: int16, codes: List[int16]) -> None:
+    control_unit = ControlUnit()
     data_path = DataPath()
-    data_path.prepare()
 
-    data_path.memory.memory[0] = opcodes[0]
+    control_unit.attach_signals(data_path.control_signals)
+    control_unit.attach_pipes(data_path.control_pipes)
 
-    for _ in opcodes:
-        data_path.do_tick()
+    data_path.memory.memory = codes
+    data_path.pc_triger.state = start_code
+
+    control_unit.start(data_path)
 
 
 def main(args):
-    ops: List[int16] = [592]
-    simulation(ops)
+    filename = 'examples/hello.out'
+
+    codes = isa.read_code(filename)
+    start_code = 8
+
+    simulation(start_code, codes)
     pass
 
 
