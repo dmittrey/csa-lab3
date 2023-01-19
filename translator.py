@@ -2,6 +2,7 @@ from enum import Enum
 import json
 import sys
 import re
+import isa
 
 from typing import Dict, List
 import numpy as np
@@ -162,7 +163,7 @@ def generate(tokens: List[Token]) -> List[MemoryCell]:
                         char_binary = int(''.join(format(x, 'b') for x in bytearray(
                             tokens[num + 2].value.replace("'", ""), 'utf-8')), 2)
                         memory.append(MemoryCell(
-                            SectionType.DATA, np.binary_repr(char_binary, 16)))
+                            SectionType.DATA, char_binary))
 
                         label_to_cell[cur_token.value] = len(memory) - 1
 
@@ -192,19 +193,19 @@ def generate(tokens: List[Token]) -> List[MemoryCell]:
                             if (tokens[num].value in no_args_op):
                                 res = 6
                                 memory.append(MemoryCell(
-                                    SectionType.CODE, np.binary_repr(res, 16)))
+                                    SectionType.CODE, res))
                                 num += 1
                                 continue
 
                             if (tokens[num].value in two_args_op):
                                 if (tokens[num + 1].TokenType != TokenType.STRING_LITERAL or
-                                    tokens[num + 2].value != ',' or
-                                    tokens[num + 3].value not in ['+', '-'] or
-                                    tokens[num + 4].TokenType not in [TokenType.STRING_LITERAL, TokenType.NUMBER_LITERAL] or
-                                    tokens[num + 5].value != '(' or
-                                    tokens[num + 6].TokenType != TokenType.STRING_LITERAL or
-                                    tokens[num + 7].value != ')'
-                                    ):
+                                        tokens[num + 2].value != ',' or
+                                        tokens[num + 3].value not in ['+', '-'] or
+                                        tokens[num + 4].TokenType not in [TokenType.STRING_LITERAL, TokenType.NUMBER_LITERAL] or
+                                        tokens[num + 5].value != '(' or
+                                        tokens[num + 6].TokenType != TokenType.STRING_LITERAL or
+                                        tokens[num + 7].value != ')'
+                                        ):
                                     raise Exception(
                                         'Unable to parse instruction ' + tokens[num:num+7])
 
@@ -216,8 +217,7 @@ def generate(tokens: List[Token]) -> List[MemoryCell]:
                                 if (tokens[num + 4].TokenType == TokenType.NUMBER_LITERAL):
                                     imm = int(tokens[num + 4].value)
                                 else:
-                                    imm = int(
-                                        memory[label_to_cell[tokens[num + 4].value]].value.encode(), 2)
+                                    imm = memory[label_to_cell[tokens[num + 4].value]].value
 
                                 match (tokens[num].value):
                                     case 'mov':
@@ -227,7 +227,7 @@ def generate(tokens: List[Token]) -> List[MemoryCell]:
                                         res += reg1 << 3
                                         res += 3
                                         memory.append(MemoryCell(
-                                            SectionType.CODE, np.binary_repr(res, 16)))
+                                            SectionType.CODE, res))
                                         pass
                                     case 'ld':
                                         res = 0
@@ -236,7 +236,7 @@ def generate(tokens: List[Token]) -> List[MemoryCell]:
                                         res += reg1 << 3
                                         res += 4
                                         memory.append(MemoryCell(
-                                            SectionType.CODE, np.binary_repr(res, 16)))
+                                            SectionType.CODE, res))
                                         pass
                                     case 'sw':
                                         res = 0
@@ -246,19 +246,19 @@ def generate(tokens: List[Token]) -> List[MemoryCell]:
                                         res += imm << 3  # mask 2 1 0 bits to 1 other 0
                                         res += 5
                                         memory.append(MemoryCell(
-                                            SectionType.CODE, np.binary_repr(res, 16)))
+                                            SectionType.CODE, res))
                                         pass
                                 num += 8
                                 continue
 
                             if (tokens[num].value in three_args_op):
                                 if (tokens[num + 1].TokenType != TokenType.STRING_LITERAL or
-                                            tokens[num + 2].value != ',' or
-                                            tokens[num + 3].TokenType != TokenType.STRING_LITERAL or
-                                            tokens[num + 4].value != ',' or
-                                            tokens[num + 5].TokenType not in [
-                                            TokenType.STRING_LITERAL, TokenType.NUMBER_LITERAL]
-                                        ):
+                                    tokens[num + 2].value != ',' or
+                                    tokens[num + 3].TokenType != TokenType.STRING_LITERAL or
+                                    tokens[num + 4].value != ',' or
+                                    tokens[num + 5].TokenType not in [
+                                    TokenType.STRING_LITERAL, TokenType.NUMBER_LITERAL]
+                                    ):
                                     raise Exception(
                                         'Unable to parse instruction ' + tokens[num:num+6])
 
@@ -284,7 +284,7 @@ def generate(tokens: List[Token]) -> List[MemoryCell]:
                                         res += reg1 << 3
                                         res += 0
                                         memory.append(MemoryCell(
-                                            SectionType.CODE, np.binary_repr(res, 16)))
+                                            SectionType.CODE, res))
                                         pass
                                     case 'bne':
                                         res = 0
@@ -294,7 +294,7 @@ def generate(tokens: List[Token]) -> List[MemoryCell]:
                                         res += imm << 3  # mask 2 1 0 bits to 1 other 0
                                         res += 1
                                         memory.append(MemoryCell(
-                                            SectionType.CODE, np.binary_repr(res, 16)))
+                                            SectionType.CODE, res))
                                         pass
                                     case 'rem':
                                         reg3 = registers[tokens[num + 5].value]
@@ -306,7 +306,7 @@ def generate(tokens: List[Token]) -> List[MemoryCell]:
                                         res += reg1 << 3
                                         res += 2
                                         memory.append(MemoryCell(
-                                            SectionType.CODE, np.binary_repr(res, 16)))
+                                            SectionType.CODE, res))
                                         pass
                                 num += 6
                                 continue
@@ -334,8 +334,10 @@ def main(args):
 
     codes: List[MemoryCell] = translate(code)
 
-    with open(target, mode='w') as file:
-        file.write(json.dumps(codes, indent=4))
+    # with open(target, mode='w') as file:
+    #     file.write(json.dumps(codes, indent=4))
+
+    isa.write_code(target, [x.value for x in codes])
     pass
 
 
