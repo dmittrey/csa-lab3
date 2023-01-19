@@ -387,8 +387,6 @@ class ControlUnit():
         self.__signals: Dict[str, WireCircuitComponent[int8]] = dict()
 
     def start(self, data_path: DataPath) -> bool:
-        is_halt = False
-
         while True:
             # 1 tick
             self.__reset_inputs()
@@ -458,6 +456,8 @@ class ControlUnit():
                         'PCWrite': 1  # Update PC value
                     })
                     data_path.do_tick()
+                case Opcode.HALT:
+                    break
                 case _:
                     print("Unsupported control unit operation: " +
                           self.__registers.get('OPCODE'))
