@@ -3,7 +3,7 @@ from typing import Dict, List, List
 from numpy import int16, int8, bitwise_and
 from circuit import FunctionalCircuitComponent, WireCircuitComponent
 
-from isa import Opcode
+from isa import read_code, Opcode
 
 
 class Triger(FunctionalCircuitComponent):
@@ -26,9 +26,6 @@ class Triger(FunctionalCircuitComponent):
     def __refresh_state(self) -> None:
         self.receive_value('In')
         self.receive_signal()
-
-    def show_state(self) -> int16:
-        print(self.state)
 
 
 class Memory(FunctionalCircuitComponent):
@@ -63,7 +60,7 @@ class RegisterFile(FunctionalCircuitComponent):
 
         super().__init__(registers, input)
 
-        self.__inner_registers: Dict[int, int16] = {
+        self.inner_registers: Dict[int, int16] = {
             0: 0,
             1: 0,
             2: 0,
@@ -79,13 +76,13 @@ class RegisterFile(FunctionalCircuitComponent):
 
         if (self.get_signal() == 1):
             if (self.get_value('A3') != 0):
-                self.__inner_registers[self.get_value(
+                self.inner_registers[self.get_value(
                     'A3')] = self.get_value('WD')
         else:
             self.set_value(
-                'RD1', self.__inner_registers[self.registers['A1']])
+                'RD1', self.inner_registers[self.registers['A1']])
             self.set_value(
-                'RD2', self.__inner_registers[self.registers['A2']])
+                'RD2', self.inner_registers[self.registers['A2']])
 
     def __refresh_state(self) -> None:
         self.receive_mask_value('A1', 448, 6)
@@ -94,15 +91,6 @@ class RegisterFile(FunctionalCircuitComponent):
         self.receive_value('WD')
 
         self.receive_signal()
-
-    def show_registers(self) -> None:
-        for register_key in self.__inner_registers.keys():
-            print("r", register_key, end=" ", sep="")
-
-        print()
-
-        for register_value in self.__inner_registers.values():
-            print(register_value, end="  ")
 
 
 class ALU(FunctionalCircuitComponent):
@@ -155,27 +143,27 @@ class SignExpand(FunctionalCircuitComponent):
     # 1 - Расширить значение из 12-15 бит команды
     # 2 - Расширить значение из 12-15 и 3-5 бит команды
     def do_tick(self) -> None:
+        self.__refresh_state()
+
         match self.get_signal():
             case 0:
-                self.__refresh_state(65024, 9)
+                self.set_value('Out', (self.get_value('In') >> 9) & 127)
                 pass
             case 1:
-                self.__refresh_state(61440, 12)
+                self.set_value('Out', (self.get_value('In') >> 12) & 15)
                 pass
             case 2:
-                left_part = bitwise_and(self.receive_value('In'), 61440) >> 9
-                right_part = bitwise_and(self.receive_value('In'), 56) >> 3
+                left_part = (self.get_value('In') >> 12) & 15
+                right_part = (self.get_value('In') >> 3) & 7
 
-                self.registers['In'] = left_part + right_part
+                self.set_value('Out', left_part + right_part)
                 pass
             case _:
                 print("Expand operation not permitted: " +
                       self.get_signal('ImmSrc'))
 
-        self.set_value('Out', self.get_value('In'))
-
-    def __refresh_state(self, imm_extension_mask: int16, shift: int16) -> None:
-        self.receive_mask_value('In', imm_extension_mask, shift)
+    def __refresh_state(self) -> None:
+        self.receive_value('In')
 
         self.receive_signal()
 
@@ -378,6 +366,12 @@ class DataPath():
         self.alu_src_a_mux.do_tick()
         self.alu_src_b_mux.do_tick()
         self.alu.do_tick()
+        self.get_info()
+
+    def get_info(self) -> Dict[str, int]:
+        for register_name, register_value in self.register_file.inner_registers.items():
+            print('x' + str(register_name), register_value, sep=' : ', end=' | ')
+        print('PC :', self.pc_triger.state)
 
 
 class ControlUnit():
@@ -393,35 +387,81 @@ class ControlUnit():
         self.__signals: Dict[str, WireCircuitComponent[int8]] = dict()
 
     def start(self, data_path: DataPath) -> bool:
-        # 0 tick
-        data_path.do_tick()
-        self.__refresh_state()
+        is_halt = False
 
-        match self.__registers.get('OPCODE'):
-            case Opcode.MOV:
-                # 1 tick
-                self.__set_inputs({
-                    'IRWrite': 1, 'ALUSrcB': 1  # Sum reg and imm_ext
-                })
-                data_path.do_tick()
+        while True:
+            # 1 tick
+            self.__reset_inputs()
+            data_path.do_tick()
+            self.__refresh_state()
 
-                # 2 tick
-                self.__set_inputs({
-                    'IRWrite': 0, 'WDSrc': 1, 'RegWrite': 1,  # Write ALU result in register
-                    'ALUSrcA': 1, 'ALUSrcB': 2, 'ALUControl': 0  # Inc PC
-                })
-                data_path.do_tick()
+            match self.__registers.get('OPCODE'):
+                case Opcode.MOV:
+                    # 1 tick
+                    self.__set_inputs({
+                        'IRWrite': 1, 'ALUSrcB': 1  # Sum reg and imm_ext
+                    })
+                    data_path.do_tick()
 
-                # 3 tick
-                self.__set_inputs({
-                    'RegWrite': 0,  # Disable write to register file from prev tick
-                    'PCWrite': 1  # Update PC value
-                })
-                data_path.do_tick()
-            case _:
-                print("Unsupported control unit operation: " +
-                      self.__registers.get('OPCODE'))
-                pass
+                    # 2 tick
+                    self.__set_inputs({
+                        'IRWrite': 0, 'WDSrc': 1, 'RegWrite': 1,  # Write ALU result in register
+                        'ALUSrcA': 1, 'ALUSrcB': 2, 'ALUControl': 0  # Inc PC
+                    })
+                    data_path.do_tick()
+
+                    # 3 tick
+                    self.__set_inputs({
+                        'RegWrite': 0,  # Disable write to register file from prev tick
+                        'PCWrite': 1  # Update PC value
+                    })
+                    data_path.do_tick()
+                case Opcode.LOAD:
+                    # 2 tick
+                    self.__set_inputs({
+                        'IRWrite': 1, 'ALUSrcB': 1  # Sum reg and imm_ext
+                    })
+                    data_path.do_tick()
+
+                    # 3 tick
+                    self.__set_inputs({
+                        # Write mem[reg+imm] in register
+                        'AdrSrc': 1, 'IRWrite': 0, 'RegWrite': 1,
+                        'ALUSrcA': 1, 'ALUSrcB': 2, 'ALUControl': 0  # Inc PC
+                    })
+                    data_path.do_tick()
+
+                    # 4 tick
+                    self.__set_inputs({
+                        'RegWrite': 0,  # Disable write to register file from prev tick
+                        'PCWrite': 1  # Update PC value
+                    })
+                    data_path.do_tick()
+                case Opcode.SAVE:
+                    # 2 tick
+                    self.__set_inputs({
+                        'IRWrite': 1, 'ALUSrcB': 1, 'ImmSrc': 2  # Sum reg and imm_ext
+                    })
+                    data_path.do_tick()
+
+                    # 3 tick
+                    self.__set_inputs({
+                        # Write mem[reg+imm] in register
+                        'AdrSrc': 1, 'IRWrite': 0, 'MemWrite': 1,
+                        'ALUSrcA': 1, 'ALUSrcB': 2, 'ALUControl': 0  # Inc PC
+                    })
+                    data_path.do_tick()
+
+                    # 4 tick
+                    self.__set_inputs({
+                        'MemWrite': 0,  # Disable write to register file from prev tick
+                        'PCWrite': 1  # Update PC value
+                    })
+                    data_path.do_tick()
+                case _:
+                    print("Unsupported control unit operation: " +
+                          self.__registers.get('OPCODE'))
+                    pass
 
     def attach_pipes(self, pipes: Dict[str, WireCircuitComponent[int16]]) -> None:
         for register_name, pipe in pipes.items():
@@ -435,8 +475,12 @@ class ControlUnit():
                 self.__signals[input_name] = signal
         pass
 
+    def __reset_inputs(self):
+        for input in self.__inputs.keys():
+            self.__set_input(input, 0)
+
     def __set_inputs(self, inputs: Dict[str, int8]):
-        for input_name, input_val in inputs:
+        for input_name, input_val in inputs.items():
             self.__set_input(input_name, input_val)
 
     def __set_input(self, input_name: str, val: int8) -> None:
@@ -486,7 +530,7 @@ def simulation(start_code: int16, codes: List[int16]) -> None:
 def main(args):
     filename = 'examples/hello.out'
 
-    codes = isa.read_code(filename)
+    codes = read_code(filename)
     start_code = 8
 
     simulation(start_code, codes)
