@@ -85,6 +85,6 @@ bne ZR, x4, increment
 rem x4, AC, DR ; %20
 bne ZR, x4, increment
 
-sw AC, +1(ZR)   ; Save symbol to output device(cell #1)
+sw AC, +121(ZR)   ; Save symbol to output device(cell #1)
 
 halt
