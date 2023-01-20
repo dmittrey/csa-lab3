@@ -1,7 +1,7 @@
 section .text
 _start:
-mov AC, +0(ZR)
-mov DR, +1(ZR)
+addi AC, ZR, 0
+addi DR, ZR, 1
 
 increment:
 addi AC, AC, 1
