@@ -223,7 +223,7 @@ def generate(tokens: List[Token]) -> List[MemoryCell]:
                                         res += shift_and_mask(imm, 9, 127, 7)
                                         res += shift_and_mask(reg2, 6, 7, 3)
                                         res += shift_and_mask(reg1, 3, 7, 3)
-                                        res += 4
+                                        res += 3
                                         memory.append(MemoryCell(
                                             SectionType.CODE, reg1, reg2, None, imm, tokens[num].value, res))
                                         pass
@@ -233,7 +233,7 @@ def generate(tokens: List[Token]) -> List[MemoryCell]:
                                         res += shift_and_mask(reg1, 9, 7, 3)
                                         res += shift_and_mask(reg2, 6, 7, 3)
                                         res += shift_and_mask(imm, 3, 7, 3)
-                                        res += 5
+                                        res += 4
                                         memory.append(MemoryCell(
                                             SectionType.CODE, reg1, reg2, None, imm, tokens[num].value, res))
                                         pass

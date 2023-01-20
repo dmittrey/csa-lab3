@@ -23,10 +23,10 @@ class FunctionalCircuitComponent(ABC):
         self.__input = input
 
         self.registers: Dict[str, int16] = {i: 0 for i in registers}
-        self.__inputs: Dict[str, int8] = {input: 0}
+        self.inputs: Dict[str, int8] = {input: 0}
 
         self.__pipes: Dict[str, WireCircuitComponent[int16]] = dict()
-        self.__signals: Dict[str, WireCircuitComponent[int8]] = dict()
+        self.signals: Dict[str, WireCircuitComponent[int8]] = dict()
 
     @abstractmethod
     def do_tick(self) -> None:
@@ -38,7 +38,7 @@ class FunctionalCircuitComponent(ABC):
         pass
 
     def attach_signal(self, signal: WireCircuitComponent[bool]) -> None:
-        self.__signals[self.__input] = signal
+        self.signals[self.__input] = signal
         pass
 
     def receive_value(self, register_name: str) -> None:
@@ -69,9 +69,9 @@ class FunctionalCircuitComponent(ABC):
         pass
 
     def receive_signal(self) -> None:
-        signal = self.__signals.get(self.__input)
+        signal = self.signals.get(self.__input)
         if (signal != None):
-            self.__inputs[self.__input] = signal.get_value()
+            self.inputs[self.__input] = signal.get_value()
 
         pass
 
@@ -80,4 +80,4 @@ class FunctionalCircuitComponent(ABC):
         return self.registers[register_name]
 
     def get_signal(self) -> int8:
-        return self.__inputs[self.__input]
+        return self.inputs[self.__input]

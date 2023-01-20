@@ -10,21 +10,31 @@ class IOHandler(FunctionalCircuitComponent):
     def __init__(self) -> None:
         registers: List[str] = ['In', 'WD', 'Out']
         input: str = 'IOOp'
+        super().__init__(registers, input)
+
+        self.inputs['IOInt'] = 0
 
         self.state = 0
+
+        self.tokens = [(1, 'h'), (10, 'e'), (20, 'l'), (25, 'l'), (100, 'o')]
+
         self.saved_tokens = []
-        self.tick_timer = 0
 
         super().__init__(registers, input)
 
-    def do_tick(self) -> None:
+    def do_tick(self, tick: int) -> None:
         self.__refresh_state()
+
+        for token in self.tokens:
+            if (token[0] == tick):
+                self.set_signal('IOInt', 1)
+                self.state = token[1]
 
         if (self.get_signal() == 1):
             # If value exists
             if (self.get_value('In') == 120):
-                self.set_value('Out', self.state)
-                print('Readed')
+                self.set_value('Out', ord(self.state))
+                print('Readed:', self.state)
             elif (self.get_value('In') == 121):
                 self.set_value('Out', self.state)
                 self.saved_tokens.append(self.get_value('WD'))
@@ -32,6 +42,17 @@ class IOHandler(FunctionalCircuitComponent):
         else:
             if (self.get_value('In') in [120, 121]):
                 raise Exception('Unsopported operation on memory cell')
+
+    def attach_signal(self, signal_name: str, signal: WireCircuitComponent[int8]):
+        self.signals[signal_name] = signal
+
+    def set_signal(self, signal_name: str, val: int8) -> None:
+        self.inputs[signal_name] = val
+
+        signal = self.signals.get(signal_name)
+        if (signal != None):
+            signal.receive_value(val)
+        pass
 
     def __refresh_state(self) -> None:
         self.receive_value('In')
@@ -80,12 +101,13 @@ class Memory(FunctionalCircuitComponent):
         else:
             self.set_value('RD', self.memory[data_addr])
 
-    def load_program(self, program: List[int16]):
+    def load_program(self, program: List[int16], start_address: int16):
         assert len(self.memory) > len(
             program), 'Память не может вместить программу'
 
         for num in range(len(program)):
-            self.memory[num] = program[num]
+            self.memory[start_address] = program[num]
+            start_address += 1
 
     def __refresh_state(self) -> None:
         self.receive_value('A')
@@ -121,7 +143,7 @@ class RegisterFile(FunctionalCircuitComponent):
                 self.inner_registers[self.get_value(
                     'A3')] = self.get_value('WD')
 
-            if (self.get_value('A3' == 1)):
+            if (self.get_value('A3') == 1):
                 self.set_value('PC', self.get_value('WD'))
 
         else:
@@ -383,6 +405,7 @@ class DataPath():
         reg_write_signal = WireCircuitComponent[int8]()
         zero_signal = WireCircuitComponent[int8]()
         io_operation_signal = WireCircuitComponent[int8]()
+        io_inerrupt_signal = WireCircuitComponent[int8]()
 
         # Attach signals
         self.control_signals['PCWrite'] = pc_write_signal
@@ -398,6 +421,7 @@ class DataPath():
         self.control_signals['RegWrite'] = reg_write_signal
         self.control_signals['Zero'] = zero_signal
         self.control_signals['IOOp'] = io_operation_signal
+        self.control_signals['IOInt'] = io_inerrupt_signal
 
         self.pc_triger.attach_signal(pc_write_signal)
         self.adr_src_mux.attach_signal(adr_src_signal)
@@ -409,15 +433,20 @@ class DataPath():
         self.alu_src_a_mux.attach_signal(alu_src_a_signal)
         self.alu_src_b_mux.attach_signal(alu_src_b_signal)
         self.alu.attach_signal(alu_control_signal)
-        self.io_handler.attach_signal(io_operation_signal)
+        self.io_handler.attach_signal('IOOp', io_operation_signal)
+        self.io_handler.attach_signal('IOInt', io_inerrupt_signal)
         # remind zero flag in alu
+
+        self.tick = 0
         pass
 
-    def do_tick(self):
+    def do_tick(self) -> None:
+        self.tick += 1
+
         self.pc_triger.do_tick()
         self.adr_src_mux.do_tick()
         self.memory.do_tick()
-        self.io_handler.do_tick()
+        self.io_handler.do_tick(self.tick)
         self.ir_triger.do_tick()
         self.wd_src_mux.do_tick()
         self.register_file.do_tick()
@@ -425,9 +454,18 @@ class DataPath():
         self.alu_src_a_mux.do_tick()
         self.alu_src_b_mux.do_tick()
         self.alu.do_tick()
-        self.get_info()
 
-    def get_info(self) -> Dict[str, int]:
+        self.get_info(self.tick)
+
+    def save_pc(self) -> None:
+        self.register_file.inner_registers[4] = self.pc_triger.state
+        self.pc_triger.state = self.register_file.inner_registers[5]
+
+    def load_pc(self) -> None:
+        self.pc_triger.state = self.register_file.inner_registers[4]
+
+    def get_info(self, tick: int) -> Dict[str, int]:
+        print(str(tick), ')', sep='', end=' ')
         for register_name, register_value in self.register_file.inner_registers.items():
             print('x' + str(register_name), register_value, sep=' : ', end=' | ')
         print('PC :', self.pc_triger.state)
@@ -437,7 +475,7 @@ class ControlUnit():
     def __init__(self) -> None:
         registers: List[str] = ['OPCODE']
         inputs: List[str] = ['PCWrite', 'AdrSrc', 'MemWrite', 'IRWrite', 'WDSrc', 'IOOp',
-                             'ImmSrc', 'ALUControl', 'ALUSrcB', 'ALUSrcA', 'RegWrite', 'Zero']
+                             'ImmSrc', 'ALUControl', 'ALUSrcB', 'ALUSrcA', 'RegWrite', 'Zero', 'IOInt']
 
         self.__registers: Dict[str, int16] = {i: 0 for i in registers}
         self.__inputs: Dict[str, int8] = {i: 0 for i in inputs}
@@ -451,34 +489,16 @@ class ControlUnit():
             self.__reset_inputs()
             data_path.do_tick()
             self.__refresh_state()
+            self.__handle_interrupt(data_path)
 
             match self.__registers.get('OPCODE'):
-                case Opcode.MOV:
-                    # 1 tick
-                    self.__set_inputs({
-                        'IRWrite': 1, 'ALUSrcB': 1  # Sum reg and imm_ext
-                    })
-                    data_path.do_tick()
-
-                    # 2 tick
-                    self.__set_inputs({
-                        'IRWrite': 0, 'WDSrc': 1, 'RegWrite': 1,  # Write ALU result in register
-                        'ALUSrcA': 1, 'ALUSrcB': 2, 'ALUControl': 0  # Inc PC
-                    })
-                    data_path.do_tick()
-
-                    # 3 tick
-                    self.__set_inputs({
-                        'RegWrite': 0,  # Disable write to register file from prev tick
-                        'PCWrite': 1  # Update PC value
-                    })
-                    data_path.do_tick()
-                case Opcode.LOAD:
+                case Opcode.LD:
                     # 2 tick
                     self.__set_inputs({
                         'IRWrite': 1, 'ALUSrcB': 1  # Sum reg and imm_ext
                     })
                     data_path.do_tick()
+                    self.__handle_interrupt(data_path)
 
                     # 3 tick
                     self.__set_inputs({
@@ -487,6 +507,7 @@ class ControlUnit():
                         'ALUSrcA': 1, 'ALUSrcB': 2, 'ALUControl': 0  # Inc PC
                     })
                     data_path.do_tick()
+                    self.__handle_interrupt(data_path)
 
                     # 4 tick
                     self.__set_inputs({
@@ -495,12 +516,14 @@ class ControlUnit():
                         'IOOp': 0
                     })
                     data_path.do_tick()
-                case Opcode.SAVE:
+                    self.__handle_interrupt(data_path)
+                case Opcode.SW:
                     # 2 tick
                     self.__set_inputs({
                         'IRWrite': 1, 'ALUSrcB': 1, 'ImmSrc': 2  # Sum reg and imm_ext
                     })
                     data_path.do_tick()
+                    self.__handle_interrupt(data_path)
 
                     # 3 tick
                     self.__set_inputs({
@@ -509,6 +532,7 @@ class ControlUnit():
                         'ALUSrcA': 1, 'ALUSrcB': 2, 'ALUControl': 0  # Inc PC
                     })
                     data_path.do_tick()
+                    self.__handle_interrupt(data_path)
 
                     # 4 tick
                     self.__set_inputs({
@@ -517,12 +541,33 @@ class ControlUnit():
                         'IOOp': 0
                     })
                     data_path.do_tick()
+                    self.__handle_interrupt(data_path)
                 case Opcode.HALT:
                     break
                 case _:
                     print("Unsupported control unit operation: " +
                           self.__registers.get('OPCODE'))
                     pass
+
+    def __handle_interrupt(self, data_path: DataPath) -> None:
+        self.__receive_signal('IOInt')
+
+        if (self.__get_input('IOInt')):
+            self.__set_input('IOInt', 0)
+            # data_path.save_pc()
+
+            pc = data_path.pc_triger.state
+            data_path.pc_triger.state = data_path.register_file.inner_registers[5]
+
+            registers = self.__registers.copy()
+            inputs = self.__inputs.copy()
+            self.start(data_path)
+            self.__registers = registers
+            self.__inputs = inputs
+
+            data_path.pc_triger.state = pc
+            # data_path.load_pc()
+            pass
 
     def attach_pipes(self, pipes: Dict[str, WireCircuitComponent[int16]]) -> None:
         for register_name, pipe in pipes.items():
@@ -553,6 +598,10 @@ class ControlUnit():
             signal.receive_value(val)
         pass
 
+    def __get_input(self, input_name: str) -> None:
+        assert input_name in self.__inputs.keys(), 'Указанный выход не существует'
+        return self.__inputs[input_name]
+
     def __receive_signal(self, input_name: str) -> None:
         assert input_name in self.__inputs.keys(), 'Указанный выход не существует'
 
@@ -566,6 +615,7 @@ class ControlUnit():
         self.__receive_value('OPCODE', 7)
 
         self.__receive_signal('Zero')
+        self.__receive_signal('IOInt')
 
     def __receive_value(self, register_name: str, mask: int16) -> None:
         assert register_name in self.__registers.keys(), 'Указанный регистр не существует'
@@ -582,8 +632,12 @@ def simulation(start_code: int16, codes: List[int16]) -> None:
     control_unit.attach_signals(data_path.control_signals)
     control_unit.attach_pipes(data_path.control_pipes)
 
-    data_path.memory.load_program(codes)
+    data_path.memory.load_program(codes, 0)
     data_path.pc_triger.state = start_code
+
+    interrupt_program = [61467, 6]
+    data_path.register_file.inner_registers[5] = 200
+    data_path.memory.load_program(interrupt_program, 200)
 
     control_unit.start(data_path)
 
