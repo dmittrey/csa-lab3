@@ -197,12 +197,12 @@ def generate(tokens: List[Token]) -> List[MemoryCell]:
 
                             if (tokens[num].value in two_args_op):
                                 if (tokens[num + 1].TokenType != TokenType.STRING_LITERAL or
-                                        tokens[num + 2].value != ',' or
-                                        tokens[num + 3].value not in ['+', '-'] or
-                                        tokens[num + 4].TokenType not in [TokenType.STRING_LITERAL, TokenType.NUMBER_LITERAL] or
-                                        tokens[num + 5].value != '(' or
-                                        tokens[num + 6].TokenType != TokenType.STRING_LITERAL or
-                                        tokens[num + 7].value != ')'
+                                    tokens[num + 2].value != ',' or
+                                    tokens[num + 3].value not in ['+', '-'] or
+                                    tokens[num + 4].TokenType not in [TokenType.STRING_LITERAL, TokenType.NUMBER_LITERAL] or
+                                    tokens[num + 5].value != '(' or
+                                    tokens[num + 6].TokenType != TokenType.STRING_LITERAL or
+                                    tokens[num + 7].value != ')'
                                     ):
                                     raise Exception(
                                         'Unable to parse instruction ' + str(tokens[num:num+7]))
@@ -242,11 +242,11 @@ def generate(tokens: List[Token]) -> List[MemoryCell]:
 
                             if (tokens[num].value in three_args_op):
                                 if (tokens[num + 1].TokenType != TokenType.STRING_LITERAL or
-                                        tokens[num + 2].value != ',' or
-                                        tokens[num + 3].TokenType != TokenType.STRING_LITERAL or
-                                        tokens[num + 4].value != ',' or
-                                        tokens[num + 5].TokenType not in [
-                                        TokenType.STRING_LITERAL, TokenType.NUMBER_LITERAL]
+                                            tokens[num + 2].value != ',' or
+                                            tokens[num + 3].TokenType != TokenType.STRING_LITERAL or
+                                            tokens[num + 4].value != ',' or
+                                            tokens[num + 5].TokenType not in [
+                                            TokenType.STRING_LITERAL, TokenType.NUMBER_LITERAL]
                                         ):
                                     raise Exception(
                                         'Unable to parse instruction ' + str(tokens[num:num+6]))
@@ -290,9 +290,9 @@ def generate(tokens: List[Token]) -> List[MemoryCell]:
 
                                         res = int()
                                         res += shift_and_mask(imm, 12, 120, 4)
-                                        res += shift_and_mask(reg2, 9, 7, 3)
-                                        res += shift_and_mask(reg1, 6, 7, 3)
-                                        res += shift_and_mask(imm, 3, 7, 3)
+                                        res += shift_and_mask(reg3, 9, 7, 3)
+                                        res += shift_and_mask(reg2, 6, 7, 3)
+                                        res += shift_and_mask(reg1, 3, 7, 3)
                                         res += 2
                                         memory.append(MemoryCell(
                                             SectionType.CODE, reg1, reg2, reg3, imm, tokens[num].value, res))
