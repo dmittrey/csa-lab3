@@ -131,6 +131,8 @@ Virtual machine and interpreter
 | 2   | Type R      | REM reg1, reg2, reg3 | reg1 = reg2 % reg3              | IMM[3:0] | reg3     | reg2  | reg1     | OPCODE |
 | 3   | Type I      | LD reg1, IMM(reg2)   | reg1 = MEM(reg2 + IMM)          | IMM[6:3] | IMM[2:0] | reg2  | reg1     | OPCODE |
 | 4   | Type S/B    | SW reg1, IMM(reg2)   | MEM(reg2 + IMM) = reg1          | IMM[6:3] | reg1     | reg2  | IMM[2:0] | OPCODE |
+| 5   |             | JMP IMM(reg1)        | PC = reg1 + IMM                 | IMM[6:3] | IMM[2:0] | reg1  |          | OPCODE |
+| 6   |             | HALT                 | Останов.                        |          |          |       |          | OPCODE |
 
 ## Способ кодирования
 

@@ -41,12 +41,12 @@ class Opcode(int, Enum):
     """Opcode для ISA."""
 
     # Коды операций, представленных на уровне языка.
-    ADD = 0
+    ADDI = 0
     BNE = 1
     REM = 2
-    MOV = 3
-    LOAD = 4
-    SAVE = 5
+    LD = 3
+    SW = 4
+    JMP = 5
 
     # Операция остановки процессора
     HALT = 6
