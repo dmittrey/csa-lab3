@@ -95,7 +95,7 @@ class Memory(FunctionalCircuitComponent):
 
 class RegisterFile(FunctionalCircuitComponent):
     def __init__(self) -> None:
-        registers: List[str] = ['A1', 'A2', 'A3', 'RD1', 'RD2', 'WD']
+        registers: List[str] = ['A1', 'A2', 'A3', 'RD1', 'RD2', 'WD', 'PC']
         input: str = 'WE3'
 
         super().__init__(registers, input)
@@ -114,10 +114,16 @@ class RegisterFile(FunctionalCircuitComponent):
     def do_tick(self) -> None:
         self.__refresh_state()
 
+        self.inner_registers[1] = self.get_value('PC')
+
         if (self.get_signal() == 1):
             if (self.get_value('A3') != 0):
                 self.inner_registers[self.get_value(
                     'A3')] = self.get_value('WD')
+
+            if (self.get_value('A3' == 1)):
+                self.set_value('PC', self.get_value('WD'))
+
         else:
             self.set_value(
                 'RD1', self.inner_registers[self.registers['A1']])
@@ -128,7 +134,9 @@ class RegisterFile(FunctionalCircuitComponent):
         self.receive_mask_value('A1', 448, 6)
         self.receive_mask_value('A2', 3584, 9)
         self.receive_mask_value('A3', 56, 3)
+
         self.receive_value('WD')
+        self.receive_value('PC')
 
         self.receive_signal()
 
@@ -322,6 +330,7 @@ class DataPath():
         self.pc_triger.attach_pipe('Out', pc_pipe)
         self.adr_src_mux.attach_pipe('In_0', pc_pipe)
         self.alu_src_a_mux.attach_pipe('In_1', pc_pipe)
+        self.register_file.attach_pipe('PC', pc_pipe)
 
         self.adr_src_mux.attach_pipe('Out', adr_pipe)
         self.memory.attach_pipe('A', adr_pipe)
