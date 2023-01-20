@@ -101,7 +101,7 @@ def generate(tokens: List[Token]) -> List[MemoryCell]:
     ]
 
     two_args_op: List[str] = [
-        'mov', 'ld', 'sw'
+        'ld', 'sw'
     ]
 
     three_args_op: List[str] = [
@@ -203,7 +203,7 @@ def generate(tokens: List[Token]) -> List[MemoryCell]:
                                         tokens[num + 5].value != '(' or
                                         tokens[num + 6].TokenType != TokenType.STRING_LITERAL or
                                         tokens[num + 7].value != ')'
-                                        ):
+                                    ):
                                     raise Exception(
                                         'Unable to parse instruction ' + str(tokens[num:num+7]))
 
@@ -242,12 +242,12 @@ def generate(tokens: List[Token]) -> List[MemoryCell]:
 
                             if (tokens[num].value in three_args_op):
                                 if (tokens[num + 1].TokenType != TokenType.STRING_LITERAL or
-                                    tokens[num + 2].value != ',' or
-                                    tokens[num + 3].TokenType != TokenType.STRING_LITERAL or
-                                    tokens[num + 4].value != ',' or
-                                    tokens[num + 5].TokenType not in [
-                                    TokenType.STRING_LITERAL, TokenType.NUMBER_LITERAL]
-                                    ):
+                                        tokens[num + 2].value != ',' or
+                                        tokens[num + 3].TokenType != TokenType.STRING_LITERAL or
+                                        tokens[num + 4].value != ',' or
+                                        tokens[num + 5].TokenType not in [
+                                        TokenType.STRING_LITERAL, TokenType.NUMBER_LITERAL]
+                                        ):
                                     raise Exception(
                                         'Unable to parse instruction ' + str(tokens[num:num+6]))
 
@@ -299,6 +299,9 @@ def generate(tokens: List[Token]) -> List[MemoryCell]:
                                         pass
                                 num += 6
                                 continue
+                            else:
+                                raise Exception(
+                                    'Unable to find instruction ' + str(tokens[num]))
                         pass
                     case _:
                         pass
