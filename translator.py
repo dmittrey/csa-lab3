@@ -111,11 +111,12 @@ def generate(tokens: List[Token]) -> List[MemoryCell]:
     registers: Dict[str, int] = {
         'x0': 0, 'ZR': 0,
         'x1': 1, 'PC': 1,
-        'x2': 2, 'TC': 2,
+        'x2': 2,
         'x3': 3, 'DR': 3,
-        'x4': 4,
-        'x5': 5,
-        'x6': 6, 'AC': 6
+        'x4': 4, 'mepc': 4,
+        'x5': 5, 'mtvec': 5,
+        'x6': 6, 'AC': 6,
+        'x7': 7, 'mscratch': 7
     }
 
     cur_section_place = -1
@@ -204,7 +205,7 @@ def generate(tokens: List[Token]) -> List[MemoryCell]:
                                         tokens[num + 7].value != ')'
                                         ):
                                     raise Exception(
-                                        'Unable to parse instruction ' + tokens[num:num+7])
+                                        'Unable to parse instruction ' + str(tokens[num:num+7]))
 
                                 # Skip <instr>(1) <reg>(1) <comma>(1) <shift>(5)
                                 reg1 = registers[tokens[num + 1].value]
@@ -217,15 +218,6 @@ def generate(tokens: List[Token]) -> List[MemoryCell]:
                                     imm = label_to_cell[tokens[num + 4].value]
 
                                 match (tokens[num].value):
-                                    case 'mov':
-                                        res = int()
-                                        res += shift_and_mask(imm, 9, 127, 7)
-                                        res += shift_and_mask(reg2, 6, 7, 3)
-                                        res += shift_and_mask(reg1, 3, 7, 3)
-                                        res += 3
-                                        memory.append(MemoryCell(
-                                            SectionType.CODE, reg1, reg2, None, imm, tokens[num].value, res))
-                                        pass
                                     case 'ld':
                                         res = int()
                                         res += shift_and_mask(imm, 9, 127, 7)
@@ -257,7 +249,7 @@ def generate(tokens: List[Token]) -> List[MemoryCell]:
                                     TokenType.STRING_LITERAL, TokenType.NUMBER_LITERAL]
                                     ):
                                     raise Exception(
-                                        'Unable to parse instruction ' + tokens[num:num+6])
+                                        'Unable to parse instruction ' + str(tokens[num:num+6]))
 
                                 reg1 = registers[tokens[num + 1].value]
                                 reg2 = registers[tokens[num + 3].value]
@@ -323,16 +315,12 @@ def translate(code: str) -> List[MemoryCell]:
 
 
 def main(args):
-    source, target, logs = ['examples/hello.asm',
-                            'examples/hello.out', 'examples/hello.json']
-    # args
+    source, target, logs = args
 
-    # ['examples/cat.asm', 'code.out']
     with open(source, mode='r') as file:
         code = file.read()
 
     codes: List[MemoryCell] = translate(code)
-    codes[10].value
 
     with open(logs, mode='w') as file:
         file.write(json.dumps(codes, indent=4))
