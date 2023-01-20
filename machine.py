@@ -127,7 +127,7 @@ class RegisterFile(FunctionalCircuitComponent):
             1: 0,  # x1 | PC
             2: 0,  # x2
             3: 0,  # x3 | DR
-            4: 0,  # x4 | mepc(Previous PC value)            <= CSR
+            4: 0,  # x4
             5: 0,  # x5 | mtvec(Interrupt vector address)    <= CSR
             6: 0,  # x6 | AC
             7: 0,  # x7 | mscratch(Save mem block for state) <= CSR
@@ -329,7 +329,7 @@ class DataPath():
         self.pc_triger = Triger()
         self.adr_src_mux = MUX1Bits('AdrSrc')
 
-        self.memory = Memory(256)  # 256 int16 cells
+        self.memory = Memory(300)  # 300 int16 cells
         self.ir_triger = Triger()
         self.wd_src_mux = MUX1Bits('WDSrc')
         self.register_file = RegisterFile()
@@ -490,7 +490,7 @@ class DataPath():
 
 
 class ControlUnit():
-    def __init__(self) -> None:
+    def __init__(self, interrupt_flag: bool) -> None:
         registers: List[str] = ['OPCODE']
         inputs: List[str] = ['PCWrite', 'AdrSrc', 'MemWrite', 'IRWrite', 'WDSrc', 'IOOp',
                              'ImmSrc', 'ALUControl', 'ALUSrcB', 'ALUSrcA', 'RegWrite', 'Zero', 'IOInt']
@@ -500,6 +500,9 @@ class ControlUnit():
 
         self.__pipes: Dict[str, WireCircuitComponent[int16]] = dict()
         self.__signals: Dict[str, WireCircuitComponent[int8]] = dict()
+
+        self.interrupt_flag = interrupt_flag
+        self.in_inerrupt = False
 
     def start(self, data_path: DataPath) -> bool:
         while True:
@@ -536,12 +539,7 @@ class ControlUnit():
                     self.__handle_interrupt(data_path)
 
                 case Opcode.BNE:
-                    # bne ZR, x2, increment
                     # 2 tick
-                    # 0000 100 000 010 001
-                    # imm = 0000 010 (2)
-                    # reg2 = 100 (4)
-                    # reg1 = 000
                     self.__set_inputs({
                         'IRWrite': 1, 'ImmSrc': 2, 'ALUControl': 1  # Sub reg1 and reg2
                     })
@@ -615,7 +613,7 @@ class ControlUnit():
 
                     # 3 tick
                     self.__set_inputs({
-                        # Write mem[reg+imm] in register
+                        # Read mem[reg+imm] in register
                         'AdrSrc': 1, 'IRWrite': 0, 'RegWrite': 1, 'IOOp': 1,
                         'ALUSrcA': 1, 'ALUSrcB': 2, 'ALUControl': 0  # Inc PC
                     })
@@ -641,7 +639,7 @@ class ControlUnit():
 
                     # 3 tick
                     self.__set_inputs({
-                        # Write mem[reg+imm] in register
+                        # Write mem[reg+imm] from register
                         'AdrSrc': 1, 'IRWrite': 0, 'IOOp': 1,
                         'ALUSrcA': 1, 'ALUSrcB': 2, 'ALUControl': 0  # Inc PC
                     })
@@ -683,9 +681,9 @@ class ControlUnit():
     def __handle_interrupt(self, data_path: DataPath) -> None:
         self.__receive_signal('IOInt')
 
-        if (self.__get_input('IOInt')):
+        if (self.interrupt_flag and self.in_inerrupt and self.__get_input('IOInt')):
+            self.in_inerrupt = True
             self.__set_input('IOInt', 0)
-            # data_path.save_pc()
 
             pc = data_path.pc_triger.state
             data_path.pc_triger.state = data_path.register_file.inner_registers[5]
@@ -697,7 +695,7 @@ class ControlUnit():
             self.__inputs = inputs
 
             data_path.pc_triger.state = pc
-            # data_path.load_pc()
+            self.in_inerrupt = False
             pass
 
     def attach_pipes(self, pipes: Dict[str, WireCircuitComponent[int16]]) -> None:
@@ -756,8 +754,8 @@ class ControlUnit():
         pass
 
 
-def simulation(start_code: int16, codes: List[int16]) -> None:
-    control_unit = ControlUnit()
+def simulation(start_code: int16, codes: List[int16], interrupt_flag: bool) -> None:
+    control_unit = ControlUnit(interrupt_flag)
     data_path = DataPath()
 
     control_unit.attach_signals(data_path.control_signals)
@@ -766,24 +764,26 @@ def simulation(start_code: int16, codes: List[int16]) -> None:
     data_path.memory.load_program(codes, 0)
     data_path.pc_triger.state = start_code
 
-    interrupt_program = [61459, 6]
+    interrupt_program = [964, 1484, 3540, 61459, 1523, 979, 459, 6]
+
     data_path.register_file.inner_registers[5] = 200
     data_path.memory.load_program(interrupt_program, 200)
+
+    data_path.register_file.inner_registers[7] = 256
 
     control_unit.start(data_path)
 
 
 def main(args):
-    filename = 'examples/prob5.out'
+    # filename = 'examples/prob5.out'
     # filename = 'examples/cat.out'
 
-    filename =
+    filename, start_code, is_interrupts_enabled = [
+        'examples/hello.out', 8, True]
 
     codes = read_code(filename)
-    # start_code = 8
-    start_code = 0
 
-    simulation(start_code, codes)
+    simulation(start_code, codes, is_interrupts_enabled)
     pass
 
 
