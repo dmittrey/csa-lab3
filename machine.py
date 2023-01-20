@@ -170,6 +170,8 @@ class ALU(FunctionalCircuitComponent):
 
         super().__init__(registers, input)
 
+        self.inputs['Zero'] = 0
+
         self.zeroFlag = False
 
     # 0 - SUM
@@ -194,6 +196,19 @@ class ALU(FunctionalCircuitComponent):
             case _:
                 print("ALU operation not permitted: " +
                       self.get_signal('ALUControl'))
+        if (self.get_value('Result') == 0):
+            self.set_signal('Zero', 1)
+
+    def attach_signal(self, signal_name: str, signal: WireCircuitComponent[int8]):
+        self.signals[signal_name] = signal
+
+    def set_signal(self, signal_name: str, val: int8) -> None:
+        self.inputs[signal_name] = val
+
+        signal = self.signals.get(signal_name)
+        if (signal != None):
+            signal.receive_value(val)
+        pass
 
     def __refresh_state(self) -> None:
         self.receive_value('srcA')
@@ -432,7 +447,8 @@ class DataPath():
         self.register_file.attach_signal(reg_write_signal)
         self.alu_src_a_mux.attach_signal(alu_src_a_signal)
         self.alu_src_b_mux.attach_signal(alu_src_b_signal)
-        self.alu.attach_signal(alu_control_signal)
+        self.alu.attach_signal('ALUControl', alu_control_signal)
+        self.alu.attach_signal('Zero', zero_signal)
         self.io_handler.attach_signal('IOOp', io_operation_signal)
         self.io_handler.attach_signal('IOInt', io_inerrupt_signal)
         # remind zero flag in alu
@@ -468,6 +484,8 @@ class DataPath():
         print(str(tick), ')', sep='', end=' ')
         for register_name, register_value in self.register_file.inner_registers.items():
             print('x' + str(register_name), register_value, sep=' : ', end=' | ')
+        print('\nAluSrcA :', self.alu.get_value('srcA'), '|', 'ALUSrcB :', self.alu.get_value(
+            'srcB'), '|', 'Result :', self.alu.get_value('Result'), '|', sep=' ', end=' ')
         print('PC :', self.pc_triger.state)
 
 
@@ -492,6 +510,101 @@ class ControlUnit():
             self.__handle_interrupt(data_path)
 
             match self.__registers.get('OPCODE'):
+                case Opcode.ADDI:
+                    # 2 tick
+                    self.__set_inputs({
+                        'IRWrite': 1, 'ALUSrcB': 1  # Sum reg and imm_ext
+                    })
+                    data_path.do_tick()
+                    self.__handle_interrupt(data_path)
+
+                    # 3 tick
+                    self.__set_inputs({
+                        # Write sum in reg[a3]
+                        'WDSrc': 1, 'IRWrite': 0, 'RegWrite': 1,
+                        'ALUSrcA': 1, 'ALUSrcB': 2, 'ALUControl': 0  # Inc PC
+                    })
+                    data_path.do_tick()
+                    self.__handle_interrupt(data_path)
+
+                    # 4 tick
+                    self.__set_inputs({
+                        'RegWrite': 0,  # Disable write to register file from prev tick
+                        'PCWrite': 1,  # Update PC value
+                    })
+                    data_path.do_tick()
+                    self.__handle_interrupt(data_path)
+
+                case Opcode.BNE:
+                    # bne ZR, x2, increment
+                    # 2 tick
+                    # 0000 100 000 010 001
+                    # imm = 0000 010 (2)
+                    # reg2 = 100 (4)
+                    # reg1 = 000
+                    self.__set_inputs({
+                        'IRWrite': 1, 'ImmSrc': 2, 'ALUControl': 1  # Sub reg1 and reg2
+                    })
+                    data_path.do_tick()
+                    self.__receive_signal('Zero')
+                    self.__handle_interrupt(data_path)
+
+                    if (self.__get_input('Zero') == 0):
+                        # 3 tick
+                        self.__set_inputs({
+                            # Not save new state in register file[a3]
+                            'IRWrite': 0,
+                            'ALUSrcA': 0, 'ALUSrcB': 1, 'ALUControl': 0  # RD1 + Imm
+                        })
+                        data_path.do_tick()
+                        self.__handle_interrupt(data_path)
+
+                        # 4 tick
+                        self.__set_inputs({
+                            'PCWrite': 1,  # Update PC value
+                        })
+                        data_path.do_tick()
+                        self.__handle_interrupt(data_path)
+                    else:
+                        # 3 tick
+                        self.__set_inputs({
+                            'ALUSrcA': 1, 'ALUSrcB': 2, 'ALUControl': 0  # Inc PC
+                        })
+                        data_path.do_tick()
+                        self.__handle_interrupt(data_path)
+
+                        # 4 tick
+                        self.__set_inputs({
+                            'PCWrite': 1,  # Update PC value
+                        })
+                        data_path.do_tick()
+                        self.__handle_interrupt(data_path)
+
+                case Opcode.REM:
+                    # 2 tick
+                    self.__set_inputs({
+                        'IRWrite': 1, 'ImmSrc': 1, 'ALUControl': 2  # Rem reg2 and reg3
+                    })
+                    data_path.do_tick()
+                    self.__handle_interrupt(data_path)
+
+                    # 3 tick
+                    self.__set_inputs({
+                        # Write rem in reg[a3]
+                        'WDSrc': 1, 'IRWrite': 0, 'RegWrite': 1,
+                        'ALUSrcA': 1, 'ALUSrcB': 2, 'ALUControl': 0  # Add PC + ALURes
+                    })
+                    data_path.do_tick()
+                    self.__handle_interrupt(data_path)
+
+                    # 4 tick
+                    self.__set_inputs({
+                        'RegWrite': 0,
+                        'PCWrite': 1  # Update PC value
+                    })
+                    data_path.do_tick()
+                    self.__handle_interrupt(data_path)
+
                 case Opcode.LD:
                     # 2 tick
                     self.__set_inputs({
@@ -517,6 +630,7 @@ class ControlUnit():
                     })
                     data_path.do_tick()
                     self.__handle_interrupt(data_path)
+
                 case Opcode.SW:
                     # 2 tick
                     self.__set_inputs({
@@ -542,8 +656,25 @@ class ControlUnit():
                     })
                     data_path.do_tick()
                     self.__handle_interrupt(data_path)
+
+                case Opcode.JMP:
+                    # 3 tick
+                    self.__set_inputs({
+                        'ALUSrcA': 1, 'ALUSrcB': 1, 'ALUControl': 0  # PC + ALURes
+                    })
+                    data_path.do_tick()
+                    self.__handle_interrupt(data_path)
+
+                    # 4 tick
+                    self.__set_inputs({
+                        'PCWrite': 1,  # Update PC value
+                    })
+                    data_path.do_tick()
+                    self.__handle_interrupt(data_path)
+
                 case Opcode.HALT:
                     break
+
                 case _:
                     print("Unsupported control unit operation: " +
                           self.__registers.get('OPCODE'))
@@ -635,7 +766,7 @@ def simulation(start_code: int16, codes: List[int16]) -> None:
     data_path.memory.load_program(codes, 0)
     data_path.pc_triger.state = start_code
 
-    interrupt_program = [61467, 6]
+    interrupt_program = [61459, 6]
     data_path.register_file.inner_registers[5] = 200
     data_path.memory.load_program(interrupt_program, 200)
 
@@ -643,10 +774,14 @@ def simulation(start_code: int16, codes: List[int16]) -> None:
 
 
 def main(args):
-    filename = 'examples/hello.out'
+    filename = 'examples/prob5.out'
+    # filename = 'examples/cat.out'
+
+    filename =
 
     codes = read_code(filename)
-    start_code = 8
+    # start_code = 8
+    start_code = 0
 
     simulation(start_code, codes)
     pass
