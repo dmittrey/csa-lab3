@@ -1,83 +1,48 @@
-from typing import Dict, List, Set, TypeVar, Generic, List
-from abc import ABC, abstractmethod
-from numpy import int16, int8, bitwise_and, binary_repr
-
-T = TypeVar('T', int16, int8)
+from typing import Dict, List
 
 
-class WireCircuitComponent(Generic[T]):
+class CircuitWire():
     def __init__(self) -> None:
-        self.__value: T = 0
+        self._value: int = 0
         pass
 
-    def receive_value(self, value: T) -> None:
-        self.__value = value
+    def set(self, value: int) -> None:
+        assert value >= 0, 'Данные в шине не положительны'
+        self._value = value
         pass
 
-    def get_value(self) -> T:
-        return self.__value
+    def get(self) -> int:
+        return self._value
 
 
-class FunctionalCircuitComponent(ABC):
-    def __init__(self, registers: List[str], input: str) -> None:
-        self.__input = input
+class CircuitComponent():
+    def __init__(self, registers: List[str]) -> None:
+        self._registers: Dict[str, int] = {i: 0 for i in registers}
 
-        self.registers: Dict[str, int16] = {i: 0 for i in registers}
-        self.inputs: Dict[str, int8] = {input: 0}
+        self._wires: Dict[str, CircuitWire] = dict()
 
-        self.__pipes: Dict[str, WireCircuitComponent[int16]] = dict()
-        self.signals: Dict[str, WireCircuitComponent[int8]] = dict()
-
-    @abstractmethod
     def do_tick(self) -> None:
+        self.update()
         pass
 
-    def attach_pipe(self, register_name: str, pipe: WireCircuitComponent[int16]) -> None:
-        assert register_name in self.registers.keys(), 'Указанный регистр не существует'
-        self.__pipes[register_name] = pipe
+    def attach(self, register_name: str, wire: CircuitWire) -> None:
+        assert register_name in self._registers.keys(), 'Указанный регистр не существует'
+        assert wire != None, 'Несуществующий провод данных'
+        self._wires[register_name] = wire
         pass
 
-    def attach_signal(self, signal: WireCircuitComponent[bool]) -> None:
-        self.signals[self.__input] = signal
+    def set_register(self, name: str, value: int):
+        assert name in self._registers.keys(), 'Указанный регистр не существует'
+        self._registers[name] = value
+        if (self._wires.get(name) != None):
+            self._wires[name].set(value)
         pass
 
-    def receive_value(self, register_name: str) -> None:
-        assert register_name in self.registers.keys(), 'Указанный регистр не существует'
+    def get_register(self, name: str):
+        assert name in self._registers.keys(), 'Указанный регистр не существует'
 
-        pipe = self.__pipes.get(register_name)
-        if (pipe != None):
-            self.registers[register_name] = pipe.get_value()
+        return self._registers[name]
 
-        pass
-
-    def receive_mask_value(self, register_name: str, mask: int16, shift: int16) -> None:
-        assert register_name in self.registers.keys(), 'Указанный регистр не существует'
-
-        pipe = self.__pipes.get(register_name)
-        if (pipe != None):
-            self.registers[register_name] = bitwise_and(
-                self.__pipes[register_name].get_value(), mask) >> shift
-        pass
-
-    def set_value(self, register_name: str, val: int16) -> None:
-        assert register_name in self.registers.keys(), 'Указанный регистр не существует'
-        self.registers[register_name] = val
-
-        pipe = self.__pipes.get(register_name)
-        if (pipe != None):
-            pipe.receive_value(val)
-        pass
-
-    def receive_signal(self) -> None:
-        signal = self.signals.get(self.__input)
-        if (signal != None):
-            self.inputs[self.__input] = signal.get_value()
-
-        pass
-
-    def get_value(self, register_name: str) -> int16:
-        assert register_name in self.registers.keys(), 'Указанный регистр не существует'
-        return self.registers[register_name]
-
-    def get_signal(self) -> int8:
-        return self.inputs[self.__input]
+    def update(self):
+        for wire_name, wire in self._wires.items():
+            self._registers[wire_name] = wire.get()
