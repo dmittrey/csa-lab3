@@ -2,8 +2,8 @@ from typing import Dict, List
 
 
 class CircuitWire():
-    def __init__(self) -> None:
-        self._value: int = 0
+    def __init__(self, val: int = 0) -> None:
+        self._value = val
         pass
 
     def set(self, value: int) -> None:

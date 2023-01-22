@@ -6,323 +6,6 @@ from circuit import FunctionalCircuitComponent, WireCircuitComponent
 from isa import read_code, Opcode
 
 
-class IOHandler(FunctionalCircuitComponent):
-    def __init__(self) -> None:
-        registers: List[str] = ['In', 'WD', 'Out']
-        input: str = 'IOOp'
-        super().__init__(registers, input)
-
-        self.inputs['IOInt'] = 0
-
-        self.state = 0
-
-        self.tokens = [(1, 'h'), (10, 'e'), (20, 'l'), (25, 'l'), (100, 'o')]
-
-        self.saved_tokens = []
-
-        super().__init__(registers, input)
-
-    def do_tick(self, tick: int) -> None:
-        self.__refresh_state()
-
-        for token in self.tokens:
-            if (token[0] == tick):
-                self.set_signal('IOInt', 1)
-                self.state = token[1]
-
-        if (self.get_signal() == 1):
-            # If value exists
-            if (self.get_value('In') == 120):
-                self.set_value('Out', ord(self.state))
-                print('Readed:', self.state)
-            elif (self.get_value('In') == 121):
-                self.set_value('Out', self.state)
-                self.saved_tokens.append(self.get_value('WD'))
-                print('Saved:', chr(self.get_value('WD')))
-        else:
-            if (self.get_value('In') in [120, 121]):
-                raise Exception('Unsopported operation on memory cell')
-
-    def attach_signal(self, signal_name: str, signal: WireCircuitComponent[int8]):
-        self.signals[signal_name] = signal
-
-    def set_signal(self, signal_name: str, val: int8) -> None:
-        self.inputs[signal_name] = val
-
-        signal = self.signals.get(signal_name)
-        if (signal != None):
-            signal.receive_value(val)
-        pass
-
-    def __refresh_state(self) -> None:
-        self.receive_value('In')
-        self.receive_value('WD')
-        self.receive_signal()
-
-
-class Triger(FunctionalCircuitComponent):
-    def __init__(self) -> None:
-        registers: List[str] = ['In', 'Out']
-        input: str = 'EN'
-
-        super().__init__(registers, input)
-
-        self.state: int16 = 0
-
-    def do_tick(self) -> None:
-        self.__refresh_state()
-
-        if (self.get_signal() == 1):
-            self.state = self.get_value('In')
-
-        self.set_value('Out', self.state)
-
-    def __refresh_state(self) -> None:
-        self.receive_value('In')
-        self.receive_signal()
-
-
-class Memory(FunctionalCircuitComponent):
-    def __init__(self, memory_size: int16) -> None:
-        registers: List[str] = ['A', 'RD', 'WD']
-        input: str = 'WE'
-
-        super().__init__(registers, input)
-
-        self.memory: List[int16] = [0] * memory_size
-
-    def do_tick(self) -> None:
-        self.__refresh_state()
-
-        data_addr = self.get_value('A')
-
-        if (self.get_signal() == 1):
-            self.memory[data_addr] = self.get_value('WD')
-        else:
-            self.set_value('RD', self.memory[data_addr])
-
-    def load_program(self, program: List[int16], start_address: int16):
-        assert len(self.memory) > len(
-            program), 'Память не может вместить программу'
-
-        for num in range(len(program)):
-            self.memory[start_address] = program[num]
-            start_address += 1
-
-    def __refresh_state(self) -> None:
-        self.receive_value('A')
-        self.receive_value('WD')
-        self.receive_signal()
-
-
-class RegisterFile(FunctionalCircuitComponent):
-    def __init__(self) -> None:
-        registers: List[str] = ['A1', 'A2', 'A3', 'RD1', 'RD2', 'WD', 'PC']
-        input: str = 'WE3'
-
-        super().__init__(registers, input)
-
-        self.inner_registers: Dict[int, int16] = {
-            0: 0,  # x0 | ZR
-            1: 0,  # x1 | PC
-            2: 0,  # x2
-            3: 0,  # x3 | DR
-            4: 0,  # x4
-            5: 0,  # x5 | mtvec(Interrupt vector address)    <= CSR
-            6: 0,  # x6 | AC
-            7: 0,  # x7 | mscratch(Save mem block for state) <= CSR
-        }
-
-    def do_tick(self) -> None:
-        self.__refresh_state()
-
-        self.inner_registers[1] = self.get_value('PC')
-
-        if (self.get_signal() == 1):
-            if (self.get_value('A3') != 0):
-                self.inner_registers[self.get_value(
-                    'A3')] = self.get_value('WD')
-
-            if (self.get_value('A3') == 1):
-                self.set_value('PC', self.get_value('WD'))
-
-        else:
-            self.set_value(
-                'RD1', self.inner_registers[self.registers['A1']])
-            self.set_value(
-                'RD2', self.inner_registers[self.registers['A2']])
-
-    def __refresh_state(self) -> None:
-        self.receive_mask_value('A1', 448, 6)
-        self.receive_mask_value('A2', 3584, 9)
-        self.receive_mask_value('A3', 56, 3)
-
-        self.receive_value('WD')
-        self.receive_value('PC')
-
-        self.receive_signal()
-
-
-class ALU(FunctionalCircuitComponent):
-    def __init__(self) -> None:
-        registers: List[str] = ['srcA', 'srcB', 'Result']
-        input: str = 'ALUControl'
-
-        super().__init__(registers, input)
-
-        self.inputs['Zero'] = 0
-
-        self.zeroFlag = False
-
-    # 0 - SUM
-    # 1 - SUB
-    # 2 - REM
-    def do_tick(self) -> None:
-        self.__refresh_state()
-
-        match self.get_signal():
-            case 0:
-                self.set_value('Result', self.get_value(
-                    'srcA') + self.get_value('srcB'))
-                pass
-            case 1:
-                self.set_value('Result', self.get_value(
-                    'srcA') - self.get_value('srcB'))
-                pass
-            case 2:
-                self.set_value('Result', self.get_value(
-                    'srcA') % self.get_value('srcB'))
-                pass
-            case _:
-                print("ALU operation not permitted: " +
-                      self.get_signal('ALUControl'))
-        if (self.get_value('Result') == 0):
-            self.set_signal('Zero', 1)
-
-    def attach_signal(self, signal_name: str, signal: WireCircuitComponent[int8]):
-        self.signals[signal_name] = signal
-
-    def set_signal(self, signal_name: str, val: int8) -> None:
-        self.inputs[signal_name] = val
-
-        signal = self.signals.get(signal_name)
-        if (signal != None):
-            signal.receive_value(val)
-        pass
-
-    def __refresh_state(self) -> None:
-        self.receive_value('srcA')
-        self.receive_value('srcB')
-
-        self.receive_signal()
-
-
-class SignExpand(FunctionalCircuitComponent):
-    def __init__(self) -> None:
-        registers: List[str] = ['In', 'Out']
-        input: str = 'ImmSrc'
-
-        super().__init__(registers, input)
-
-    # 0 - Расширить значение из 9-15 бит команды
-    # 1 - Расширить значение из 12-15 бит команды
-    # 2 - Расширить значение из 12-15 и 3-5 бит команды
-    def do_tick(self) -> None:
-        self.__refresh_state()
-
-        match self.get_signal():
-            case 0:
-                self.set_value('Out', (self.get_value('In') >> 9) & 127)
-                pass
-            case 1:
-                self.set_value('Out', (self.get_value('In') >> 12) & 15)
-                pass
-            case 2:
-                left_part = (self.get_value('In') >> 9) & 120
-                right_part = (self.get_value('In') >> 3) & 7
-
-                self.set_value('Out', left_part + right_part)
-                pass
-            case _:
-                print("Expand operation not permitted: " +
-                      self.get_signal('ImmSrc'))
-
-    def __refresh_state(self) -> None:
-        self.receive_value('In')
-
-        self.receive_signal()
-
-
-class MUX1Bits(FunctionalCircuitComponent):
-    def __init__(self, input: str) -> None:
-        registers: List[str] = ['In_0', 'In_1', 'Out']
-
-        super().__init__(registers, input)
-
-    # 0 - Данные со входа In_0
-    # 1 - Данные со входа In_1
-    def do_tick(self) -> None:
-        self.__refresh_state()
-
-        # signal: int8 = self.get_signal(self.__input)
-
-        match self.get_signal():
-            case 0:
-                self.set_value('Out', self.get_value('In_0'))
-                pass
-            case 1:
-                self.set_value('Out', self.get_value('In_1'))
-                pass
-            case _:
-                print("MUX operation not permitted: " +
-                      self.get_signal())
-
-    def __refresh_state(self) -> None:
-        self.receive_value('In_0')
-        self.receive_value('In_1')
-
-        self.receive_signal()
-
-
-class MUX2Bits(FunctionalCircuitComponent):
-    def __init__(self, input: str) -> None:
-        registers: List[str] = ['In_00', 'In_01', 'In_10', 'In_11', 'Out']
-
-        super().__init__(registers, input)
-
-    # 0 - Данные со входа In_00
-    # 1 - Данные со входа In_01
-    # 2 - Данные со входа In_10
-    # 3 - Данные со входа In_11
-    def do_tick(self) -> None:
-        self.__refresh_state()
-
-        match self.get_signal():
-            case 0:
-                self.set_value('Out', self.get_value('In_00'))
-                pass
-            case 1:
-                self.set_value('Out', self.get_value('In_01'))
-                pass
-            case 2:
-                self.set_value('Out', self.get_value('In_10'))
-                pass
-            case 3:
-                self.set_value('Out', self.get_value('In_11'))
-                pass
-            case _:
-                print("MUXSrcB operation not permitted: " +
-                      self.get_signal('ALUSrcB'))
-
-    def __refresh_state(self) -> None:
-        self.receive_value('In_00')
-        self.receive_value('In_01')
-        self.receive_value('In_10')
-        self.receive_value('In_11')
-
-        self.receive_signal()
-
-
 class DataPath():
     def __init__(self) -> None:
         # Components
@@ -511,6 +194,8 @@ class ControlUnit():
             data_path.do_tick()
             self.__refresh_state()
             self.__handle_interrupt(data_path)
+            if (data_path.pc_triger.state == 206):
+                pass
 
             match self.__registers.get('OPCODE'):
                 case Opcode.ADDI:
@@ -681,7 +366,7 @@ class ControlUnit():
     def __handle_interrupt(self, data_path: DataPath) -> None:
         self.__receive_signal('IOInt')
 
-        if (self.interrupt_flag and self.in_inerrupt and self.__get_input('IOInt')):
+        if (self.interrupt_flag and (not self.in_inerrupt) and self.__get_input('IOInt')):
             self.in_inerrupt = True
             self.__set_input('IOInt', 0)
 
@@ -698,13 +383,13 @@ class ControlUnit():
             self.in_inerrupt = False
             pass
 
-    def attach_pipes(self, pipes: Dict[str, WireCircuitComponent[int16]]) -> None:
+    def attach_pipes(self, pipes: Dict[str, WireCircuitComponent]) -> None:
         for register_name, pipe in pipes.items():
             if register_name in self.__registers.keys():
                 self.__pipes[register_name] = pipe
         pass
 
-    def attach_signals(self, signals: Dict[str, WireCircuitComponent[int8]]) -> None:
+    def attach_signals(self, signals: Dict[str, WireCircuitComponent]) -> None:
         for input_name, signal in signals.items():
             if input_name in self.__inputs.keys():
                 self.__signals[input_name] = signal
@@ -764,12 +449,16 @@ def simulation(start_code: int16, codes: List[int16], interrupt_flag: bool) -> N
     data_path.memory.load_program(codes, 0)
     data_path.pc_triger.state = start_code
 
-    interrupt_program = [964, 1484, 3540, 61459, 1523, 979, 459, 6]
+    interrupt_program = [96, 3524, 61467, 499, 264, 6]
 
     data_path.register_file.inner_registers[5] = 200
     data_path.memory.load_program(interrupt_program, 200)
 
     data_path.register_file.inner_registers[7] = 256
+
+    # Цвиллинга 28 21 окт 2002 - декабрь 2002
+    # Проспект Ленина 67 143 2003
+    # Пустового 15 5
 
     control_unit.start(data_path)
 
