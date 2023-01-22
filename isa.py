@@ -52,10 +52,6 @@ class Opcode(int, Enum):
     HALT = 6
 
 
-class Register(str, Enum):
-    """Алиасы для регистров"""
-
-
 class Term(namedtuple('Term', 'line pos symbol')):
     """Описание выражения из исходного текста программы."""
 
