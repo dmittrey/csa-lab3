@@ -1,7 +1,7 @@
-from typing import Dict, List
+from typing import Dict, List, Tuple
 from circuit import CircuitComponent
 from enum import Enum
-import numpy
+from numpy import binary_repr
 
 
 class Trigger(CircuitComponent):
@@ -163,32 +163,24 @@ class SignExpand(CircuitComponent):
                 raise AssertionError('Expand sign operation not permitted')
 
 
-class MUX1Bits(CircuitComponent):
-    def __init__(self, input: str) -> None:
-        super().__init__(['In_0', 'In_1', 'Out', input])
+class MUX(CircuitComponent):
+    def __init__(self, digit_capacity: int, src_register_name: str = 'Src') -> None:
+        self._src_register = src_register_name
+        self.__digit_capacity = digit_capacity
 
-    # 0 - Данные со входа In_0
-    # 1 - Данные со входа In_1
+        super().__init__(['In_' + self.__get_bin_number(x) for x in range(2 ** digit_capacity)]
+                         + ['Out', src_register_name])
+
     def do_tick(self) -> None:
         super().do_tick()
 
         self.set_register('Out', self.get_register(
-            'In_' + numpy.binary_repr(input, 1)))
+            'In_' +
+            self.__get_bin_number(self.get_register(self._src_register))
+        ))
 
-
-class MUX2Bits(CircuitComponent):
-    def __init__(self, input: str) -> None:
-        super().__init__(['In_00', 'In_01', 'In_10', 'In_11', 'Out', input])
-
-    # 0 - Данные со входа In_00
-    # 1 - Данные со входа In_01
-    # 2 - Данные со входа In_10
-    # 3 - Данные со входа In_11
-    def do_tick(self) -> None:
-        super().do_tick()
-
-        self.set_register('Out', self.get_register(
-            'In_' + numpy.binary_repr(input, 2)))
+    def __get_bin_number(self, number: int) -> None:
+        return binary_repr(number, self.__digit_capacity)
 
 
 class IOMemoryCell(int, Enum):
@@ -197,32 +189,38 @@ class IOMemoryCell(int, Enum):
 
 
 class IOHandler(CircuitComponent):
-    def __init__(self) -> None:
-        self.state = 0
+    """Class to emulate IOC and connected DIP"""
 
-        self.interrupt_tokens = [
-            (1, 'h'), (10, 'e'), (20, 'l'), (25, 'l'), (100, 'o')]
-        self.saved_tokens = []
+    def __init__(self, int_tokens: List[Tuple[int, str]] =
+                 [(1, 'h'), (10, 'e'), (20, 'l'), (25, 'l'), (100, 'o')]) -> None:
+        self.__interrupt_tokens = int_tokens
+
+        self._dip_value = 0
+        self._saved_tokens = []
 
         super().__init__(['In', 'WD', 'Out', 'IOOp', 'IOInt'])
 
     def do_tick(self, tick: int) -> None:
         super().do_tick()
 
-        for token in self.interrupt_tokens:
+        for token in self.__interrupt_tokens:
             token_tick, token_value = token
             if (token_tick == tick):
                 self.set_register('IOInt', 1)
-                self.state = token_value
+                self._dip_value = ord(token_value)
 
         if (self.get_register('IOOp') == 1):
+            # LD operation on 120 cell
             if (self.get_register('In') == IOMemoryCell.IN):
-                self.set_register('Out', ord(self.state))
-                print('Readed:', self.state)
+                self.set_register('Out', self._dip_value)
+                print('Readed:', chr(self._dip_value))
 
-            if (self.get_register('Out') == IOMemoryCell.OUT):
-                self.saved_tokens.append(self.get_register('WD'))
+            # SW operation on 121 cell
+            if (self.get_register('In') == IOMemoryCell.OUT):
+                self._saved_tokens.append(chr(self.get_register('WD')))
+                self._dip_value = self.get_register('WD')
                 print('Saved:', chr(self.get_register('WD')))
         else:
+            # Address IO memory addresses without access signal
             if (self.get_register('In') in [120, 121]):
-                raise Exception('Unsopported operation on memory cell')
+                raise AttributeError('Unsopported operation on memory cell')
