@@ -89,6 +89,9 @@ class RegisterFile(CircuitComponent):
             if (self.get_register('A3') == 1):
                 self.set_register('PC', self.get_register('WD'))
 
+    def enter_interrupt(self) -> None:
+        self.set_register('PC', self._inner_registers[Register.x5])
+
     def update(self):
         for wire_name, wire in self._wires.items():
             match wire_name:

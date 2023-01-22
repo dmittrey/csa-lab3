@@ -1,5 +1,5 @@
 import unittest
-from components import SignExpand, Trigger, Memory, RegisterFile, ALU, MUX, IOHandler, IOMemoryCell
+from components import Register, SignExpand, Trigger, Memory, RegisterFile, ALU, MUX, IOHandler, IOMemoryCell
 from circuit import CircuitWire
 
 
@@ -96,6 +96,7 @@ class RegisterFileTests(unittest.TestCase):
     3) С сигналом WE3 записать в нулевой регистр
     4) С сигналом WE3 записать в другой регистр
     5) С сигналом WE3 записать в PC регистр
+    6) Вход в прерывание
     """
 
     def test_DoTick_ReceiveMaskedValues(self):
@@ -153,6 +154,14 @@ class RegisterFileTests(unittest.TestCase):
         register_file.do_tick()
 
         self.assertEqual(pc_wire.get(), 5)
+        self.assertEqual(register_file.get_register('PC'), 5)
+
+    def test_EnterInterrupt_GetPCRegisterValueFromX5Register(self):
+        register_file = RegisterFile()
+        register_file._inner_registers[Register.x5] = 5
+
+        register_file.enter_interrupt()
+
         self.assertEqual(register_file.get_register('PC'), 5)
 
 
