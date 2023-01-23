@@ -1,6 +1,6 @@
 import unittest
 from circuit import CircuitWire
-
+from components import Memory
 from machine import ControlUnit, DataPath
 
 
@@ -25,13 +25,14 @@ class ControlUnitTests(unittest.TestCase):
 
     def test_DoPerformHaltOp_CalculateNothingAndStop(self):
         control_unit = ControlUnit()
-        opcode_wire = CircuitWire(6)
-        control_unit.attach('OPCODE', opcode_wire)
+        data_path = DataPath()
 
-        control_unit.start()
+        data_path.control_wires['OPCODE'].set(6)
+        control_unit.start(data_path)
 
-        for register_val in control_unit._registers.values():
-            self.assertEqual(register_val, 0)
+        for register_name, register_val in control_unit._registers.items():
+            if (register_name != 'OPCODE'):
+                self.assertEqual(register_val, 0)
 
     def test_DoTickWithUndefinedOpcode_ThrowsAssert(self):
         control_unit = ControlUnit()
@@ -71,6 +72,68 @@ class ControlUnitTests(unittest.TestCase):
         self.assertEqual(control_unit.get_register('PCWrite'), 1)
         self.assertEqual(control_unit.get_register('IRWrite'), 1)
         self.assertEqual(control_unit.get_register('ALUSrcA'), 1)
+
+
+class InstructionPerformTests(unittest.TestCase):
+    def test_ADDIFirstTick(self):
+        """
+        Такты ADDI:
+        1) Алу слева должна иметь константу, справа должна иметь значение reg2
+        2) WD хранит результат суммирование, A3 хранит значение reg1, RegWrite активирован
+           Алу слева должна иметь 1, справа должна иметь значение PC
+        3) PC, должен иметь значение результата АЛУ
+        """
+        control_unit = ControlUnit()
+        tick_valves = {
+            'IRWrite': 1,
+            'ALUSrcB': 1
+        }
+
+        data_path = DataPath()
+
+        # (0000 101)5 (010)2 (111)7 (000)ADDI
+        data_path.Memory._memory[0] = 2744
+        data_path.Register_File._inner_registers[2] = 5
+
+        control_unit.attach_wires(data_path.control_wires)
+        control_unit._do_tick(data_path, tick_valves)
+
+        self.assertEquals(data_path.ALU.get_register('srcA'), 5)
+        self.assertEquals(data_path.ALU.get_register('srcB'), 5)
+        self.assertEquals(data_path.ALU.get_register('Result'), 10)
+
+    def test_ADDISecondTick(self):
+        control_unit = ControlUnit()
+        tick_valves = {'WDSrc': 1, 'RegWrite': 1,
+                       'ALUSrcA': 1, 'ALUSrcB': 2, 'ALUControl': 0}
+
+        data_path = DataPath()
+
+        # (0000 101)5 (010)2 (111)7 (000)ADDI
+        data_path.IR._state = 2744
+        data_path.ALU.set_register('Result', 10)
+
+        control_unit.attach_wires(data_path.control_wires)
+        control_unit._do_tick(data_path, tick_valves)
+
+        self.assertEquals(data_path.Register_File.get_register('WD'), 10)
+        self.assertEquals(data_path.Register_File.get_register('A3'), 7)
+        self.assertEquals(data_path.ALU.get_register('srcA'), 0)
+        self.assertEquals(data_path.ALU.get_register('srcB'), 1)
+        self.assertEquals(data_path.ALU.get_register('Result'), 1)
+
+    def test_ADDIThirdTick(self):
+        control_unit = ControlUnit()
+        tick_valves = {'PCWrite': 1}
+
+        data_path = DataPath()
+
+        data_path.ALU.set_register('Result', 2)
+
+        control_unit.attach_wires(data_path.control_wires)
+        control_unit._do_tick(data_path, tick_valves)
+
+        self.assertEquals(data_path.PC._state, 2)
 
 
 if __name__ == '__main__':
