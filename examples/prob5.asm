@@ -8,14 +8,14 @@ addi x1, ZR, 2  ; Set x1 start to 2
 .findprime:
     addi x1, x1, 1  ; Inc x1
     cmp x4, +0(x1)  ; x1 - x4
-    jg 16           ; .findnumber
+    jg .findnumber  ; 16
     addi x3, ZR, 2  ; 
     .checkmod:
         rem x2, x1, x3
         beq .findprime
         addi x3, x3, 1
         cmp x3, +0(x1)
-        beq 14      ; .mulstep
+        beq .mulstep ; 14
         jmp .findprime
     .mulstep:
             mul x5, x5, x1
@@ -32,7 +32,7 @@ addi x1, ZR, 2  ; Set x1 start to 2
         bne .nextnumber   
 
         cmp x3, +0(x4)
-        beq 25      ;.exit
+        beq .exit      ;25
 
         jmp .nextdivider
 .exit:
