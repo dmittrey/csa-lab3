@@ -92,13 +92,13 @@ class RegisterFile(CircuitComponent):
         for wire_name, wire in self._wires.items():
             match wire_name:
                 case 'A1':
-                    self._registers[wire_name] = (wire.get() >> 6) & 7
+                    self._registers[wire_name] = (wire.get() >> 7) & 7
                     pass
                 case 'A2':
-                    self._registers[wire_name] = (wire.get() >> 9) & 7
+                    self._registers[wire_name] = (wire.get() >> 10) & 7
                     pass
                 case 'A3':
-                    self._registers[wire_name] = (wire.get() >> 3) & 7
+                    self._registers[wire_name] = (wire.get() >> 4) & 7
                     pass
                 case _:
                     self._registers[wire_name] = wire.get()
@@ -108,7 +108,7 @@ class RegisterFile(CircuitComponent):
 class ALU(CircuitComponent):
     def __init__(self) -> None:
         super().__init__(['srcA', 'srcB', 'Result',
-                          'ALUControl', 'ZeroFlag', 'PositiveFlag'])
+                          'ALUControl', 'ZeroFlag', 'PositiveFlag', 'EF'])
 
     # 0 - SUM, 1 - SUB, 2 - REM, 3 - MUL
     def do_tick(self, tick_num: int = 0) -> None:
@@ -134,42 +134,43 @@ class ALU(CircuitComponent):
             case _:
                 raise AssertionError('ALU operation not permitted')
 
-        if (self.get_register('Result') == 0):
-            self.set_register('ZeroFlag', 1)
-            logging.debug('Zero flag is active')
-        else:
-            self.set_register('ZeroFlag', 0)
-            logging.debug('Zero flag is inactive')
+        if (self.get_register('EF') == 1):
+            if (self.get_register('Result') == 0):
+                self.set_register('ZeroFlag', 1)
+                logging.debug('Zero flag is active')
+            else:
+                self.set_register('ZeroFlag', 0)
+                logging.debug('Zero flag is inactive')
 
-        if (self.get_register('Result') > 0):
-            self.set_register('PositiveFlag', 1)
-            logging.debug('Positive flag is active')
-        else:
-            self.set_register('PositiveFlag', 0)
-            logging.debug('Positive flag is inactive')
+            if (self.get_register('Result') > 0):
+                self.set_register('PositiveFlag', 1)
+                logging.debug('Positive flag is active')
+            else:
+                self.set_register('PositiveFlag', 0)
+                logging.debug('Positive flag is inactive')
 
 
 class SignExpand(CircuitComponent):
     def __init__(self) -> None:
         super().__init__(['In', 'Out', 'ImmSrc'])
 
-    # 0 - Расширить значение из 9-15 бит команды
-    # 1 - Расширить значение из 12-15 бит команды
-    # 2 - Расширить значение из 12-15 и 3-5 бит команды
+    # 0 - Расширить значение из 10-16 бит команды
+    # 1 - Расширить значение из 13-16 бит команды
+    # 2 - Расширить значение из 13-16 и 4-6 бит команды
     def do_tick(self, tick_num: int = 0) -> None:
         super().do_tick()
 
         in_value = self.get_register('In')
         match self.get_register('ImmSrc'):
             case 0:
-                self.set_register('Out', (in_value >> 9) & 127)
+                self.set_register('Out', (in_value >> 10) & 127)
                 pass
             case 1:
-                self.set_register('Out', (in_value >> 12) & 15)
+                self.set_register('Out', (in_value >> 13) & 15)
                 pass
             case 2:
-                left_part = (in_value >> 9) & 120
-                right_part = (in_value >> 3) & 7
+                left_part = (in_value >> 10) & 120
+                right_part = (in_value >> 4) & 7
                 self.set_register('Out', left_part + right_part)
                 pass
             case _:

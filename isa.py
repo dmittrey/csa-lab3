@@ -54,7 +54,7 @@ def write_code(filename, code: List[int16]) -> None:
     """Записать машинный код в файл."""
     with open(filename, mode='wb') as file:
         for instr in code:
-            instr_str = binary_repr(instr, 16)
+            instr_str = binary_repr(instr, 17)
             file.write(instr_str.encode())
 
 
@@ -64,7 +64,7 @@ def read_code(filename: str) -> List[int16]:
 
     with open(filename, encoding="utf-8") as file:
         while True:
-            code_str = file.read(16)
+            code_str = file.read(17)
             if (code_str == ''):
                 break
 
