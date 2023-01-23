@@ -2,7 +2,7 @@ from enum import Enum
 import sys
 from typing import Dict, List
 from circuit import CircuitComponent, CircuitWire
-from components import SignExpand, Trigger, Memory, RegisterFile, ALU, MUX, IOHandler
+from components import SignExpand, Trigger, Memory, RegisterFile, ALU, MUX, IOHandler, Register
 
 from isa import read_code, Opcode
 
@@ -48,7 +48,6 @@ class DataPath():
         self.PC.attach('Out', pc_pipe)
         self.Adr_Src_Mux.attach('In_0', pc_pipe)
         self.Alu_Src_A_Mux.attach('In_1', pc_pipe)
-        self.Register_File.attach('PC', pc_pipe)
 
         self.Adr_Src_Mux.attach('Out', adr_pipe)
         self.Memory.attach('A', adr_pipe)
@@ -152,7 +151,12 @@ class DataPath():
         self.__get_info()
 
     def enter_interrupt(self) -> None:
-        self.Register_File.enter_interrupt()
+        prev_pc = self.PC._state
+        self.PC._state = self.Register_File._inner_registers[Register.x5]
+        self.Register_File._inner_registers[Register.x4] = prev_pc
+
+    def exit_interrupt(self) -> None:
+        self.PC._state = self.Register_File._inner_registers[Register.x4]
 
     def __get_info(self) -> None:
         print(str(self.tick), ')', sep='', end=' ')
@@ -273,6 +277,8 @@ class ControlUnit(CircuitComponent):
             data_path.enter_interrupt()
             # Start executing
             self.start(data_path)
+            # Back to prev PC
+            data_path.exit_interrupt()
 
             self._restore_context(registers)
 
@@ -280,15 +286,15 @@ class ControlUnit(CircuitComponent):
         return self._instruction_transitions.get(op)
 
 
-def simulation(program: List[int], text_start_adr: int = 0, memory_size: int = 512,
-               is_interrupts_allowed: bool = False) -> None:
+def simulation(program: List[int], text_start_adr: int = 0, is_interrupts_allowed: bool = False,
+               memory_size: int = 512) -> None:
     control_unit = ControlUnit(is_interrupts_allowed)
     data_path = DataPath(memory_size)
 
     data_path.Memory.load_program(program, 0)
     data_path.PC._state = text_start_adr
 
-    interrupt_program = []
+    interrupt_program = [61467, 6]
     # Interrupt vector address
     data_path.Register_File._inner_registers[5] = 200
     data_path.Memory.load_program(interrupt_program, 200)
@@ -307,7 +313,7 @@ def main(args):
 
     codes = read_code(filename)
 
-    simulation(codes)
+    simulation(codes, start_code, is_interrupts_enabled)
 
     pass
 
