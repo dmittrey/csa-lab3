@@ -93,7 +93,11 @@ def shift_and_mask(value: int, shift_length: int, mask: int, length: int) -> int
 def generate(tokens: List[Token]) -> List[MemoryCell]:
     memory: List[MemoryCell] = []
 
-    # Сопоставляет номер токена с ячейкой где используется
+    # Add stub to later put it jmp on .start
+    jump_stub = MemoryCell(None, None, None, None, None, 'JMP', 6)
+    memory.append(jump_stub)
+
+    # Map with label and its cell
     label_to_cell: Dict[str, int] = {}
 
     no_args_op: List[str] = [
@@ -105,12 +109,12 @@ def generate(tokens: List[Token]) -> List[MemoryCell]:
     ]
 
     three_args_op: List[str] = [
-        'addi', 'bne', 'rem'
+        'addi', 'bne', 'rem', 'mul'
     ]
 
     registers: Dict[str, int] = {
         'x0': 0, 'ZR': 0,
-        'x1': 1, 'PC': 1,
+        'x1': 1,
         'x2': 2,
         'x3': 3, 'DR': 3,
         'x4': 4, 'mepc': 4,
@@ -189,7 +193,7 @@ def generate(tokens: List[Token]) -> List[MemoryCell]:
 
                             # Парсинг лексем составляющих инструкцию
                             if (tokens[num].value in no_args_op):
-                                res = 6
+                                res = 7
                                 memory.append(MemoryCell(
                                     SectionType.CODE, 0, 0, 0, 0, 'halt', res))
                                 num += 1
@@ -197,12 +201,12 @@ def generate(tokens: List[Token]) -> List[MemoryCell]:
 
                             if (tokens[num].value in two_args_op):
                                 if (tokens[num + 1].TokenType != TokenType.STRING_LITERAL or
-                                    tokens[num + 2].value != ',' or
-                                    tokens[num + 3].value not in ['+', '-'] or
-                                    tokens[num + 4].TokenType not in [TokenType.STRING_LITERAL, TokenType.NUMBER_LITERAL] or
-                                    tokens[num + 5].value != '(' or
-                                    tokens[num + 6].TokenType != TokenType.STRING_LITERAL or
-                                    tokens[num + 7].value != ')'
+                                        tokens[num + 2].value != ',' or
+                                        tokens[num + 3].value not in ['+', '-'] or
+                                        tokens[num + 4].TokenType not in [TokenType.STRING_LITERAL, TokenType.NUMBER_LITERAL] or
+                                        tokens[num + 5].value != '(' or
+                                        tokens[num + 6].TokenType != TokenType.STRING_LITERAL or
+                                        tokens[num + 7].value != ')'
                                     ):
                                     raise Exception(
                                         'Unable to parse instruction ' + str(tokens[num:num+7]))
@@ -223,7 +227,7 @@ def generate(tokens: List[Token]) -> List[MemoryCell]:
                                         res += shift_and_mask(imm, 9, 127, 7)
                                         res += shift_and_mask(reg2, 6, 7, 3)
                                         res += shift_and_mask(reg1, 3, 7, 3)
-                                        res += 3
+                                        res += 4
                                         memory.append(MemoryCell(
                                             SectionType.CODE, reg1, reg2, None, imm, tokens[num].value, res))
                                         pass
@@ -233,7 +237,7 @@ def generate(tokens: List[Token]) -> List[MemoryCell]:
                                         res += shift_and_mask(reg1, 9, 7, 3)
                                         res += shift_and_mask(reg2, 6, 7, 3)
                                         res += shift_and_mask(imm, 3, 7, 3)
-                                        res += 4
+                                        res += 5
                                         memory.append(MemoryCell(
                                             SectionType.CODE, reg1, reg2, None, imm, tokens[num].value, res))
                                         pass
@@ -242,11 +246,11 @@ def generate(tokens: List[Token]) -> List[MemoryCell]:
 
                             if (tokens[num].value in three_args_op):
                                 if (tokens[num + 1].TokenType != TokenType.STRING_LITERAL or
-                                            tokens[num + 2].value != ',' or
-                                            tokens[num + 3].TokenType != TokenType.STRING_LITERAL or
-                                            tokens[num + 4].value != ',' or
-                                            tokens[num + 5].TokenType not in [
-                                            TokenType.STRING_LITERAL, TokenType.NUMBER_LITERAL]
+                                        tokens[num + 2].value != ',' or
+                                        tokens[num + 3].TokenType != TokenType.STRING_LITERAL or
+                                        tokens[num + 4].value != ',' or
+                                        tokens[num + 5].TokenType not in [
+                                        TokenType.STRING_LITERAL, TokenType.NUMBER_LITERAL]
                                         ):
                                     raise Exception(
                                         'Unable to parse instruction ' + str(tokens[num:num+6]))
@@ -297,6 +301,18 @@ def generate(tokens: List[Token]) -> List[MemoryCell]:
                                         memory.append(MemoryCell(
                                             SectionType.CODE, reg1, reg2, reg3, imm, tokens[num].value, res))
                                         pass
+                                    case 'mul':
+                                        reg3 = registers[tokens[num + 5].value]
+
+                                        res = int()
+                                        res += shift_and_mask(imm, 12, 120, 4)
+                                        res += shift_and_mask(reg3, 9, 7, 3)
+                                        res += shift_and_mask(reg2, 6, 7, 3)
+                                        res += shift_and_mask(reg1, 3, 7, 3)
+                                        res += 3
+                                        memory.append(MemoryCell(
+                                            SectionType.CODE, reg1, reg2, reg3, imm, tokens[num].value, res))
+                                        pass
                                 num += 6
                                 continue
                             else:
@@ -307,6 +323,12 @@ def generate(tokens: List[Token]) -> List[MemoryCell]:
                         pass
         num += 1
 
+    res = 0
+    res += shift_and_mask(label_to_cell['_start'], 9, 127, 7)
+    res += shift_and_mask(0, 6, 7, 3)
+    res += 6
+    memory[0] = MemoryCell(SectionType.CODE, 0, None,
+                           None, label_to_cell['_start'], 'JMP', res)
     return memory
 
 
