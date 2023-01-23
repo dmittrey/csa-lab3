@@ -30,7 +30,7 @@ class ControlUnitTests(unittest.TestCase):
         control_unit.start(data_path)
 
         for register_name, register_val in control_unit._registers.items():
-            if (register_name not in ['OPCODE', 'IOInt', 'ZeroFlag']):
+            if (register_name not in ['OPCODE', 'IOInt', 'ZeroFlag', 'IRWrite']):
                 self.assertEqual(register_val, 0)
 
     def test_DoTickWithUndefinedOpcode_ThrowsAssert(self):
