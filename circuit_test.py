@@ -3,12 +3,6 @@ from circuit import CircuitComponent, CircuitWire
 
 
 class CircuitWireTests(unittest.TestCase):
-    def test_SetNegativeValue_AssertThrown(self):
-        wire = CircuitWire()
-
-        with self.assertRaises(AssertionError):
-            wire.set(-5)
-
     def test_SetZeroValue_Calculated(self):
         wire = CircuitWire()
 

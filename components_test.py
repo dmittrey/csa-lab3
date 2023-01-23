@@ -100,14 +100,14 @@ class RegisterFileTests(unittest.TestCase):
 
     def test_DoTick_ReceiveMaskedValues(self):
         register_file = RegisterFile()
-        register_file.attach('A1', CircuitWire(880))   # 1 (101) 110 000
-        register_file.attach('A2', CircuitWire(6985))  # 1 (101) 101 001 001
-        register_file.attach('A3', CircuitWire(109))   # 1 (101) 101
+        register_file.attach('A1', CircuitWire(1904))  # 1 (110) 111 0000
+        register_file.attach('A2', CircuitWire(15177))  # 1 (110) 110 100 1001
+        register_file.attach('A3', CircuitWire(221))   # 1 (101) 1101
 
         register_file.do_tick()
 
-        self.assertEqual(register_file.get_register('A1'), 5)
-        self.assertEqual(register_file.get_register('A2'), 5)
+        self.assertEqual(register_file.get_register('A1'), 6)
+        self.assertEqual(register_file.get_register('A2'), 6)
         self.assertEqual(register_file.get_register('A3'), 5)
 
     def test_DoTickWithoutWe3Signal_GetRDValuesFromRegisters(self):
@@ -183,16 +183,10 @@ class ALUTests(unittest.TestCase):
 
         self.assertEqual(alu.get_register('Result'), 5)
 
-    def test_ALUControlIsThree_ThrowsAssert(self):
-        alu = ALU()
-        alu.set_register('ALUControl', 3)
-
-        with self.assertRaises(AssertionError):
-            alu.do_tick()
-
     def test_ResultIsZero_ZeroFlagIsActive(self):
         alu = ALU()
         alu.set_register('ALUControl', 0)
+        alu.set_register('EF', 1)
 
         alu.do_tick()
 
@@ -220,7 +214,7 @@ class SignExapndTests(unittest.TestCase):
     def test_DoTickWithImmSrcZero_GetSevenBiggestBits(self):
         sign_expand = SignExpand()
         sign_expand.set_register('ImmSrc', 0)
-        sign_expand.set_register('In', 33664)  # (1000 001) 110 000 000 33664
+        sign_expand.set_register('In', 67336)  # (1000 001) 110 000 1000 67336
 
         sign_expand.do_tick()
 
@@ -229,7 +223,7 @@ class SignExapndTests(unittest.TestCase):
     def test_DoTickWithImmSrcOne_GetFourBiggestBits(self):
         sign_expand = SignExpand()
         sign_expand.set_register('ImmSrc', 1)
-        sign_expand.set_register('In', 40832)  # (1001) 111 110 000 000 40832
+        sign_expand.set_register('In', 81664)  # (1001) 111 110 000 0000
 
         sign_expand.do_tick()
 
@@ -238,7 +232,8 @@ class SignExapndTests(unittest.TestCase):
     def test_DoTickWithImmSrcSecond_GetFourBiggestBitsAndThreeInMiddle(self):
         sign_expand = SignExpand()
         sign_expand.set_register('ImmSrc', 2)
-        sign_expand.set_register('In', 39036)  # (1001) 100 001 (111) 100 39036
+        # (1001) 100 001 (111) 1100 78076
+        sign_expand.set_register('In', 78076)
 
         sign_expand.do_tick()
 

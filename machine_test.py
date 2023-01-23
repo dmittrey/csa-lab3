@@ -1,5 +1,6 @@
 import unittest
 from circuit import CircuitWire
+from isa import Opcode
 from machine import ControlUnit, DataPath
 
 
@@ -13,20 +14,20 @@ class ControlUnitTests(unittest.TestCase):
     6) Чекнуть восстановление контекста прерывания
     """
 
-    def test_DoTick_MaskFirstThreeBitsFromOPCODE(self):
+    def test_DoTick_MaskFirstFourBitsFromOPCODE(self):
         control_unit = ControlUnit()
-        opcode_wire = CircuitWire(29)  # 11 (101) 29
+        opcode_wire = CircuitWire(59)  # 11 (1011) 59
         control_unit.attach('OPCODE', opcode_wire)
 
         control_unit.update()
 
-        self.assertEqual(control_unit.get_register('OPCODE'), 5)
+        self.assertEqual(control_unit.get_register('OPCODE'), 11)
 
     def test_DoPerformHaltOp_CalculateNothingAndStop(self):
         control_unit = ControlUnit()
         data_path = DataPath()
 
-        data_path.Memory._memory[0] = 6
+        data_path.Memory._memory[0] = 11
         control_unit.start(data_path)
 
         for register_name, register_val in control_unit._registers.items():
@@ -35,8 +36,7 @@ class ControlUnitTests(unittest.TestCase):
 
     def test_DoTickWithUndefinedOpcode_ThrowsAssert(self):
         control_unit = ControlUnit()
-        opcode_wire = CircuitWire(7)
-        control_unit.attach('OPCODE', opcode_wire)
+        control_unit.set_register('OPCODE', 11)
 
         with self.assertRaises(AttributeError):
             control_unit.start()
@@ -90,8 +90,8 @@ class InstructionPerformTests(unittest.TestCase):
 
         data_path = DataPath()
 
-        # (0000 101)5 (010)2 (111)7 (000)ADDI
-        data_path.Memory._memory[0] = 2744
+        # (0000 101)5 (010)2 (111)7 (0000)ADDI
+        data_path.Memory._memory[0] = 5488
         data_path.Register_File._inner_registers[2] = 5
 
         control_unit.attach_wires(data_path.control_wires)
@@ -108,8 +108,8 @@ class InstructionPerformTests(unittest.TestCase):
 
         data_path = DataPath()
 
-        # (0000 101)5 (010)2 (111)7 (000)ADDI
-        data_path.IR._state = 2744
+        # (0000 101)5 (010)2 (111)7 (0000)ADDI
+        data_path.IR._state = 5488
         data_path.ALU.set_register('Result', 10)
 
         control_unit.attach_wires(data_path.control_wires)
