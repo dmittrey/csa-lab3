@@ -109,7 +109,7 @@ class ALU(CircuitComponent):
     def __init__(self) -> None:
         super().__init__(['srcA', 'srcB', 'Result', 'ALUControl', 'ZeroFlag'])
 
-    # 0 - SUM, 1 - SUB, 2 - REM
+    # 0 - SUM, 1 - SUB, 2 - REM, 3 - MUL
     def do_tick(self, tick_num: int = 0) -> None:
         super().do_tick()
 
@@ -125,6 +125,10 @@ class ALU(CircuitComponent):
             case 2:
                 self.set_register('Result', self.get_register(
                     'srcA') % self.get_register('srcB'))
+                pass
+            case 3:
+                self.set_register('Result', self.get_register(
+                    'srcA') * self.get_register('srcB'))
                 pass
             case _:
                 raise AssertionError('ALU operation not permitted')
@@ -204,14 +208,6 @@ class IOHandler(CircuitComponent):
     def do_tick(self, tick_num: int = 0) -> None:
         super().do_tick()
 
-        for token in self.__interrupt_tokens:
-            token_tick, token_value = token
-            if (token_tick == tick_num):
-                self.set_register('IOInt', 1)
-                self._dip_value = ord(token_value)
-                logging.debug(
-                    f'Interrupt request! {self._dip_value} in tick {tick_num}')
-
         if (self.get_register('IOOp') == 1):
             # LD operation on 120 cell
             if (self.get_register('In') == IOMemoryCell.IN):
@@ -229,3 +225,11 @@ class IOHandler(CircuitComponent):
             # Address IO memory addresses without access signal
             if (self.get_register('In') in [120, 121]):
                 raise AttributeError('Unsopported operation on memory cell')
+
+        for token in self.__interrupt_tokens:
+            token_tick, token_value = token
+            if (token_tick == tick_num):
+                self.set_register('IOInt', 1)
+                self._dip_value = ord(token_value)
+                logging.debug(
+                    f'Interrupt request! {self._dip_value} in tick {tick_num}')
