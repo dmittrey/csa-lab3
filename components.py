@@ -5,12 +5,12 @@ from numpy import binary_repr
 
 
 class Trigger(CircuitComponent):
-    def __init__(self) -> None:
-        self._state: int = 0
+    def __init__(self, state: int = 0) -> None:
+        self._state: int = state
 
         super().__init__(['In', 'Out', 'EN'])
 
-    def do_tick(self) -> None:
+    def do_tick(self, tick_num: int = 0) -> None:
         super().do_tick()
 
         if (self.get_register('EN') != 0):
@@ -26,7 +26,7 @@ class Memory(CircuitComponent):
 
         super().__init__(['A', 'RD', 'WD', 'WE'])
 
-    def do_tick(self) -> None:
+    def do_tick(self, tick_num: int = 0) -> None:
         super().do_tick()
 
         data_addr = self.get_register('A')
@@ -71,7 +71,7 @@ class RegisterFile(CircuitComponent):
 
         super().__init__(['A1', 'A2', 'A3', 'RD1', 'RD2', 'WD', 'PC', 'WE3'])
 
-    def do_tick(self) -> None:
+    def do_tick(self, tick_num: int = 0) -> None:
         super().do_tick()
 
         self._inner_registers[Register.x1] = self.get_register('PC')
@@ -114,7 +114,7 @@ class ALU(CircuitComponent):
         super().__init__(['srcA', 'srcB', 'Result', 'ALUControl', 'ZeroFlag'])
 
     # 0 - SUM, 1 - SUB, 2 - REM
-    def do_tick(self) -> None:
+    def do_tick(self, tick_num: int = 0) -> None:
         super().do_tick()
 
         match self.get_register('ALUControl'):
@@ -146,7 +146,7 @@ class SignExpand(CircuitComponent):
     # 0 - Расширить значение из 9-15 бит команды
     # 1 - Расширить значение из 12-15 бит команды
     # 2 - Расширить значение из 12-15 и 3-5 бит команды
-    def do_tick(self) -> None:
+    def do_tick(self, tick_num: int = 0) -> None:
         super().do_tick()
 
         in_value = self.get_register('In')
@@ -174,7 +174,7 @@ class MUX(CircuitComponent):
         super().__init__(['In_' + self.__get_bin_number(x) for x in range(2 ** digit_capacity)]
                          + ['Out', src_register_name])
 
-    def do_tick(self) -> None:
+    def do_tick(self, tick_num: int = 0) -> None:
         super().do_tick()
 
         self.set_register('Out', self.get_register(
@@ -203,12 +203,12 @@ class IOHandler(CircuitComponent):
 
         super().__init__(['In', 'WD', 'Out', 'IOOp', 'IOInt'])
 
-    def do_tick(self, tick: int) -> None:
+    def do_tick(self, tick_num: int = 0) -> None:
         super().do_tick()
 
         for token in self.__interrupt_tokens:
             token_tick, token_value = token
-            if (token_tick == tick):
+            if (token_tick == tick_num):
                 self.set_register('IOInt', 1)
                 self._dip_value = ord(token_value)
 

@@ -21,7 +21,7 @@ class CircuitComponent():
 
         self._wires: Dict[str, CircuitWire] = dict()
 
-    def do_tick(self) -> None:
+    def do_tick(self, tick_num: int = 0) -> None:
         self.update()
         pass
 
