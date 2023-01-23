@@ -10,37 +10,37 @@ d: 'd'
 
 section .text
 _start:
-ld AC, +h(ZR)
-sw AC, +121(ZR)   ; Save symbol to output device(cell #1)
+ld x4, +h(ZR)
+sw x4, +121(ZR)   ; Save symbol to output device(cell #1)
 
-ld AC, +e(ZR)
-sw AC, +121(ZR)
+ld x4, +e(ZR)
+sw x4, +121(ZR)
 
-ld AC, +l(ZR)
-sw AC, +121(ZR)
+ld x4, +l(ZR)
+sw x4, +121(ZR)
 
-ld AC, +l(ZR)
-sw AC, +121(ZR)
+ld x4, +l(ZR)
+sw x4, +121(ZR)
 
-ld AC, +o(ZR)
-sw AC, +121(ZR)
+ld x4, +o(ZR)
+sw x4, +121(ZR)
 
-ld AC, +space(ZR)
-sw AC, +121(ZR)
+ld x4, +space(ZR)
+sw x4, +121(ZR)
 
-ld AC, +w(ZR)
-sw AC, +121(ZR)
+ld x4, +w(ZR)
+sw x4, +121(ZR)
 
-ld AC, +o(ZR)
-sw AC, +121(ZR)
+ld x4, +o(ZR)
+sw x4, +121(ZR)
 
-ld AC, +r(ZR)
-sw AC, +121(ZR)
+ld x4, +r(ZR)
+sw x4, +121(ZR)
 
-ld AC, +l(ZR)
-sw AC, +121(ZR) 
+ld x4, +l(ZR)
+sw x4, +121(ZR) 
 
-ld AC, +d(ZR)
-sw AC, +121(ZR)
+ld x4, +d(ZR)
+sw x4, +121(ZR)
 
 halt

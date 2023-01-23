@@ -1,90 +1,40 @@
 section .text
 _start:
-addi AC, ZR, 0
-addi DR, ZR, 1
+addi x4, ZR, 20 ; Put 20 in x4
 
-increment:
-addi AC, AC, 1
+addi x5, ZR, 2  ; Set x2 start to 2
+addi x1, ZR, 2  ; Set x1 start to 2
 
-rem x4, AC, DR ; %1
-addi DR, DR, 1
-bne ZR, x4, increment
+.findprime:
+    addi x1, x1, 1  ; Inc x1
+    cmp x4, +0(x1)  ; x1 - x4
+    jg 16           ; .findnumber
+    addi x3, ZR, 2  ; 
+    .checkmod:
+        rem x2, x1, x3
+        beq .findprime
+        addi x3, x3, 1
+        cmp x3, +0(x1)
+        beq 14      ; .mulstep
+        jmp .findprime
+    .mulstep:
+            mul x5, x5, x1
+            jmp .findprime
 
-rem x4, AC, DR ; %1
-addi DR, DR, 1
-bne ZR, x4, increment
+.findnumber:
+    addi x1, ZR, 0 ;16
+    .nextnumber:
+        add x1, x1, x5
+        addi x3, ZR, 0
+    .nextdivider:
+        addi x3, x3, 1
+        rem x2, x1, x3
+        bne .nextnumber   
 
-rem x4, AC, DR ; %1
-addi DR, DR, 1
-bne ZR, x4, increment
+        cmp x3, +0(x4)
+        beq 25      ;.exit
 
-rem x4, AC, DR ; %1
-addi DR, DR, 1
-bne ZR, x4, increment
-
-rem x4, AC, DR ; %1
-addi DR, DR, 1
-bne ZR, x4, increment
-
-rem x4, AC, DR ; %1
-addi DR, DR, 1
-bne ZR, x4, increment
-
-rem x4, AC, DR ; %1
-addi DR, DR, 1
-bne ZR, x4, increment
-
-rem x4, AC, DR ; %1
-addi DR, DR, 1
-bne ZR, x4, increment
-
-rem x4, AC, DR ; %1
-addi DR, DR, 1
-bne ZR, x4, increment
-
-rem x4, AC, DR ; %1
-addi DR, DR, 1
-bne ZR, x4, increment
-
-rem x4, AC, DR ; %1
-addi DR, DR, 1
-bne ZR, x4, increment
-
-rem x4, AC, DR ; %1
-addi DR, DR, 1
-bne ZR, x4, increment
-
-rem x4, AC, DR ; %1
-addi DR, DR, 1
-bne ZR, x4, increment
-
-rem x4, AC, DR ; %1
-addi DR, DR, 1
-bne ZR, x4, increment
-
-rem x4, AC, DR ; %1
-addi DR, DR, 1
-bne ZR, x4, increment
-
-rem x4, AC, DR ; %1
-addi DR, DR, 1
-bne ZR, x4, increment
-
-rem x4, AC, DR ; %1
-addi DR, DR, 1
-bne ZR, x4, increment
-
-rem x4, AC, DR ; %1
-addi DR, DR, 1
-bne ZR, x4, increment
-
-rem x4, AC, DR ; %1
-addi DR, DR, 1
-bne ZR, x4, increment
-
-rem x4, AC, DR ; %20
-bne ZR, x4, increment
-
-sw AC, +121(ZR)   ; Save symbol to output device(cell #1)
-
-halt
+        jmp .nextdivider
+.exit:
+    sw x1, +121(ZR)
+    halt

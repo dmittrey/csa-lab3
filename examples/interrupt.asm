@@ -1,5 +1,5 @@
 section .text
 _start:
-ld DR, +120(ZR) ; Read new word
+ld x1, +120(ZR) ; Read new word
 
 halt
