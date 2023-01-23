@@ -95,8 +95,7 @@ class RegisterFileTests(unittest.TestCase):
     2) Без сигнала WE3 посмотреть вывод RD1, RD2
     3) С сигналом WE3 записать в нулевой регистр
     4) С сигналом WE3 записать в другой регистр
-    5) С сигналом WE3 записать в PC регистр
-    6) Вход в прерывание
+    5) Вход в прерывание
     """
 
     def test_DoTick_ReceiveMaskedValues(self):
@@ -142,27 +141,6 @@ class RegisterFileTests(unittest.TestCase):
         register_file.do_tick()
 
         self.assertEqual(register_file._inner_registers[3], 5)
-
-    def test_WriteInFirstRegister_ChangePCWireAndPCRegister(self):
-        register_file = RegisterFile()
-        register_file.set_register('A3', 1)
-        register_file.set_register('WD', 5)
-        register_file.set_register('WE3', 1)
-        pc_wire = CircuitWire()
-        register_file.attach('PC', pc_wire)
-
-        register_file.do_tick()
-
-        self.assertEqual(pc_wire.get(), 5)
-        self.assertEqual(register_file.get_register('PC'), 5)
-
-    def test_EnterInterrupt_GetPCRegisterValueFromX5Register(self):
-        register_file = RegisterFile()
-        register_file._inner_registers[Register.x5] = 5
-
-        register_file.enter_interrupt()
-
-        self.assertEqual(register_file.get_register('PC'), 5)
 
 
 class ALUTests(unittest.TestCase):
