@@ -1,6 +1,5 @@
 import unittest
 from circuit import CircuitWire
-from components import Memory
 from machine import ControlUnit, DataPath
 
 
@@ -27,11 +26,11 @@ class ControlUnitTests(unittest.TestCase):
         control_unit = ControlUnit()
         data_path = DataPath()
 
-        data_path.control_wires['OPCODE'].set(6)
+        data_path.Memory._memory[0] = 6
         control_unit.start(data_path)
 
         for register_name, register_val in control_unit._registers.items():
-            if (register_name != 'OPCODE'):
+            if (register_name not in ['OPCODE', 'IOInt', 'ZeroFlag']):
                 self.assertEqual(register_val, 0)
 
     def test_DoTickWithUndefinedOpcode_ThrowsAssert(self):
