@@ -180,12 +180,8 @@ class DataPath():
         self.IR._state = self.Memory._memory[257]
 
     def __log_state(self) -> None:
-        msg = (f'Tick {self.tick}\t\t' +
-               f'PC: {self.PC._state}\t' +
-               f'Registers: {[x for x in  self.Register_File._inner_registers.values()]}\t' +
-               f'SrcA: {self.ALU.get_register("srcA")} | SrcB: {self.ALU.get_register("srcB")} | Result: {self.ALU.get_register("Result")}\t' +
-               f'A1: {self.Register_File.get_register("A1")} | A2: {self.Register_File.get_register("A2")} | A3: {self.Register_File.get_register("A3")}' +
-               f'PF: {self.ALU.get_register("PositiveFlag")} | ZF: {self.ALU.get_register("ZeroFlag")}')
+        msg = (f'Tick {self.tick}\t\t' + f'PC: {self.PC._state}\t' + f'Registers: {[x for x in  self.Register_File._inner_registers.values()]}\t' + f'SrcA: {self.ALU.get_register("srcA")} | SrcB: {self.ALU.get_register("srcB")} | Result: {self.ALU.get_register("Result")}\t' +
+               f'A1: {self.Register_File.get_register("A1")} | A2: {self.Register_File.get_register("A2")} | A3: {self.Register_File.get_register("A3")}' + f'PF: {self.ALU.get_register("PositiveFlag")} | ZF: {self.ALU.get_register("ZeroFlag")}')
         if (self.in_interrupt):
             logging.warning('(Int)' + msg)
         else:
@@ -223,9 +219,9 @@ class ControlUnit(CircuitComponent):
                         {'AdrSrc': 1, 'IOOp': 1,
                         'ALUSrcA': 1, 'ALUSrcB': 2, 'ALUControl': 0},
                         {'PCWrite': 1}],
-            Opcode.CMP:  [{'IRWrite': 1, 'ALUControl': 1, 'EF': 1},
-                          {'ALUSrcA': 1, 'ALUSrcB': 2, 'ALUControl': 0},
-                          {'PCWrite': 1}],
+            Opcode.CMP: [{'IRWrite': 1, 'ALUControl': 1, 'EF': 1},
+                         {'ALUSrcA': 1, 'ALUSrcB': 2, 'ALUControl': 0},
+                         {'PCWrite': 1}],
             Opcode.JMP: [{'ALUSrcA': 1, 'ALUSrcB': 1, 'ALUControl': 0},
                          {'PCWrite': 1}],
         }
@@ -244,7 +240,7 @@ class ControlUnit(CircuitComponent):
                 break
 
             op_transitions = self.__get_op_transitions(opcode)
-            if (op_transitions != None):
+            if (op_transitions is not None):
                 for valves_state in op_transitions:
                     self._do_tick(data_path, valves_state)
             else:
@@ -282,7 +278,7 @@ class ControlUnit(CircuitComponent):
             # Volatile registers
             if (register_name in ['OPCODE', 'ZeroFlag', 'PositiveFlag', 'IOInt']):
                 continue
-            elif (new_state.get(register_name) != None):
+            elif (new_state.get(register_name) is not None):
                 self.set_register(register_name, new_state[register_name])
             else:
                 # Set to zero all unused registers to easily handle instructions
@@ -295,8 +291,7 @@ class ControlUnit(CircuitComponent):
         self.__handle_interrupt(data_path)
 
     def __handle_interrupt(self, data_path: DataPath) -> None:
-        if (self.__is_interrupts_allowed and (not self._in_interrupt_context)
-                and self.get_register('IOInt') == 1):
+        if (self.__is_interrupts_allowed and (not self._in_interrupt_context) and self.get_register('IOInt') == 1):
             registers = self._save_context()
 
             # Goto interrupt vector
