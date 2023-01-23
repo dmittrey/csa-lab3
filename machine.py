@@ -102,6 +102,7 @@ class DataPath():
         zero_signal = CircuitWire()
         io_operation_signal = CircuitWire()
         io_inerrupt_signal = CircuitWire()
+        positive_signal = CircuitWire()
 
         # Attach signals
         self.PC.attach('EN', pc_write_signal)
@@ -115,6 +116,7 @@ class DataPath():
         self.Alu_Src_B_Mux.attach('ALUSrcB', alu_src_b_signal)
         self.ALU.attach('ALUControl', alu_control_signal)
         self.ALU.attach('ZeroFlag', zero_signal)
+        self.ALU.attach('PositiveFlag', positive_signal)
         self.IO_Handler.attach('IOOp', io_operation_signal)
         self.IO_Handler.attach('IOInt', io_inerrupt_signal)
 
@@ -132,6 +134,7 @@ class DataPath():
         self.control_wires['ALUSrcA'] = alu_src_a_signal
         self.control_wires['RegWrite'] = reg_write_signal
         self.control_wires['ZeroFlag'] = zero_signal
+        self.control_wires['PositiveFlag'] = positive_signal
         self.control_wires['IOOp'] = io_operation_signal
         self.control_wires['IOInt'] = io_inerrupt_signal
 
@@ -222,7 +225,7 @@ class ControlUnit(CircuitComponent):
         }
 
         super().__init__(['OPCODE', 'PCWrite', 'AdrSrc', 'MemWrite', 'IRWrite', 'WDSrc', 'IOOp',
-                          'ImmSrc', 'ALUControl', 'ALUSrcB', 'ALUSrcA', 'RegWrite', 'ZeroFlag', 'IOInt'])
+                          'ImmSrc', 'ALUControl', 'ALUSrcB', 'ALUSrcA', 'RegWrite', 'ZeroFlag', 'PositiveFlag', 'IOInt'])
 
     def start(self, data_path: DataPath = None) -> None:
         self.attach_wires(data_path.control_wires)

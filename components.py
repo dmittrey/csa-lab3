@@ -107,7 +107,8 @@ class RegisterFile(CircuitComponent):
 
 class ALU(CircuitComponent):
     def __init__(self) -> None:
-        super().__init__(['srcA', 'srcB', 'Result', 'ALUControl', 'ZeroFlag'])
+        super().__init__(['srcA', 'srcB', 'Result',
+                          'ALUControl', 'ZeroFlag', 'PositiveFlag'])
 
     # 0 - SUM, 1 - SUB, 2 - REM, 3 - MUL
     def do_tick(self, tick_num: int = 0) -> None:
@@ -139,6 +140,13 @@ class ALU(CircuitComponent):
         else:
             self.set_register('ZeroFlag', 0)
             logging.debug('Zero flag is inactive')
+
+        if (self.get_register('Result') > 0):
+            self.set_register('PositiveFlag', 1)
+            logging.debug('Positive flag is active')
+        else:
+            self.set_register('PositiveFlag', 0)
+            logging.debug('Positive flag is inactive')
 
 
 class SignExpand(CircuitComponent):
