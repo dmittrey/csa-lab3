@@ -156,24 +156,22 @@ class DataPath():
         self.in_interrupt = True
         # Save PC
         prev_pc = self.PC._state
-        self.PC._state = self.Register_File._inner_registers[Register.x5]
-        self.Register_File._inner_registers[Register.x4] = prev_pc
+        self.PC._state = self.Register_File._inner_registers[Register.x6]
+        self.Register_File._inner_registers[Register.x7] = prev_pc
         # Save ALU Result
-        self.Memory._memory[self.Register_File._inner_registers[Register.x7]
-                            ] = self.ALU.get_register('Result')
+        self.Memory._memory[256] = self.ALU.get_register('Result')
         # Save current command
-        self.Memory._memory[self.Register_File._inner_registers[Register.x7] + 1
-                            ] = self.IR._state
+        self.Memory._memory[257] = self.IR._state
 
     def exit_interrupt(self) -> None:
         self.in_interrupt = False
         # Restore PC
-        self.PC._state = self.Register_File._inner_registers[Register.x4]
+        self.PC._state = self.Register_File._inner_registers[Register.x7]
         # Restore ALU Result
         self.ALU.set_register(
-            'Result', self.Memory._memory[self.Register_File._inner_registers[Register.x7]])
+            'Result', self.Memory._memory[256])
         # Restore prev instr
-        self.IR._state = self.Memory._memory[self.Register_File._inner_registers[Register.x7] + 1]
+        self.IR._state = self.Memory._memory[257]
 
     def __log_state(self) -> None:
         msg = (f'Tick №{self.tick})\t' +
@@ -313,12 +311,12 @@ def simulation(program: List[int], text_start_adr: int = 0, is_interrupts_allowe
     data_path.Memory.load_program(program, 0)
     data_path.PC._state = text_start_adr
 
-    interrupt_program = [61468, 7]
+    interrupt_program = [61452, 7]
     # Interrupt vector address
-    data_path.Register_File._inner_registers[5] = 200
+    data_path.Register_File._inner_registers[6] = 200
     data_path.Memory.load_program(interrupt_program, 200)
     # Interrupt buffer
-    data_path.Register_File._inner_registers[7] = 256
+    # data_path.Register_File._inner_registers[7] = 256
 
     control_unit.start(data_path)
 
