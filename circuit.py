@@ -26,14 +26,14 @@ class CircuitComponent():
 
     def attach(self, register_name: str, wire: CircuitWire) -> None:
         assert register_name in self._registers.keys(), 'Указанный регистр не существует'
-        assert wire != None, 'Несуществующий провод данных'
+        assert wire is not None, 'Несуществующий провод данных'
         self._wires[register_name] = wire
         pass
 
     def set_register(self, name: str, value: int):
         assert name in self._registers.keys(), 'Указанный регистр не существует'
         self._registers[name] = value
-        if (self._wires.get(name) != None):
+        if (self._wires.get(name) is not None):
             self._wires[name].set(value)
         pass
 

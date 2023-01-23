@@ -182,15 +182,14 @@ class MUX(CircuitComponent):
         self._src_register = src_register_name
         self.__digit_capacity = digit_capacity
 
-        super().__init__(['In_' + self.__get_bin_number(x) for x in range(2 ** digit_capacity)]
-                         + ['Out', src_register_name])
+        super().__init__(['In_' + self.__get_bin_number(x)
+                          for x in range(2 ** digit_capacity)] + ['Out', src_register_name])
 
     def do_tick(self, tick_num: int = 0) -> None:
         super().do_tick()
 
         self.set_register('Out', self.get_register(
-            'In_' +
-            self.__get_bin_number(self.get_register(self._src_register))
+            'In_' + self.__get_bin_number(self.get_register(self._src_register))
         ))
 
     def __get_bin_number(self, number: int) -> None:

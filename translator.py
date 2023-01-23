@@ -49,7 +49,7 @@ def lexical_analysis(code: str) -> List[Token]:
         TokenType.CHAR_LITERAL: r"'\s*[a-z]*'",
         TokenType.STRING_LITERAL: r".?[a-z]+[0-9]*",
         TokenType.EOL: r"\n",
-        TokenType.WHITESPACE: '\s+'
+        TokenType.WHITESPACE: r"\s+"
     }
 
     cur_pos = 0
@@ -60,7 +60,7 @@ def lexical_analysis(code: str) -> List[Token]:
             res = re.match(lexem_re, code[cur_pos:],
                            re.MULTILINE | re.IGNORECASE)
 
-            if (res != None):
+            if (res is not None):
                 found = True
                 end_pos = cur_pos + res.end()
                 if (lexem_type != TokenType.COMMENT and lexem_type != TokenType.WHITESPACE):
@@ -69,7 +69,7 @@ def lexical_analysis(code: str) -> List[Token]:
                 break
 
         cur_pos = end_pos
-        assert found == True, 'Не распознало лексему'
+        assert found is True, 'Не распознало лексему'
 
     return tokens
 
@@ -197,7 +197,7 @@ def generate(tokens: List[Token]) -> List[MemoryCell]:
                             if (tokens[num].value in one_args_op):
                                 if (tokens[num + 1].TokenType != TokenType.NUMBER_LITERAL):
                                     raise Exception(
-                                        'Unable to parse instruction ' + str(tokens[num:num+7]))
+                                        'Unable to parse instruction ' + str(tokens[num : num+7]))
 
                                 imm = int(tokens[num + 1].value)
 
@@ -242,14 +242,7 @@ def generate(tokens: List[Token]) -> List[MemoryCell]:
                                 continue
 
                             if (tokens[num].value in two_args_op):
-                                if (tokens[num + 1].TokenType != TokenType.STRING_LITERAL or
-                                        tokens[num + 2].value != ',' or
-                                        tokens[num + 3].value not in ['+', '-'] or
-                                        tokens[num + 4].TokenType not in [TokenType.STRING_LITERAL, TokenType.NUMBER_LITERAL] or
-                                        tokens[num + 5].value != '(' or
-                                        tokens[num + 6].TokenType != TokenType.STRING_LITERAL or
-                                        tokens[num + 7].value != ')'
-                                    ):
+                                if (tokens[num + 1].TokenType != TokenType.STRING_LITERAL or tokens[num + 2].value != ',' or tokens[num + 3].value not in ['+', '-'] or tokens[num + 4].TokenType not in [TokenType.STRING_LITERAL, TokenType.NUMBER_LITERAL] or tokens[num + 5].value != '(' or tokens[num + 6].TokenType != TokenType.STRING_LITERAL or tokens[num + 7].value != ')'):
                                     raise Exception(
                                         'Unable to parse instruction ' + str(tokens[num:num+7]))
 
@@ -297,11 +290,7 @@ def generate(tokens: List[Token]) -> List[MemoryCell]:
                                 continue
 
                             if (tokens[num].value in three_args_op):
-                                if (tokens[num + 1].TokenType != TokenType.STRING_LITERAL or
-                                        tokens[num + 2].value != ',' or
-                                        tokens[num + 3].TokenType != TokenType.STRING_LITERAL or
-                                        tokens[num + 4].value != ',' or
-                                        tokens[num + 5].TokenType not in [
+                                if (tokens[num + 1].TokenType != TokenType.STRING_LITERAL or tokens[num + 2].value != ',' or tokens[num + 3].TokenType != TokenType.STRING_LITERAL or tokens[num + 4].value != ',' or tokens[num + 5].TokenType not in [
                                         TokenType.STRING_LITERAL, TokenType.NUMBER_LITERAL]
                                         ):
                                     raise Exception(
