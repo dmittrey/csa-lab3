@@ -331,7 +331,7 @@ def main(args):
 
     codes = read_code(filename)
 
-    simulation(codes, int(start_code), bool(is_interrupts_enabled))
+    simulation(codes, int(start_code), is_interrupts_enabled == 'True')
 
     pass
 
