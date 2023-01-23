@@ -7,7 +7,6 @@ class CircuitWire():
         pass
 
     def set(self, value: int) -> None:
-        assert value >= 0, 'Данные в шине не положительны'
         self._value = value
         pass
 
