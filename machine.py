@@ -119,7 +119,7 @@ class DataPath():
         self.IO_Handler.attach('IOInt', io_inerrupt_signal)
 
         # Register control wires
-        self.control_wires['OPCODE'] = rd_pipe
+        self.control_wires['OPCODE'] = instr_pipe
         self.control_wires['PCWrite'] = pc_write_signal
         self.control_wires['PCWrite'] = pc_write_signal
         self.control_wires['AdrSrc'] = adr_src_signal
@@ -154,22 +154,35 @@ class DataPath():
 
     def enter_interrupt(self) -> None:
         self.in_interrupt = True
+        # Save PC
         prev_pc = self.PC._state
         self.PC._state = self.Register_File._inner_registers[Register.x5]
         self.Register_File._inner_registers[Register.x4] = prev_pc
+        # Save ALU Result
+        self.Memory._memory[self.Register_File._inner_registers[Register.x7]
+                            ] = self.ALU.get_register('Result')
+        # Save current command
+        self.Memory._memory[self.Register_File._inner_registers[Register.x7] + 1
+                            ] = self.IR._state
 
     def exit_interrupt(self) -> None:
         self.in_interrupt = False
+        # Restore PC
         self.PC._state = self.Register_File._inner_registers[Register.x4]
+        # Restore ALU Result
+        self.ALU.set_register(
+            'Result', self.Memory._memory[self.Register_File._inner_registers[Register.x7]])
+        # Restore prev instr
+        self.IR._state = self.Memory._memory[self.Register_File._inner_registers[Register.x7] + 1]
 
     def __log_state(self) -> None:
         msg = (f'Tick №{self.tick})\t' +
                f'PC: {self.PC._state}\t' +
-               f'Registers: {[x for x in  self.Register_File._inner_registers.values()]}\t\t' +
-               f'SrcA: {self.ALU.get_register("srcA")} | SrcB: {self.ALU.get_register("srcB")} | Result: {self.ALU.get_register("Result")}')
-
+               f'Registers: {[x for x in  self.Register_File._inner_registers.values()]}\t' +
+               f'SrcA: {self.ALU.get_register("srcA")} | SrcB: {self.ALU.get_register("srcB")} | Result: {self.ALU.get_register("Result")}\t' +
+               f'A1: {self.Register_File.get_register("A1")} | A2: {self.Register_File.get_register("A2")} | A3: {self.Register_File.get_register("A3")}')
         if (self.in_interrupt):
-            logging.warn(msg)
+            logging.warning('(Int)' + msg)
         else:
             logging.info(msg)
 
@@ -196,17 +209,13 @@ class ControlUnit(CircuitComponent):
                          {'RegWrite': 0,
                           'PCWrite': 1}],
             Opcode.LD: [{'IRWrite': 1, 'ALUSrcB': 1},
-                        {'AdrSrc': 1, 'IRWrite': 0, 'RegWrite': 1, 'IOOp': 1,
-                         'ALUSrcA': 1, 'ALUSrcB': 2, 'ALUControl': 0},
-                        {'RegWrite': 0,
-                         'PCWrite': 1,
-                         'IOOp': 0}],
+                        {'AdrSrc': 1, 'RegWrite': 1, 'IOOp': 1,
+                         'ALUSrcA': 1, 'ALUSrcB': 2},
+                        {'PCWrite': 1}],
             Opcode.SW: [{'IRWrite': 1, 'ALUSrcB': 1, 'ImmSrc': 2},
-                        {'AdrSrc': 1, 'IRWrite': 0, 'IOOp': 1,
+                        {'AdrSrc': 1, 'IOOp': 1,
                         'ALUSrcA': 1, 'ALUSrcB': 2, 'ALUControl': 0},
-                        {'MemWrite': 0,
-                        'PCWrite': 1,
-                         'IOOp': 0}],
+                        {'PCWrite': 1}],
             Opcode.JMP: [{'ALUSrcA': 1, 'ALUSrcB': 1, 'ALUControl': 0},
                          {'PCWrite': 1}],
         }
@@ -218,7 +227,7 @@ class ControlUnit(CircuitComponent):
         self.attach_wires(data_path.control_wires)
 
         while True:
-            self._do_tick(data_path)
+            self._do_tick(data_path, {'IRWrite': 1})
 
             opcode = self.get_register('OPCODE')
             if (opcode == Opcode.HALT):
@@ -313,7 +322,7 @@ def simulation(program: List[int], text_start_adr: int = 0, is_interrupts_allowe
 
 def main(args):
     logging.basicConfig(level=logging.INFO,
-                        filename="py_log.log", filemode="w", format="%(asctime)s %(levelname)s %(message)s")
+                        filename="py_log.log", filemode="w", format="%(levelname)s %(message)s")
 
     filename, start_code, is_interrupts_enabled = [
         'examples/hello.out', 8, True]
