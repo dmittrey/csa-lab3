@@ -16,6 +16,7 @@ class Trigger(CircuitComponent):
 
         if (self.get_register('EN') != 0):
             self._state = self.get_register('In')
+            logging.debug(f'Trigger {__name__} change state to {self._state}')
 
         self.set_register('Out', self._state)
 
@@ -84,6 +85,8 @@ class RegisterFile(CircuitComponent):
             if (self.get_register('A3') != 0):
                 self._inner_registers[self.get_register(
                     'A3')] = self.get_register('WD')
+            else:
+                logging.warning('Prevent writing in x0 register')
 
     def update(self):
         for wire_name, wire in self._wires.items():
@@ -128,8 +131,10 @@ class ALU(CircuitComponent):
 
         if (self.get_register('Result') == 0):
             self.set_register('ZeroFlag', 1)
+            logging.debug('Zero flag is active')
         else:
             self.set_register('ZeroFlag', 0)
+            logging.debug('Zero flag is inactive')
 
 
 class SignExpand(CircuitComponent):
@@ -204,6 +209,8 @@ class IOHandler(CircuitComponent):
             if (token_tick == tick_num):
                 self.set_register('IOInt', 1)
                 self._dip_value = ord(token_value)
+                logging.debug(
+                    f'Interrupt request! {self._dip_value} in tick {tick_num}')
 
         if (self.get_register('IOOp') == 1):
             # LD operation on 120 cell
