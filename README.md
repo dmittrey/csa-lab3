@@ -1,4 +1,4 @@
-# csa-lab3
+# Зубахин Дмитрий, P33312
 
 Virtual machine and interpreter
 
