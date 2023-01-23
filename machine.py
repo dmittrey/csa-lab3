@@ -353,8 +353,7 @@ def main(args):
     logging.basicConfig(level=logging.INFO,
                         filename="py_log.log", filemode="w", format="%(levelname)s %(message)s")
 
-    filename, start_code, is_interrupts_enabled = [
-        'examples/my_prob5.out', 0, False]
+    filename, start_code, is_interrupts_enabled = args
 
     codes = read_code(filename)
 
