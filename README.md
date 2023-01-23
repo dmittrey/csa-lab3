@@ -132,7 +132,7 @@ Virtual machine and interpreter
 | 3   | Type R      | MUL reg1, reg2, reg3 | reg1 = reg2 \* reg3             |          | reg3     | reg2  | reg1     | OPCODE |
 | 4   | Type I      | LD reg1, IMM(reg2)   | reg1 = MEM(reg2 + IMM)          | IMM[6:3] | IMM[2:0] | reg2  | reg1     | OPCODE |
 | 5   | Type S/B    | SW reg1, IMM(reg2)   | MEM(reg2 + IMM) = reg1          | IMM[6:3] | reg1     | reg2  | IMM[2:0] | OPCODE |
-| 6   |             | CMP reg1, reg2       | SET FLAGS (reg1 - reg2)         |          | reg2     | reg1  |          | OPCODE |
+| 6   |             | CMP reg1, IMM(reg2)  | SET FLAGS (reg1 - reg2)         | IMM[6:3] | reg2     | reg1  | IMM[2:0] | OPCODE |
 | 7   |             | JMP IMM(reg1)        | PC = reg1 + IMM                 | IMM[6:3] | IMM[2:0] | reg1  |          | OPCODE |
 | 8   |             | JG IMM(reg1)         | PC = reg1 + IMM IF PositiveFlag | IMM[6:3] | IMM[2:0] | reg1  |          | OPCODE |
 | 9   |             | BNE IMM(reg1)        | PC = reg1 + IMM IF NOT ZeroFlag | IMM[6:3] | IMM[2:0] | reg1  |          | OPCODE |
