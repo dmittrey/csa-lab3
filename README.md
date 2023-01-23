@@ -76,16 +76,16 @@ Virtual machine and interpreter
 - Структура памяти неоднородная, первые 32 ячейки зарезервированы под устройства ввода-вывода.
 - Пользователю доступны 6 регистров(остальные два - CSR регистры)
 
-| Название регистра | Алиас    | Назначение                |
-| ----------------- | -------- | ------------------------- |
-| x0                | ZR       | Регистр всегда хранит 0   |
-| x1                | PC       | Счетчик команд            |
-| x2                | -        | Регистр общего назначения |
-| x3                | DR       | Регистр данных            |
-| x4                | mepc     | Previous PC value         |
-| x5                | mtvec    | Interrupt vector address  |
-| x6                | AC       | Аккумулятор               |
-| x7                | mscratch | Save mem block for state  |
+| Название регистра | Алиас | Назначение                |
+| ----------------- | ----- | ------------------------- |
+| x0                | ZR    | Регистр всегда хранит 0   |
+| x1                | -     | Регистр общего назначения |
+| x2                | -     | Регистр общего назначения |
+| x3                | -     | Регистр общего назначения |
+| x4                | -     | Регистр общего назначения |
+| x5                | -     | Регистр общего назначения |
+| x6                | mtvec | Interrupt vector address  |
+| x7                | mepc  | Previous PC value         |
 
 ## Отображение на модель памяти процессора
 
@@ -124,16 +124,20 @@ Virtual machine and interpreter
 
 ## Набор инструкций
 
-| №   | Тип команды | Название команды     | Назначение                        | 4 бит    | 3 бит    | 3 бит | 3 бит    | 3 бит  |
-| --- | ----------- | -------------------- | --------------------------------- | -------- | -------- | ----- | -------- | ------ |
-| 0   | Type I      | ADDI reg1, reg2, IMM | reg1 = reg2 + IMM                 | IMM[6:3] | IMM[2:0] | reg2  | reg1     | OPCODE |
-| 1   | Type S/B    | BNE reg1, reg2, IMM  | if (reg1 != reg2) PC = reg1 + IMM | IMM[6:3] | reg2     | reg1  | IMM[2:0] | OPCODE |
-| 2   | Type R      | REM reg1, reg2, reg3 | reg1 = reg2 % reg3                | IMM[3:0] | reg3     | reg2  | reg1     | OPCODE |
-| 3   | Type R      | MUL reg1, reg2, reg3 | reg1 = reg2 \* reg3               | IMM[3:0] | reg3     | reg2  | reg1     | OPCODE |
-| 4   | Type I      | LD reg1, IMM(reg2)   | reg1 = MEM(reg2 + IMM)            | IMM[6:3] | IMM[2:0] | reg2  | reg1     | OPCODE |
-| 5   | Type S/B    | SW reg1, IMM(reg2)   | MEM(reg2 + IMM) = reg1            | IMM[6:3] | reg1     | reg2  | IMM[2:0] | OPCODE |
-| 6   |             | JMP IMM(reg1)        | PC = reg1 + IMM                   | IMM[6:3] | IMM[2:0] | reg1  |          | OPCODE |
-| 7   |             | HALT                 | Останов.                          |          |          |       |          | OPCODE |
+| №   | Тип команды | Название команды     | Назначение                      | 4 бит    | 3 бит    | 3 бит | 3 бит    | 3 бит  |
+| --- | ----------- | -------------------- | ------------------------------- | -------- | -------- | ----- | -------- | ------ |
+| 0   | Type I      | ADDI reg1, reg2, IMM | reg1 = reg2 + IMM               | IMM[6:3] | IMM[2:0] | reg2  | reg1     | OPCODE |
+| 3   | Type R      | ADD reg1, reg2, reg3 | reg1 = reg2 + reg3              |          | reg3     | reg2  | reg1     | OPCODE |
+| 2   | Type R      | REM reg1, reg2, reg3 | reg1 = reg2 % reg3              |          | reg3     | reg2  | reg1     | OPCODE |
+| 3   | Type R      | MUL reg1, reg2, reg3 | reg1 = reg2 \* reg3             |          | reg3     | reg2  | reg1     | OPCODE |
+| 4   | Type I      | LD reg1, IMM(reg2)   | reg1 = MEM(reg2 + IMM)          | IMM[6:3] | IMM[2:0] | reg2  | reg1     | OPCODE |
+| 5   | Type S/B    | SW reg1, IMM(reg2)   | MEM(reg2 + IMM) = reg1          | IMM[6:3] | reg1     | reg2  | IMM[2:0] | OPCODE |
+| 6   |             | CMP reg1, reg2       | SET FLAGS (reg1 - reg2)         |          | reg2     | reg1  |          | OPCODE |
+| 6   |             | JMP IMM(reg1)        | PC = reg1 + IMM                 | IMM[6:3] | IMM[2:0] | reg1  |          | OPCODE |
+| 6   |             | JG IMM(reg1)         | PC = reg1 + IMM IF PositiveFlag | IMM[6:3] | IMM[2:0] | reg1  |          | OPCODE |
+| 1   |             | BNE IMM(reg1)        | PC = reg1 + IMM IF NOT ZeroFlag | IMM[6:3] | IMM[2:0] | reg1  |          | OPCODE |
+| 1   |             | BEQ IMM(reg1)        | PC = reg1 + IMM IF ZeroFlag     | IMM[6:3] | IMM[2:0] | reg1  |          | OPCODE |
+| 7   |             | HALT                 | Останов.                        |          |          |       |          | OPCODE |
 
 ## Способ кодирования
 
