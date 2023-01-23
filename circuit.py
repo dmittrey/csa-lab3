@@ -25,9 +25,6 @@ class CircuitComponent():
         self.update()
         pass
 
-    def enter_interrupt(self) -> None:
-        pass
-
     def attach(self, register_name: str, wire: CircuitWire) -> None:
         assert register_name in self._registers.keys(), 'Указанный регистр не существует'
         assert wire != None, 'Несуществующий провод данных'

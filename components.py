@@ -60,7 +60,7 @@ class RegisterFile(CircuitComponent):
     def __init__(self) -> None:
         self._inner_registers: Dict[int, int] = {
             Register.x0: 0,  # x0 | ZR
-            Register.x1: 0,  # x1 | PC
+            Register.x1: 0,  # x1
             Register.x2: 0,  # x2
             Register.x3: 0,  # x3 | DR
             Register.x4: 0,  # x4 | mepc(Previous PC value)
@@ -69,12 +69,10 @@ class RegisterFile(CircuitComponent):
             Register.x7: 0,  # x7 | mscratch(Save mem block for state)
         }
 
-        super().__init__(['A1', 'A2', 'A3', 'RD1', 'RD2', 'WD', 'PC', 'WE3'])
+        super().__init__(['A1', 'A2', 'A3', 'RD1', 'RD2', 'WD', 'WE3'])
 
     def do_tick(self, tick_num: int = 0) -> None:
         super().do_tick()
-
-        self._inner_registers[Register.x1] = self.get_register('PC')
 
         if (self.get_register('WE3') == 0):
             self.set_register(
@@ -85,12 +83,6 @@ class RegisterFile(CircuitComponent):
             if (self.get_register('A3') != 0):
                 self._inner_registers[self.get_register(
                     'A3')] = self.get_register('WD')
-
-            if (self.get_register('A3') == 1):
-                self.set_register('PC', self.get_register('WD'))
-
-    def enter_interrupt(self) -> None:
-        self.set_register('PC', self._inner_registers[Register.x5])
 
     def update(self):
         for wire_name, wire in self._wires.items():
