@@ -1,3 +1,4 @@
+import logging
 from typing import Dict, List, Tuple
 from circuit import CircuitComponent
 from enum import Enum
@@ -208,13 +209,15 @@ class IOHandler(CircuitComponent):
             # LD operation on 120 cell
             if (self.get_register('In') == IOMemoryCell.IN):
                 self.set_register('Out', self._dip_value)
-                print('Readed:', chr(self._dip_value))
+                logging.info(
+                    f'Readed: {chr(self._dip_value)}')
 
             # SW operation on 121 cell
             if (self.get_register('In') == IOMemoryCell.OUT):
                 self._saved_tokens.append(chr(self.get_register('WD')))
                 self._dip_value = self.get_register('WD')
-                print('Saved:', chr(self.get_register('WD')))
+                logging.info(
+                    f'Saved: {chr(self.get_register("WD"))}')
         else:
             # Address IO memory addresses without access signal
             if (self.get_register('In') in [120, 121]):

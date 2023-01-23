@@ -1,4 +1,5 @@
 from enum import Enum
+import logging
 import sys
 from typing import Dict, List
 from circuit import CircuitComponent, CircuitWire
@@ -10,6 +11,7 @@ from isa import read_code, Opcode
 class DataPath():
     def __init__(self, memory_size: int = 512) -> None:
         self.tick = 0
+        self.in_interrupt = False
 
         self.PC = Trigger()
         self.Adr_Src_Mux = MUX(1, 'AdrSrc')
@@ -148,23 +150,28 @@ class DataPath():
         self.Alu_Src_B_Mux.do_tick()
         self.ALU.do_tick()
 
-        self.__get_info()
+        self.__log_state()
 
     def enter_interrupt(self) -> None:
+        self.in_interrupt = True
         prev_pc = self.PC._state
         self.PC._state = self.Register_File._inner_registers[Register.x5]
         self.Register_File._inner_registers[Register.x4] = prev_pc
 
     def exit_interrupt(self) -> None:
+        self.in_interrupt = False
         self.PC._state = self.Register_File._inner_registers[Register.x4]
 
-    def __get_info(self) -> None:
-        print(str(self.tick), ')', sep='', end=' ')
-        for register_name, register_value in self.Register_File._inner_registers.items():
-            print('x' + str(register_name), register_value, sep=' : ', end=' | ')
-        print('\nAluSrcA :', self.ALU.get_register('srcA'), '|', 'ALUSrcB :', self.ALU.get_register(
-            'srcB'), '|', 'Result :', self.ALU.get_register('Result'), '|', sep=' ', end=' ')
-        print('PC :', self.PC._state)
+    def __log_state(self) -> None:
+        msg = (f'Tick №{self.tick})\t' +
+               f'PC: {self.PC._state}\t' +
+               f'Registers: {[x for x in  self.Register_File._inner_registers.values()]}\t\t' +
+               f'SrcA: {self.ALU.get_register("srcA")} | SrcB: {self.ALU.get_register("srcB")} | Result: {self.ALU.get_register("Result")}')
+
+        if (self.in_interrupt):
+            logging.warn(msg)
+        else:
+            logging.info(msg)
 
 
 class ControlUnit(CircuitComponent):
@@ -305,11 +312,11 @@ def simulation(program: List[int], text_start_adr: int = 0, is_interrupts_allowe
 
 
 def main(args):
-    # filename = 'examples/prob5.out'
-    # filename = 'examples/cat.out'
+    logging.basicConfig(level=logging.INFO,
+                        filename="py_log.log", filemode="w", format="%(asctime)s %(levelname)s %(message)s")
 
     filename, start_code, is_interrupts_enabled = [
-        'examples/cat.out', 0, True]
+        'examples/hello.out', 8, True]
 
     codes = read_code(filename)
 
