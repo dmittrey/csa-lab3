@@ -44,12 +44,13 @@ class Opcode(int, Enum):
     ADDI = 0
     BNE = 1
     REM = 2
-    LD = 3
-    SW = 4
-    JMP = 5
+    MUL = 3
+    LD = 4
+    SW = 5
+    JMP = 6
 
     # Операция остановки процессора
-    HALT = 6
+    HALT = 7
 
 
 class Term(namedtuple('Term', 'line pos symbol')):

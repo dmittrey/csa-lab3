@@ -203,11 +203,14 @@ class ControlUnit(CircuitComponent):
                          {'IRWrite': 0,
                           'ALUSrcA': 0, 'ALUSrcB': 1, 'ALUControl': 0},
                          {'PCWrite': 1}],
-            Opcode.REM: [{'IRWrite': 1, 'ImmSrc': 1, 'ALUControl': 2},
-                         {'WDSrc': 1, 'IRWrite': 0, 'RegWrite': 1,
+            Opcode.REM: [{'IRWrite': 1, 'ALUControl': 2},
+                         {'WDSrc': 1, 'RegWrite': 1,
                           'ALUSrcA': 1, 'ALUSrcB': 2, 'ALUControl': 0},
-                         {'RegWrite': 0,
-                          'PCWrite': 1}],
+                         {'PCWrite': 1}],
+            Opcode.MUL: [{'IRWrite': 1, 'ALUControl': 3},
+                         {'WDSrc': 1, 'RegWrite': 1,
+                          'ALUSrcA': 1, 'ALUSrcB': 2, 'ALUControl': 0},
+                         {'PCWrite': 1}],
             Opcode.LD: [{'IRWrite': 1, 'ALUSrcB': 1},
                         {'AdrSrc': 1, 'RegWrite': 1, 'IOOp': 1,
                          'ALUSrcA': 1, 'ALUSrcB': 2},
@@ -310,7 +313,7 @@ def simulation(program: List[int], text_start_adr: int = 0, is_interrupts_allowe
     data_path.Memory.load_program(program, 0)
     data_path.PC._state = text_start_adr
 
-    interrupt_program = [61467, 6]
+    interrupt_program = [61468, 7]
     # Interrupt vector address
     data_path.Register_File._inner_registers[5] = 200
     data_path.Memory.load_program(interrupt_program, 200)
@@ -324,12 +327,11 @@ def main(args):
     logging.basicConfig(level=logging.INFO,
                         filename="py_log.log", filemode="w", format="%(levelname)s %(message)s")
 
-    filename, start_code, is_interrupts_enabled = [
-        'examples/hello.out', 8, True]
+    filename, start_code, is_interrupts_enabled = args
 
     codes = read_code(filename)
 
-    simulation(codes, start_code, is_interrupts_enabled)
+    simulation(codes, int(start_code), bool(is_interrupts_enabled))
 
     pass
 
