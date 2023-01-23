@@ -27,17 +27,20 @@ Virtual machine and interpreter
 <sign> ::= "-" | "+"
 <comment> ::= ";" <digit_or_letter_list>
 
-<register> ::= "ZR" | "PC" | "ZF" | "TC" | x[3-6]
+<register> ::= "ZR" | "mtvec" | "mepc" | x[3-6]
 <immediate> ::= <digit_list>
 <shift> ::= <sign> <immediate> "(" <register> ")"
 
-<two_arg_op> ::= "mov" | "ld" | "sw" | "halt"
-<three_arg_op> ::= "addi" | "beq" | "rem"
+<no_args_op> ::= "halt"
+<one_args_op> ::= "jmp" | "jg" | "bne" | "beq"
+<two_args_op> ::= "ld" | "sw" | "cmp"
+<three_arg_op> ::= "addi" | "add" | "rem" | "mul"
 
+<one_args_instr> ::= <one_args_op> <identifier>
 <two_args_instr> ::= <two_arg_op> <register> <shift> | <two_arg_op> <register> <immediate>
 <three_args_instr> ::= <three_arg_op> <register> <register> <immediate> | <three_arg_op> <register> <register>
 
-<instruction> ::= <two_args_instr> <comment> | <three_args_instr> <comment> | <comment>
+<instruction> ::= <no_args_op> <comment> | <one_args_op> <comment> | <two_args_instr> <comment> | <three_args_instr> <comment> | <comment>
 <label> ::= <identifier>
 <program_line> ::= <label> <instruction> | <label> | <instruction>
 <program_line_list> ::= <program_line> | <program_line> <program_line_list>
@@ -66,7 +69,7 @@ Virtual machine and interpreter
 
 ## Работа с памятью
 
-- Память одна на команды и данные(согласно варианту). Память адресуется с помощью 16-битного адреса.
+- Память одна на команды и данные(согласно варианту). Память адресуется с помощью 17-битного адреса.
 - При попытке исполнить данные как инструкцию программа падает с ошибкой.
 - Scope в языке глобальный.
 
@@ -91,16 +94,16 @@ Virtual machine and interpreter
 
 ```text
      Memory (for data and instructions)
-+-------------------------------+
-|    ...                        |
-| 0x00: var1                    |
-| 0x20: var2                    |
-| 0x40: cmd1                    |
-| 0x60: cmd2                    |
-|    ...                        |
-| 0xFFBF interruption handler 0 |
-|    ...                        |
-+-------------------------------+
++----------------------------------+
+|    ...                           |
+| 0x00: var1                       |
+| 0x20: var2                       |
+| 0x40: cmd1                       |
+| 0x60: cmd2                       |
+|    ...                           |
+| mtvec_val interruption handler 0 |
+|    ...                           |
++----------------------------------+
 ```
 
 Инструкции и данные не перемешиваются(сначала данные, потом инструкции). Обработчик прерывания размещается в последних 4 машинных словах.
@@ -109,16 +112,16 @@ Virtual machine and interpreter
 
 ## Особенности процессора
 
-- Машинное слово -- 16 бит, знаковое.
+- Машинное слово -- 17 бит, знаковое.
 - Память данных и команд:
 
   - Адресуется через DR.
   - Адрес следующей команды хранится в аккумуляторе
   - Регистр x0 не может изменятся, там статично лежит значение 0.
 
-- Ввод-вывод - memory-mapped. Первые 32 ячейки зарезервированы под внешние устройства. Доступ осуществляется через запись номера устройства в DR. Данные будут лежать в аккумуляторе.
+- Ввод-вывод - memory-mapped. Ячейки 120, 121 зарезервированы под внешние устройства.
 - Program_counter - счетчик команд. Инкрементируется с каждой инструкцией, может быть перезаписан командой перехода.
-- Прерываний есть, состояние AC и PC сохраняется над обработчиком прерывания. После обработки прерывания работа программы возобновляется.
+- Прерываний есть, состояние PC, ALUResult, и состояние шины инструкции сохраняется . После обработки прерывания работа программы возобновляется.
 - Машина поддерживает только абсолютную адресацию.
 - Присутствует флаг Z (zero) для команд перехода.
 
@@ -126,12 +129,12 @@ Virtual machine and interpreter
 
 | №   | Тип команды | Название команды     | Назначение                      | 4 бит    | 3 бит    | 3 бит | 3 бит    | 4 бит  |
 | --- | ----------- | -------------------- | ------------------------------- | -------- | -------- | ----- | -------- | ------ |
-| 0   | Type I      | ADDI reg1, reg2, IMM | reg1 = reg2 + IMM               | IMM[6:3] | IMM[2:0] | reg2  | reg1     | OPCODE |
-| 1   | Type R      | ADD reg1, reg2, reg3 | reg1 = reg2 + reg3              |          | reg3     | reg2  | reg1     | OPCODE |
-| 2   | Type R      | REM reg1, reg2, reg3 | reg1 = reg2 % reg3              |          | reg3     | reg2  | reg1     | OPCODE |
-| 3   | Type R      | MUL reg1, reg2, reg3 | reg1 = reg2 \* reg3             |          | reg3     | reg2  | reg1     | OPCODE |
-| 4   | Type I      | LD reg1, IMM(reg2)   | reg1 = MEM(reg2 + IMM)          | IMM[6:3] | IMM[2:0] | reg2  | reg1     | OPCODE |
-| 5   | Type S/B    | SW reg1, IMM(reg2)   | MEM(reg2 + IMM) = reg1          | IMM[6:3] | reg1     | reg2  | IMM[2:0] | OPCODE |
+| 0   | Type B      | ADDI reg1, reg2, IMM | reg1 = reg2 + IMM               | IMM[6:3] | IMM[2:0] | reg2  | reg1     | OPCODE |
+| 1   | Type A      | ADD reg1, reg2, reg3 | reg1 = reg2 + reg3              |          | reg3     | reg2  | reg1     | OPCODE |
+| 2   | Type A      | REM reg1, reg2, reg3 | reg1 = reg2 % reg3              |          | reg3     | reg2  | reg1     | OPCODE |
+| 3   | Type A      | MUL reg1, reg2, reg3 | reg1 = reg2 \* reg3             |          | reg3     | reg2  | reg1     | OPCODE |
+| 4   | Type B      | LD reg1, IMM(reg2)   | reg1 = MEM(reg2 + IMM)          | IMM[6:3] | IMM[2:0] | reg2  | reg1     | OPCODE |
+| 5   | Type C      | SW reg1, IMM(reg2)   | MEM(reg2 + IMM) = reg1          | IMM[6:3] | reg1     | reg2  | IMM[2:0] | OPCODE |
 | 6   |             | CMP reg1, IMM(reg2)  | SET FLAGS (reg1 - reg2)         | IMM[6:3] | reg2     | reg1  | IMM[2:0] | OPCODE |
 | 7   |             | JMP IMM(reg1)        | PC = reg1 + IMM                 | IMM[6:3] | IMM[2:0] | reg1  |          | OPCODE |
 | 8   |             | JG IMM(reg1)         | PC = reg1 + IMM IF PositiveFlag | IMM[6:3] | IMM[2:0] | reg1  |          | OPCODE |
@@ -141,17 +144,13 @@ Virtual machine and interpreter
 
 ## Способ кодирования
 
-- **_Type R_**
-
-Инструкции типа R используют три регистра
-в качестве операндов: два регистра-источника
-и один регистр-назначение.
+- **_Type A_**
 
 | 4 бит(13:16) | 3 бит(10:12) | 3 бит(7:9) | 3 бит(4:6) | 4 бит(0:3) |
 | ------------ | ------------ | ---------- | ---------- | ---------- |
 | IMM[3:0]     | RS2          | RS1        | RD         | OPCODE     |
 
-- **_Type I_**
+- **_Type B_**
 
 Команды типа I (immediate, непосредственные)
 используют два регистровых операнда и один
@@ -161,7 +160,7 @@ Virtual machine and interpreter
 | ------------ | ------------ | ---------- | ---------- | ---------- |
 | IMM[6:3]     | IMM[2:0]     | RS         | RD         | OPCODE     |
 
-- **_Type S/B_**
+- **_Type C_**
 
 Инструкции типа S/B (store/branch, хранение слова в памяти / условный пе- реход) используют два регистровых операнда и один непосредственный операнд (константу)
 
