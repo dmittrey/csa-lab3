@@ -149,8 +149,18 @@ class DataPath():
         self.Alu_Src_B_Mux.do_tick()
         self.ALU.do_tick()
 
+        self.__get_info()
+
     def enter_interrupt(self) -> None:
         self.Register_File.enter_interrupt()
+
+    def __get_info(self) -> None:
+        print(str(self.tick), ')', sep='', end=' ')
+        for register_name, register_value in self.Register_File._inner_registers.items():
+            print('x' + str(register_name), register_value, sep=' : ', end=' | ')
+        print('\nAluSrcA :', self.ALU.get_register('srcA'), '|', 'ALUSrcB :', self.ALU.get_register(
+            'srcB'), '|', 'Result :', self.ALU.get_register('Result'), '|', sep=' ', end=' ')
+        print('PC :', self.PC._state)
 
 
 class ControlUnit(CircuitComponent):
@@ -249,10 +259,10 @@ class ControlUnit(CircuitComponent):
                 self.set_register(register_name, 0)
 
     def _do_tick(self, data_path: DataPath, new_state: Dict[str, int] = {}) -> None:
-        self.update()
-        self.__handle_interrupt(data_path)
         self._change_valves(new_state)
         data_path.do_tick()
+        self.update()
+        self.__handle_interrupt(data_path)
 
     def __handle_interrupt(self, data_path: DataPath) -> None:
         if (self.__is_interrupts_allowed and (not self._in_interrupt_context)
@@ -270,14 +280,34 @@ class ControlUnit(CircuitComponent):
         return self._instruction_transitions.get(op)
 
 
+def simulation(program: List[int], text_start_adr: int = 0, memory_size: int = 512,
+               is_interrupts_allowed: bool = False) -> None:
+    control_unit = ControlUnit(is_interrupts_allowed)
+    data_path = DataPath(memory_size)
+
+    data_path.Memory.load_program(program, 0)
+    data_path.PC._state = text_start_adr
+
+    interrupt_program = []
+    # Interrupt vector address
+    data_path.Register_File._inner_registers[5] = 200
+    data_path.Memory.load_program(interrupt_program, 200)
+    # Interrupt buffer
+    data_path.Register_File._inner_registers[7] = 256
+
+    control_unit.start(data_path)
+
+
 def main(args):
     # filename = 'examples/prob5.out'
     # filename = 'examples/cat.out'
 
     filename, start_code, is_interrupts_enabled = [
-        'examples/hello.out', 8, True]
+        'examples/cat.out', 0, True]
 
     codes = read_code(filename)
+
+    simulation(codes)
 
     pass
 
