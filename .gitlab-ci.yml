@@ -8,6 +8,7 @@ test-job: # This job runs in the test stage.
     entrypoint: [""]
   before_script:
     - pip install pytest-golden
+    - pip install numpy
   script:
     - echo "Running unit tests..."
     - python3-coverage run -m pytest --verbose
