@@ -1,40 +1,8 @@
-"""
-Типы данных для представления и сериализации/десериализации машинного кода.
-
-Особенности:
-
-- Машинный код сериализуется в список JSON.
-- Один элемент списка -- одна инструкция.
-- Индекс списка -- адрес инструкции.
-
-Пример:
-
-```json
-[
-    {
-        "opcode": "jz",
-        "arg": 5,
-        "term": [
-            1,
-            5,
-            "]"
-        ]
-    },
-]
-```
-
-где:
-
-- `opcode` -- строка с кодом операции;
-- `arg` -- аргумент инструкции (если требуется);
-- `term` -- информация о связанном месте в исходном коде (если есть).
-"""
-
 import json
 from collections import namedtuple
 from enum import Enum
 from typing import Dict, List
-from numpy import int16, int8, bitwise_and, binary_repr
+from numpy import int16, binary_repr
 
 
 class Opcode(int, Enum):
@@ -42,15 +10,19 @@ class Opcode(int, Enum):
 
     # Коды операций, представленных на уровне языка.
     ADDI = 0
-    BNE = 1
+    ADD = 1
     REM = 2
     MUL = 3
     LD = 4
     SW = 5
-    JMP = 6
+    CMP = 6
+    JMP = 7
+    JG = 8
+    BNE = 9
+    BEQ = 10
 
     # Операция остановки процессора
-    HALT = 7
+    HALT = 11
 
 
 class Term(namedtuple('Term', 'line pos symbol')):
