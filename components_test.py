@@ -11,7 +11,7 @@ class TriggerTests(unittest.TestCase):
         trigger.set_register('EN', 1)
         trigger.do_tick()
 
-        self.assertEqual(trigger._state, 5)
+        self.assertEqual(trigger.state, 5)
 
     def test_DoTickWithoutEnSignal_NotGetStateFromInputValue(self):
         trigger = Trigger()
@@ -20,12 +20,12 @@ class TriggerTests(unittest.TestCase):
         trigger.set_register('EN', 0)
         trigger.do_tick()
 
-        self.assertEqual(trigger._state, 0)
+        self.assertEqual(trigger.state, 0)
 
     def test_DoTick_GetOutputValueFromState(self):
         trigger = Trigger()
 
-        trigger._state = 5
+        trigger.state = 5
         trigger.do_tick()
 
         self.assertEqual(trigger.get_register('Out'), 5)

@@ -109,7 +109,7 @@ class InstructionPerformTests(unittest.TestCase):
         data_path = DataPath()
 
         # (0000 101)5 (010)2 (111)7 (0000)ADDI
-        data_path.IR._state = 5488
+        data_path.IR.state = 5488
         data_path.ALU.set_register('Result', 10)
 
         control_unit.attach_wires(data_path.control_wires)
@@ -132,7 +132,7 @@ class InstructionPerformTests(unittest.TestCase):
         control_unit.attach_wires(data_path.control_wires)
         control_unit._do_tick(data_path, tick_valves)
 
-        self.assertEquals(data_path.PC._state, 2)
+        self.assertEquals(data_path.PC.state, 2)
 
 
 if __name__ == '__main__':

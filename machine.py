@@ -180,7 +180,7 @@ class DataPath():
         self.IR._state = self.Memory._memory[257]
 
     def __log_state(self) -> None:
-        msg = (f'Tick {self.tick}\tPC: {self.PC._state}\tRegisters: {[x for x in  self.Register_File._inner_registers.values()]}\tSrcA: {self.ALU.get_register("srcA")} | SrcB: {self.ALU.get_register("srcB")} | Result: {self.ALU.get_register("Result")}\tA1: {self.Register_File.get_register("A1")} | A2: {self.Register_File.get_register("A2")} | A3: {self.Register_File.get_register("A3")}PF: {self.ALU.get_register("PositiveFlag")} | ZF: {self.ALU.get_register("ZeroFlag")}')
+        msg = (f'Tick {self.tick}\tPC: {self.PC.state}\tRegisters: {[x for x in  self.Register_File._inner_registers.values()]}\tSrcA: {self.ALU.get_register("srcA")} | SrcB: {self.ALU.get_register("srcB")} | Result: {self.ALU.get_register("Result")}\tA1: {self.Register_File.get_register("A1")} | A2: {self.Register_File.get_register("A2")} | A3: {self.Register_File.get_register("A3")}PF: {self.ALU.get_register("PositiveFlag")} | ZF: {self.ALU.get_register("ZeroFlag")}')
         if (self.in_interrupt):
             logging.warning('(Int)' + msg)
         else:

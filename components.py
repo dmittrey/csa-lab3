@@ -7,7 +7,7 @@ from numpy import binary_repr
 
 class Trigger(CircuitComponent):
     def __init__(self, state: int = 0) -> None:
-        self._state: int = state
+        self.state: int = state
 
         super().__init__(['In', 'Out', 'EN'])
 
@@ -15,10 +15,10 @@ class Trigger(CircuitComponent):
         super().do_tick()
 
         if (self.get_register('EN') != 0):
-            self._state = self.get_register('In')
-            logging.debug(f'Trigger {__name__} change state to {self._state}')
+            self.state = self.get_register('In')
+            logging.debug(f'Trigger {__name__} change state to {self.state}')
 
-        self.set_register('Out', self._state)
+        self.set_register('Out', self.state)
 
 
 class Memory(CircuitComponent):
