@@ -4,7 +4,7 @@
 # pylint: disable=line-too-long               # строки с ожидаемым выводом
 
 import logging
-from typing import Dict, List
+from typing import Dict, List, Tuple
 from enum import Enum
 from numpy import binary_repr
 from circuit import CircuitComponent
@@ -200,9 +200,12 @@ class IOMemoryCell(int, Enum):
 class IOHandler(CircuitComponent):
     """Class to emulate IOC and connected DIP"""
 
-    def __init__(self) -> None:
-        self.__interrupt_tokens = [
-            (1, 'h'), (10, 'e'), (20, 'l'), (25, 'l'), (100, 'o')]
+    def __init__(self, int_tokens: List[Tuple[int, str]] = None) -> None:
+        if int_tokens is None:
+            self.__interrupt_tokens = [
+                (1, 'h'), (10, 'e'), (20, 'l'), (25, 'l'), (100, 'o')]
+        else:
+            self.__interrupt_tokens = int_tokens
 
         self.dip_value = 0
         self.saved_tokens = []

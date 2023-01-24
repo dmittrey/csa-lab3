@@ -347,15 +347,15 @@ class IOHandlerTests(unittest.TestCase):
     """
 
     def test_DoTickWithInterruptToken_ActivateIOIntRegisterAndFillDip(self):
-        io_handler = IOHandler()
+        io_handler = IOHandler([(1, 'a')])
 
         io_handler.do_tick(1)
 
         self.assertEqual(io_handler.get_register('IOInt'), 1)
-        self.assertEqual(io_handler.dip_value, ord('h'))
+        self.assertEqual(io_handler.dip_value, ord('a'))
 
     def test_DoTickWithActiveIOOpFromReadMemoryCell_SetDipValueToOutRegister(self):
-        io_handler = IOHandler()
+        io_handler = IOHandler([])
         io_handler.dip_value = ord('a')
         io_handler.set_register('IOOp', 1)
         io_handler.set_register('In', IOMemoryCell.IN)
@@ -368,7 +368,7 @@ class IOHandlerTests(unittest.TestCase):
         self.assertEqual(io_handler.dip_value, ord('a'))
 
     def test_DoTickWithActiveIOOpFromWriteMemoryCell_SetWDRegisterValueToDipValue(self):
-        io_handler = IOHandler()
+        io_handler = IOHandler([])
         io_handler.dip_value = ord('a')
         io_handler.set_register('IOOp', 1)
         io_handler.set_register('In', IOMemoryCell.OUT)
@@ -381,7 +381,7 @@ class IOHandlerTests(unittest.TestCase):
         self.assertEqual(io_handler.dip_value, ord('b'))
 
     def test_DoTickWithoutActiveIOOpFromReadMemoryCell_ThrowsAssert(self):
-        io_handler = IOHandler()
+        io_handler = IOHandler([])
         io_handler.dip_value = ord('a')
         io_handler.set_register('IOOp', 0)
         io_handler.set_register('In', IOMemoryCell.IN)
@@ -391,7 +391,7 @@ class IOHandlerTests(unittest.TestCase):
             io_handler.do_tick(1)
 
     def test_DoTickWithoutActiveIOOpFromWriteMemoryCell_ThrowsAssert(self):
-        io_handler = IOHandler()
+        io_handler = IOHandler([])
         io_handler.dip_value = ord('a')
         io_handler.set_register('IOOp', 0)
         io_handler.set_register('In', IOMemoryCell.OUT)
@@ -401,7 +401,7 @@ class IOHandlerTests(unittest.TestCase):
             io_handler.do_tick(1)
 
     def test_WriteTwoValues_BufferIncludeTwoChars(self):
-        io_handler = IOHandler()
+        io_handler = IOHandler([])
         io_handler.set_register('IOOp', 1)
         io_handler.set_register('In', IOMemoryCell.OUT)
         io_handler.set_register('WD', ord('b'))
