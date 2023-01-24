@@ -1,47 +1,47 @@
+# pylint: disable=missing-module-docstring    # чтобы не быть Капитаном Очевидностью
+# pylint: disable=missing-class-docstring     # чтобы не быть Капитаном Очевидностью
+# pylint: disable=missing-function-docstring  # чтобы не быть Капитаном Очевидностью
+# pylint: disable=line-too-long               # строки с ожидаемым выводом
+
 from typing import Dict, List
 
 
 class CircuitWire():
     def __init__(self, val: int = 0) -> None:
-        self._value = val
-        pass
+        self.value = val
 
     def set(self, value: int) -> None:
-        self._value = value
-        pass
+        self.value = value
 
     def get(self) -> int:
-        return self._value
+        return self.value
 
 
 class CircuitComponent():
     def __init__(self, registers: List[str]) -> None:
-        self._registers: Dict[str, int] = {i: 0 for i in registers}
+        self.registers: Dict[str, int] = {i: 0 for i in registers}
 
-        self._wires: Dict[str, CircuitWire] = dict()
+        self._wires: Dict[str, CircuitWire] = {}
 
-    def do_tick(self, tick_num: int = 0) -> None:
+    def do_tick(self) -> None:
         self.update()
-        pass
 
     def attach(self, register_name: str, wire: CircuitWire) -> None:
-        assert register_name in self._registers.keys(), 'Указанный регистр не существует'
+        assert register_name in self.registers.keys(), 'Указанный регистр не существует'
         assert wire is not None, 'Несуществующий провод данных'
         self._wires[register_name] = wire
-        pass
 
     def set_register(self, name: str, value: int):
-        assert name in self._registers.keys(), 'Указанный регистр не существует'
-        self._registers[name] = value
-        if (self._wires.get(name) is not None):
+        assert name in self.registers.keys(), 'Указанный регистр не существует'
+        self.registers[name] = value
+        if self._wires.get(name) is not None:
             self._wires[name].set(value)
-        pass
 
     def get_register(self, name: str):
-        assert name in self._registers.keys(), 'Указанный регистр не существует'
+        assert name in self.registers.keys(), 'Указанный регистр не существует'
 
-        return self._registers[name]
+        return self.registers[name]
 
     def update(self):
         for wire_name, wire in self._wires.items():
-            self._registers[wire_name] = wire.get()
+            self.registers[wire_name] = wire.get()

@@ -1,3 +1,8 @@
+# pylint: disable=missing-module-docstring     # чтобы не быть Капитаном Очевидностью
+# pylint: disable=missing-class-docstring     # чтобы не быть Капитаном Очевидностью
+# pylint: disable=missing-function-docstring  # чтобы не быть Капитаном Очевидностью
+# pylint: disable=line-too-long               # строки с ожидаемым выводом
+
 import json
 from collections import namedtuple
 from enum import Enum
@@ -38,7 +43,7 @@ class Term(namedtuple('Term', 'line pos symbol')):
 
 def write_logs(filename, instrs: List[str], terms: List[Term]):
     """Записать машинный код в файл."""
-    logs: List[Dict] = list()
+    logs: List[Dict] = []
 
     for num in range(len(instrs)):
         logs.append({
@@ -65,7 +70,7 @@ def read_code(filename: str) -> List[int16]:
     with open(filename, encoding="utf-8") as file:
         while True:
             code_str = file.read(17)
-            if (code_str == ''):
+            if code_str == '':
                 break
 
             codes.append(int(code_str.encode(), 2))

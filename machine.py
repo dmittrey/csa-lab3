@@ -1,4 +1,8 @@
-from enum import Enum
+# pylint: disable=missing-module-docstring     # чтобы не быть Капитаном Очевидностью
+# pylint: disable=missing-class-docstring     # чтобы не быть Капитаном Очевидностью
+# pylint: disable=missing-function-docstring  # чтобы не быть Капитаном Очевидностью
+# pylint: disable=line-too-long               # строки с ожидаемым выводом
+
 import logging
 import sys
 from typing import Dict, List
@@ -161,28 +165,28 @@ class DataPath():
     def enter_interrupt(self) -> None:
         self.in_interrupt = True
         # Save PC
-        prev_pc = self.PC._state
-        self.PC._state = self.Register_File._inner_registers[Register.x6]
-        self.Register_File._inner_registers[Register.x7] = prev_pc
+        prev_pc = self.PC.state
+        self.PC.state = self.Register_File.inner_registers[Register.x6]
+        self.Register_File.inner_registers[Register.x7] = prev_pc
         # Save ALU Result
-        self.Memory._memory[256] = self.ALU.get_register('Result')
+        self.Memory.memory[256] = self.ALU.get_register('Result')
         # Save current command
-        self.Memory._memory[257] = self.IR._state
+        self.Memory.memory[257] = self.IR.state
 
     def exit_interrupt(self) -> None:
         self.in_interrupt = False
         # Restore PC
-        self.PC._state = self.Register_File._inner_registers[Register.x7]
+        self.PC.state = self.Register_File.inner_registers[Register.x7]
         # Restore ALU Result
         self.ALU.set_register(
-            'Result', self.Memory._memory[256])
+            'Result', self.Memory.memory[256])
         # Restore prev instr
-        self.IR._state = self.Memory._memory[257]
+        self.IR.state = self.Memory.memory[257]
 
     def __log_state(self) -> None:
-        msg = (f'Tick {self.tick}\tPC: {self.PC.state}\tRegisters: {[x for x in  self.Register_File._inner_registers.values()]}\tSrcA: {self.ALU.get_register("srcA")} | SrcB: {self.ALU.get_register("srcB")} | Result: {self.ALU.get_register("Result")}\tA1: {self.Register_File.get_register("A1")} | A2: {self.Register_File.get_register("A2")} | A3: {self.Register_File.get_register("A3")}PF: {self.ALU.get_register("PositiveFlag")} | ZF: {self.ALU.get_register("ZeroFlag")}')
-        if (self.in_interrupt):
-            logging.warning('(Int)' + msg)
+        msg = (f'Tick {self.tick}\tPC: {self.PC.state}\tRegisters: {list(self.Register_File.inner_registers.values())}\tSrcA: {self.ALU.get_register("srcA")} | SrcB: {self.ALU.get_register("srcB")} | Result: {self.ALU.get_register("Result")}\tA1: {self.Register_File.get_register("A1")} | A2: {self.Register_File.get_register("A2")} | A3: {self.Register_File.get_register("A3")}PF: {self.ALU.get_register("PositiveFlag")} | ZF: {self.ALU.get_register("ZeroFlag")}')
+        if self.in_interrupt:
+            logging.warning('(Int) %s', msg)
         else:
             logging.info(msg)
 
@@ -192,7 +196,7 @@ class ControlUnit(CircuitComponent):
     def __init__(self, is_interrupts_allowed: bool = False) -> None:
         self.__is_interrupts_allowed: bool = is_interrupts_allowed
 
-        self._in_interrupt_context: bool = False
+        self.in_interrupt_context: bool = False
         self._instruction_transitions: Dict[Opcode, List[Dict[str, int]]] = {
             Opcode.ADDI: [{'IRWrite': 1, 'ALUSrcB': 1, 'EF': 1},
                           {'WDSrc': 1, 'RegWrite': 1,
@@ -232,16 +236,16 @@ class ControlUnit(CircuitComponent):
         self.attach_wires(data_path.control_wires)
 
         while True:
-            self._do_tick(data_path, {'IRWrite': 1})
+            self.change_state(data_path, {'IRWrite': 1})
 
             opcode = self.get_register('OPCODE')
-            if (opcode == Opcode.HALT):
+            if opcode == Opcode.HALT:
                 break
 
             op_transitions = self.__get_op_transitions(opcode)
-            if (op_transitions is not None):
+            if op_transitions is not None:
                 for valves_state in op_transitions:
-                    self._do_tick(data_path, valves_state)
+                    self.change_state(data_path, valves_state)
             else:
                 raise AttributeError('Unsupported opcode: ' + str(opcode))
 
@@ -249,49 +253,48 @@ class ControlUnit(CircuitComponent):
         for wire_name, wire in self._wires.items():
             match wire_name:
                 case 'OPCODE':
-                    self._registers[wire_name] = wire.get() & 15
-                    pass
+                    self.registers[wire_name] = wire.get() & 15
                 case _:
-                    self._registers[wire_name] = wire.get()
-                    pass
+                    self.registers[wire_name] = wire.get()
 
     def attach_wires(self, wires: Dict[str, CircuitWire]):
         for wire_name, wire in wires.items():
             self.attach(wire_name, wire)
 
-    def _save_context(self) -> Dict[str, int]:
+    def save_context(self) -> Dict[str, int]:
         # Set interrupt mode and receive INT signal
-        self._in_interrupt_context = True
+        self.in_interrupt_context = True
         self.set_register('IOInt', 0)
 
         # Save control unit state
-        return self._registers.copy()
+        return self.registers.copy()
 
-    def _restore_context(self, registers: Dict[str, int]) -> None:
+    def restore_context(self, registers: Dict[str, int]) -> None:
         # Restore state after handling interrupt
-        self._registers = registers
-        self._in_interrupt_context = False
+        self.registers = registers
+        self.in_interrupt_context = False
 
-    def _change_valves(self, new_state: Dict[str, int]) -> None:
-        for register_name in self._registers.keys():
+    def _change_valves(self, new_state: Dict[str, int] | None) -> None:
+        for register_name in self.registers.keys():
             # Volatile registers
-            if (register_name in ['OPCODE', 'ZeroFlag', 'PositiveFlag', 'IOInt']):
+            if register_name in ['OPCODE', 'ZeroFlag', 'PositiveFlag', 'IOInt']:
                 continue
-            elif (new_state.get(register_name) is not None):
+
+            if new_state.get(register_name) is not None:
                 self.set_register(register_name, new_state[register_name])
             else:
                 # Set to zero all unused registers to easily handle instructions
                 self.set_register(register_name, 0)
 
-    def _do_tick(self, data_path: DataPath, new_state: Dict[str, int] = {}) -> None:
+    def change_state(self, data_path: DataPath, new_state: Dict[str, int] = None) -> None:
         self._change_valves(new_state)
         data_path.do_tick()
         self.update()
         self.__handle_interrupt(data_path)
 
     def __handle_interrupt(self, data_path: DataPath) -> None:
-        if (self.__is_interrupts_allowed and (not self._in_interrupt_context) and self.get_register('IOInt') == 1):
-            registers = self._save_context()
+        if (self.__is_interrupts_allowed and (not self.in_interrupt_context) and self.get_register('IOInt') == 1):
+            registers = self.save_context()
 
             # Goto interrupt vector
             data_path.enter_interrupt()
@@ -300,29 +303,25 @@ class ControlUnit(CircuitComponent):
             # Back to prev PC
             data_path.exit_interrupt()
 
-            self._restore_context(registers)
+            self.restore_context(registers)
 
     def __get_op_transitions(self, op: int) -> None | List[Dict[str, int]]:
         skip_transitions = [{'ALUSrcA': 1, 'ALUSrcB': 2, 'ALUControl': 0},
                             {'PCWrite': 1}]
         match op:
             case Opcode.JG:
-                if (self.get_register('PositiveFlag') == 1):
+                if self.get_register('PositiveFlag') == 1:
                     return self._instruction_transitions.get(Opcode.JMP)
-                else:
-                    return skip_transitions
             case Opcode.BNE:
-                if (self.get_register('ZeroFlag') != 1):
+                if self.get_register('ZeroFlag') != 1:
                     return self._instruction_transitions.get(Opcode.JMP)
-                else:
-                    return skip_transitions
             case Opcode.BEQ:
-                if (self.get_register('ZeroFlag') == 1):
+                if self.get_register('ZeroFlag') == 1:
                     return self._instruction_transitions.get(Opcode.JMP)
-                else:
-                    return skip_transitions
             case _:
                 return self._instruction_transitions.get(op)
+
+        return skip_transitions
 
 
 def simulation(program: List[int], text_start_adr: int = 0, is_interrupts_allowed: bool = False,
@@ -331,11 +330,11 @@ def simulation(program: List[int], text_start_adr: int = 0, is_interrupts_allowe
     data_path = DataPath(memory_size)
 
     data_path.Memory.load_program(program, 0)
-    data_path.PC._state = text_start_adr
+    data_path.PC.state = text_start_adr
 
     interrupt_program = [122900, 11]
     # Interrupt vector address
-    data_path.Register_File._inner_registers[6] = 200
+    data_path.Register_File.inner_registers[6] = 200
     data_path.Memory.load_program(interrupt_program, 200)
     # Interrupt buffer
     # data_path.Register_File._inner_registers[7] = 256
@@ -352,8 +351,6 @@ def main(args):
     codes = read_code(filename)
 
     simulation(codes, int(start_code), is_interrupts_enabled == 'True')
-
-    pass
 
 
 if __name__ == '__main__':

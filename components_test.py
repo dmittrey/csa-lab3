@@ -1,5 +1,10 @@
+# pylint: disable=missing-module-docstring     # чтобы не быть Капитаном Очевидностью
+# pylint: disable=missing-class-docstring     # чтобы не быть Капитаном Очевидностью
+# pylint: disable=missing-function-docstring  # чтобы не быть Капитаном Очевидностью
+# pylint: disable=line-too-long               # строки с ожидаемым выводом
+
 import unittest
-from components import Register, SignExpand, Trigger, Memory, RegisterFile, ALU, MUX, IOHandler, IOMemoryCell
+from components import SignExpand, Trigger, Memory, RegisterFile, ALU, MUX, IOHandler, IOMemoryCell
 from circuit import CircuitWire
 
 
@@ -61,11 +66,11 @@ class MemoryTests(unittest.TestCase):
 
         memory.do_tick()
 
-        self.assertEqual(memory._memory[3], 5)
+        self.assertEqual(memory.memory[3], 5)
 
     def test_DoTickWithoutWeSignal_GetRdValueFromMemory(self):
         memory = Memory(5)
-        memory._memory[3] = 5
+        memory.memory[3] = 5
         memory.set_register('A', 3)
         memory.set_register('WE', 0)
 
@@ -79,7 +84,7 @@ class MemoryTests(unittest.TestCase):
 
         memory.load_program(program, 0)
 
-        self.assertEqual(memory._memory[0], 6)
+        self.assertEqual(memory.memory[0], 6)
 
     def test_LoadSameProgramOutOfMemory_ThrowsAssert(self):
         memory = Memory(5)
@@ -113,9 +118,9 @@ class RegisterFileTests(unittest.TestCase):
     def test_DoTickWithoutWe3Signal_GetRDValuesFromRegisters(self):
         register_file = RegisterFile()
         register_file.set_register('A1', 7)
-        register_file._inner_registers[7] = 20
+        register_file.inner_registers[7] = 20
         register_file.set_register('A2', 5)
-        register_file._inner_registers[5] = 10
+        register_file.inner_registers[5] = 10
 
         register_file.do_tick()
 
@@ -130,7 +135,7 @@ class RegisterFileTests(unittest.TestCase):
 
         register_file.do_tick()
 
-        self.assertEqual(register_file._inner_registers[0], 0)
+        self.assertEqual(register_file.inner_registers[0], 0)
 
     def test_WriteInNonZeroRegister_Calculate(self):
         register_file = RegisterFile()
@@ -140,7 +145,7 @@ class RegisterFileTests(unittest.TestCase):
 
         register_file.do_tick()
 
-        self.assertEqual(register_file._inner_registers[3], 5)
+        self.assertEqual(register_file.inner_registers[3], 5)
 
 
 class ALUTests(unittest.TestCase):
@@ -342,16 +347,16 @@ class IOHandlerTests(unittest.TestCase):
     """
 
     def test_DoTickWithInterruptToken_ActivateIOIntRegisterAndFillDip(self):
-        io_handler = IOHandler([(1, 'a')])
+        io_handler = IOHandler()
 
         io_handler.do_tick(1)
 
         self.assertEqual(io_handler.get_register('IOInt'), 1)
-        self.assertEqual(io_handler._dip_value, ord('a'))
+        self.assertEqual(io_handler.dip_value, ord('h'))
 
     def test_DoTickWithActiveIOOpFromReadMemoryCell_SetDipValueToOutRegister(self):
-        io_handler = IOHandler([])
-        io_handler._dip_value = ord('a')
+        io_handler = IOHandler()
+        io_handler.dip_value = ord('a')
         io_handler.set_register('IOOp', 1)
         io_handler.set_register('In', IOMemoryCell.IN)
         io_handler.set_register('WD', ord('b'))
@@ -360,11 +365,11 @@ class IOHandlerTests(unittest.TestCase):
 
         self.assertEqual(io_handler.get_register('IOInt'), 0)
         self.assertEqual(io_handler.get_register('Out'), ord('a'))
-        self.assertEqual(io_handler._dip_value, ord('a'))
+        self.assertEqual(io_handler.dip_value, ord('a'))
 
     def test_DoTickWithActiveIOOpFromWriteMemoryCell_SetWDRegisterValueToDipValue(self):
-        io_handler = IOHandler([])
-        io_handler._dip_value = ord('a')
+        io_handler = IOHandler()
+        io_handler.dip_value = ord('a')
         io_handler.set_register('IOOp', 1)
         io_handler.set_register('In', IOMemoryCell.OUT)
         io_handler.set_register('WD', ord('b'))
@@ -373,11 +378,11 @@ class IOHandlerTests(unittest.TestCase):
 
         self.assertEqual(io_handler.get_register('IOInt'), 0)
         self.assertEqual(io_handler.get_register('Out'), 0)
-        self.assertEqual(io_handler._dip_value, ord('b'))
+        self.assertEqual(io_handler.dip_value, ord('b'))
 
     def test_DoTickWithoutActiveIOOpFromReadMemoryCell_ThrowsAssert(self):
-        io_handler = IOHandler([])
-        io_handler._dip_value = ord('a')
+        io_handler = IOHandler()
+        io_handler.dip_value = ord('a')
         io_handler.set_register('IOOp', 0)
         io_handler.set_register('In', IOMemoryCell.IN)
         io_handler.set_register('WD', ord('b'))
@@ -386,8 +391,8 @@ class IOHandlerTests(unittest.TestCase):
             io_handler.do_tick(1)
 
     def test_DoTickWithoutActiveIOOpFromWriteMemoryCell_ThrowsAssert(self):
-        io_handler = IOHandler([])
-        io_handler._dip_value = ord('a')
+        io_handler = IOHandler()
+        io_handler.dip_value = ord('a')
         io_handler.set_register('IOOp', 0)
         io_handler.set_register('In', IOMemoryCell.OUT)
         io_handler.set_register('WD', ord('b'))
@@ -396,7 +401,7 @@ class IOHandlerTests(unittest.TestCase):
             io_handler.do_tick(1)
 
     def test_WriteTwoValues_BufferIncludeTwoChars(self):
-        io_handler = IOHandler([])
+        io_handler = IOHandler()
         io_handler.set_register('IOOp', 1)
         io_handler.set_register('In', IOMemoryCell.OUT)
         io_handler.set_register('WD', ord('b'))
@@ -404,7 +409,7 @@ class IOHandlerTests(unittest.TestCase):
         io_handler.do_tick(1)
         io_handler.do_tick(2)
 
-        self.assertEqual(io_handler._saved_tokens, ['b', 'b'])
+        self.assertEqual(io_handler.saved_tokens, ['b', 'b'])
 
 
 if __name__ == '__main__':

@@ -1,3 +1,8 @@
+# pylint: disable=missing-module-docstring    # чтобы не быть Капитаном Очевидностью
+# pylint: disable=missing-class-docstring     # чтобы не быть Капитаном Очевидностью
+# pylint: disable=missing-function-docstring  # чтобы не быть Капитаном Очевидностью
+# pylint: disable=line-too-long               # строки с ожидаемым выводом
+
 import unittest
 from circuit import CircuitComponent, CircuitWire
 
@@ -8,14 +13,14 @@ class CircuitWireTests(unittest.TestCase):
 
         wire.set(0)
 
-        self.assertEqual(wire._value, 0)
+        self.assertEqual(wire.value, 0)
 
     def test_SetPositiveValue_Calculated(self):
         wire = CircuitWire()
 
         wire.set(5)
 
-        self.assertEqual(wire._value, 5)
+        self.assertEqual(wire.value, 5)
 
     def test_GetValueAfterInitialize_ReturnZero(self):
         wire = CircuitWire()
@@ -25,7 +30,7 @@ class CircuitWireTests(unittest.TestCase):
     def test_GetValueAfterAssignment_ReturnAssignment(self):
         wire = CircuitWire()
 
-        wire._value = 5
+        wire.value = 5
 
         self.assertEqual(wire.get(), 5)
 
@@ -62,7 +67,7 @@ class CircuitComponentTests(unittest.TestCase):
 
         component.set_register('In', 5)
 
-        self.assertEqual(component._registers['In'], 5)
+        self.assertEqual(component.registers['In'], 5)
 
     def test_SetDefinedConnectedRegister_CalculateAndFillWire(self):
         component = CircuitComponent(['In'])
@@ -71,7 +76,7 @@ class CircuitComponentTests(unittest.TestCase):
         component.attach('In', wire)
         component.set_register('In', 5)
 
-        self.assertEqual(component._registers['In'], 5)
+        self.assertEqual(component.registers['In'], 5)
         self.assertEqual(wire.get(), 5)
 
     def test_GetUndefinedRegister_AssertThrown(self):
@@ -83,7 +88,7 @@ class CircuitComponentTests(unittest.TestCase):
     def test_GetDefinedRegister_Calculate(self):
         component = CircuitComponent(['In'])
 
-        component._registers['In'] = 5
+        component.registers['In'] = 5
 
         self.assertEqual(component.get_register('In'), 5)
 
