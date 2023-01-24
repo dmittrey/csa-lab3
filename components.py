@@ -211,7 +211,10 @@ class IOHandler(CircuitComponent):
 
         super().__init__(['In', 'WD', 'Out', 'IOOp', 'IOInt'])
 
-    def do_tick(self, tick_num: int = 0) -> None:
+    def do_tick(self) -> None:
+        self.do_tick(0)
+
+    def do_tick(self, tick_num: int) -> None:
         super().do_tick()
 
         if self.get_register('IOOp') == 1:

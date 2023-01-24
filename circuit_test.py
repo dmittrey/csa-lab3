@@ -56,6 +56,8 @@ class CircuitComponentTests(unittest.TestCase):
 
         component.attach('In', wire)
 
+        self.assertEqual(component.get_register('In'), 0)
+
     def test_SetUndefinedRegister_AssertThrown(self):
         component = CircuitComponent([])
 
