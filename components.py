@@ -200,6 +200,7 @@ class IOHandler(CircuitComponent):
     """Class to emulate IOC and connected DIP"""
 
     def __init__(self, int_tokens: List[Tuple[int, str]] = None) -> None:
+        self.tick_count = 0
         if int_tokens is None:
             self.__interrupt_tokens = [
                 (1, 'h'), (10, 'e'), (20, 'l'), (25, 'l'), (100, 'o')]
@@ -212,10 +213,8 @@ class IOHandler(CircuitComponent):
         super().__init__(['In', 'WD', 'Out', 'IOOp', 'IOInt'])
 
     def do_tick(self) -> None:
-        self.do_tick(0)
-
-    def do_tick(self, tick_num: int) -> None:
         super().do_tick()
+        self.tick_count += 1
 
         if self.get_register('IOOp') == 1:
             # LD operation on 120 cell
@@ -235,8 +234,8 @@ class IOHandler(CircuitComponent):
 
         for token in self.__interrupt_tokens:
             token_tick, token_value = token
-            if token_tick == tick_num:
+            if token_tick == self.tick_count:
                 self.set_register('IOInt', 1)
                 self.dip_value = ord(token_value)
                 logging.debug('Interrupt request! %s in tick %s',
-                              self.dip_value, tick_num)
+                              self.dip_value, self.tick_count)

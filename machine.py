@@ -151,7 +151,7 @@ class DataPath():
         self.PC.do_tick()
         self.Adr_Src_Mux.do_tick()
         self.Memory.do_tick()
-        self.IO_Handler.do_tick(self.tick)
+        self.IO_Handler.do_tick()
         self.IR.do_tick()
         self.WD_Src_Mux.do_tick()
         self.Register_File.do_tick()

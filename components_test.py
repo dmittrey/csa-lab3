@@ -349,7 +349,7 @@ class IOHandlerTests(unittest.TestCase):
     def test_DoTickWithInterruptToken_ActivateIOIntRegisterAndFillDip(self):
         io_handler = IOHandler([(1, 'a')])
 
-        io_handler.do_tick(1)
+        io_handler.do_tick()
 
         self.assertEqual(io_handler.get_register('IOInt'), 1)
         self.assertEqual(io_handler.dip_value, ord('a'))
@@ -361,7 +361,7 @@ class IOHandlerTests(unittest.TestCase):
         io_handler.set_register('In', IOMemoryCell.IN)
         io_handler.set_register('WD', ord('b'))
 
-        io_handler.do_tick(1)
+        io_handler.do_tick()
 
         self.assertEqual(io_handler.get_register('IOInt'), 0)
         self.assertEqual(io_handler.get_register('Out'), ord('a'))
@@ -374,7 +374,7 @@ class IOHandlerTests(unittest.TestCase):
         io_handler.set_register('In', IOMemoryCell.OUT)
         io_handler.set_register('WD', ord('b'))
 
-        io_handler.do_tick(1)
+        io_handler.do_tick()
 
         self.assertEqual(io_handler.get_register('IOInt'), 0)
         self.assertEqual(io_handler.get_register('Out'), 0)
@@ -388,7 +388,7 @@ class IOHandlerTests(unittest.TestCase):
         io_handler.set_register('WD', ord('b'))
 
         with self.assertRaises(AttributeError):
-            io_handler.do_tick(1)
+            io_handler.do_tick()
 
     def test_DoTickWithoutActiveIOOpFromWriteMemoryCell_ThrowsAssert(self):
         io_handler = IOHandler([])
@@ -398,7 +398,7 @@ class IOHandlerTests(unittest.TestCase):
         io_handler.set_register('WD', ord('b'))
 
         with self.assertRaises(AttributeError):
-            io_handler.do_tick(1)
+            io_handler.do_tick()
 
     def test_WriteTwoValues_BufferIncludeTwoChars(self):
         io_handler = IOHandler([])
@@ -406,8 +406,8 @@ class IOHandlerTests(unittest.TestCase):
         io_handler.set_register('In', IOMemoryCell.OUT)
         io_handler.set_register('WD', ord('b'))
 
-        io_handler.do_tick(1)
-        io_handler.do_tick(2)
+        io_handler.do_tick()
+        io_handler.do_tick()
 
         self.assertEqual(io_handler.saved_tokens, ['b', 'b'])
 
