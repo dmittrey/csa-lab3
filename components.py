@@ -184,8 +184,7 @@ class MUX(CircuitComponent):
         super().do_tick()
 
         self.set_register('Out', self.get_register(
-            'In_%s',
-            self.__get_bin_number(self.get_register(self._src_register))
+            'In_' + self.__get_bin_number(self.get_register(self._src_register))
         ))
 
     def __get_bin_number(self, number: int) -> None:
