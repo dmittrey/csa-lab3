@@ -233,13 +233,7 @@ def generate(tokens: List[Token]) -> List[MemoryCell]:
                                             tokens[num].value, res))
                             num += 2
                         if tokens[num].value in two_args_op:
-                            if (tokens[num + 1].TokenType != TokenType.STRING_LITERAL
-                                or tokens[num + 2].value != ','
-                                or tokens[num + 3].value not in ['+', '-']
-                                or tokens[num + 4].TokenType not in [TokenType.STRING_LITERAL, TokenType.NUMBER_LITERAL]
-                                or tokens[num + 5].value != '('
-                                or tokens[num + 6].TokenType != TokenType.STRING_LITERAL
-                                    or tokens[num + 7].value != ')'):
+                            if (tokens[num + 1].TokenType != TokenType.STRING_LITERAL or tokens[num + 2].value != ',' or tokens[num + 3].value not in ['+', '-'] or tokens[num + 4].TokenType not in [TokenType.STRING_LITERAL, TokenType.NUMBER_LITERAL] or tokens[num + 5].value != '(' or tokens[num + 6].TokenType != TokenType.STRING_LITERAL or tokens[num + 7].value != ')'):
                                 raise Exception(
                                     'Unable to parse instruction ' + str(tokens[num: num + 7]))
                             # Skip <instr>(1) <reg>(1) <comma>(1) <shift>(5)
@@ -282,12 +276,7 @@ def generate(tokens: List[Token]) -> List[MemoryCell]:
                                         tokens[num].value, res))
                             num += 8
                         if tokens[num].value in three_args_op:
-                            if (tokens[num + 1].TokenType != TokenType.STRING_LITERAL
-                                or tokens[num + 2].value != ','
-                                or tokens[num + 3].TokenType != TokenType.STRING_LITERAL
-                                or tokens[num + 4].value != ','
-                                or tokens[num + 5].TokenType not in [
-                                    TokenType.STRING_LITERAL, TokenType.NUMBER_LITERAL]):
+                            if (tokens[num + 1].TokenType != TokenType.STRING_LITERAL or tokens[num + 2].value != ',' or tokens[num + 3].TokenType != TokenType.STRING_LITERAL or tokens[num + 4].value != ',' or tokens[num + 5].TokenType not in (TokenType.STRING_LITERAL, TokenType.NUMBER_LITERAL)):
                                 raise Exception(
                                     'Unable to parse instruction ' + str(tokens[num: num + 6]))
                             reg1 = registers[tokens[num + 1].value]
