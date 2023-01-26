@@ -67,7 +67,21 @@ Virtual machine and interpreter
 
 # Устройство сигналов
 
-
+| Название управляющего сигнала | Назнчение                                      |
+|-------------------------------|------------------------------------------------|
+| PCWrite                       | Разрешение защелкнуть значение в регистре PC   |
+| AdrSrc                        | Коммутировать мультиплексор ведущий от PC      |
+| IOOp                          | Выставление флага операции на КВУ              |
+| MemWrite                      | Разрешение записи в память                     |
+| IRWrite                       | Защелкнуть значение в IR регистре              |
+| WDSrc                         | Коммутировать мультиплексор ведущий к WD       |
+| ImmSrc                        | Выставить флаг расширения на SignExpand        |
+| ALUControl                    | Выставить флаг операции ALU                    |
+| ALUSrcB                       | Коммутировать мультиплексор ведущий ко входу B |
+| ALUSrcA                       | Коммутировать мультиплексор ведущий ко входу A |
+| RegWrite                      | Разрешение записи в регистровый файл           |
+| Zero                          | Флаг нулевого результата выходящий из ALU      |
+| PositiveFlag                  | Флаг позитивного результата выходящий из ALU   |
 
 # Организация памяти
 
@@ -131,19 +145,19 @@ Virtual machine and interpreter
 
 ## Набор инструкций и способ кодирования
 
-| №   | Название команды     | Назначение                      | 4 бит    | 3 бит    | 3 бит | 3 бит    | 4 бит  |
-| --- | -------------------- | ------------------------------- | -------- | -------- | ----- | -------- | ------ |
-| 0   | ADDI reg1, reg2, IMM | reg1 = reg2 + IMM               | IMM[6:3] | IMM[2:0] | reg2  | reg1     | OPCODE |
-| 1   | ADD reg1, reg2, reg3 | reg1 = reg2 + reg3              |          | reg3     | reg2  | reg1     | OPCODE |
-| 2   | REM reg1, reg2, reg3 | reg1 = reg2 % reg3              |          | reg3     | reg2  | reg1     | OPCODE |
-| 3   | MUL reg1, reg2, reg3 | reg1 = reg2 \* reg3             |          | reg3     | reg2  | reg1     | OPCODE |
-| 4   | LD reg1, IMM(reg2)   | reg1 = MEM(reg2 + IMM)          | IMM[6:3] | IMM[2:0] | reg2  | reg1     | OPCODE |
-| 5   | SW reg1, IMM(reg2)   | MEM(reg2 + IMM) = reg1          | IMM[6:3] | reg1     | reg2  | IMM[2:0] | OPCODE |
-| 6   | CMP reg1, IMM(reg2)  | SET FLAGS (reg1 - reg2)         | IMM[6:3] | reg2     | reg1  | IMM[2:0] | OPCODE |
-| 7   | JMP IMM(reg1)        | PC = reg1 + IMM                 | IMM[6:3] | IMM[2:0] | reg1  |          | OPCODE |
-| 8   | JG IMM(reg1)         | PC = reg1 + IMM IF PositiveFlag | IMM[6:3] | IMM[2:0] | reg1  |          | OPCODE |
-| 9   | BNE IMM(reg1)        | PC = reg1 + IMM IF NOT ZeroFlag | IMM[6:3] | IMM[2:0] | reg1  |          | OPCODE |
-| 10  | BEQ IMM(reg1)        | PC = reg1 + IMM IF ZeroFlag     | IMM[6:3] | IMM[2:0] | reg1  |          | OPCODE |
-| 11  | HALT                 | Останов.                        |          |          |       |          | OPCODE |
+| №   | Название команды     | Назначение                      | 4 бит    | 3 бит    | 3 бит | 3 бит    | 4 бит  | Кол-во тактов |
+| --- | -------------------- | ------------------------------- | -------- | -------- | ----- | -------- | ------ | ------------- |
+| 0   | ADDI reg1, reg2, IMM | reg1 = reg2 + IMM               | IMM[6:3] | IMM[2:0] | reg2  | reg1     | OPCODE | 4             |
+| 1   | ADD reg1, reg2, reg3 | reg1 = reg2 + reg3              |          | reg3     | reg2  | reg1     | OPCODE | 4             |
+| 2   | REM reg1, reg2, reg3 | reg1 = reg2 % reg3              |          | reg3     | reg2  | reg1     | OPCODE | 4             |
+| 3   | MUL reg1, reg2, reg3 | reg1 = reg2 \* reg3             |          | reg3     | reg2  | reg1     | OPCODE | 4             |
+| 4   | LD reg1, IMM(reg2)   | reg1 = MEM(reg2 + IMM)          | IMM[6:3] | IMM[2:0] | reg2  | reg1     | OPCODE | 4             |
+| 5   | SW reg1, IMM(reg2)   | MEM(reg2 + IMM) = reg1          | IMM[6:3] | reg1     | reg2  | IMM[2:0] | OPCODE | 4             |
+| 6   | CMP reg1, IMM(reg2)  | SET FLAGS (reg1 - reg2)         | IMM[6:3] | reg2     | reg1  | IMM[2:0] | OPCODE | 4             |
+| 7   | JMP IMM(reg1)        | PC = reg1 + IMM                 | IMM[6:3] | IMM[2:0] | reg1  |          | OPCODE | 3             |
+| 8   | JG IMM(reg1)         | PC = reg1 + IMM IF PositiveFlag | IMM[6:3] | IMM[2:0] | reg1  |          | OPCODE | 3             |
+| 9   | BNE IMM(reg1)        | PC = reg1 + IMM IF NOT ZeroFlag | IMM[6:3] | IMM[2:0] | reg1  |          | OPCODE | 3             |
+| 10  | BEQ IMM(reg1)        | PC = reg1 + IMM IF ZeroFlag     | IMM[6:3] | IMM[2:0] | reg1  |          | OPCODE | 3             |
+| 11  | HALT                 | Останов.                        |          |          |       |          | OPCODE | 2             |
 
 ---
