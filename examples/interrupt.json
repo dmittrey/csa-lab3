@@ -1,29 +1,29 @@
 [
     [
         ".text",
+        "string",
         0,
         null,
         null,
-        1,
-        "JMP",
-        1031
+        "_start",
+        "jmp"
     ],
     [
         ".text",
+        "number",
         1,
         0,
         null,
-        120,
-        "ld",
-        122900
+        "120",
+        "ld"
     ],
     [
         ".text",
+        "nothing",
         0,
         0,
         0,
         0,
-        "halt",
-        11
+        "halt"
     ]
 ]

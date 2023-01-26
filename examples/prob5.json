@@ -1,245 +1,245 @@
 [
     [
         ".text",
+        "string",
         0,
         null,
         null,
-        1,
-        "JMP",
-        1031
+        "_start",
+        "jmp"
     ],
     [
         ".text",
+        "number",
         4,
         0,
-        null,
-        20,
-        "addi",
-        20544
+        "20",
+        "20",
+        "addi"
     ],
     [
         ".text",
+        "number",
         5,
         0,
-        null,
-        2,
-        "addi",
-        2128
+        "2",
+        "2",
+        "addi"
     ],
     [
         ".text",
+        "number",
         1,
         0,
-        null,
-        2,
-        "addi",
-        2064
+        "2",
+        "2",
+        "addi"
     ],
     [
         ".text",
+        "number",
         1,
         1,
-        null,
-        1,
-        "addi",
-        1168
+        "1",
+        "1",
+        "addi"
     ],
     [
         ".text",
+        "number",
         4,
         1,
         null,
+        "0",
+        "cmp"
+    ],
+    [
+        ".text",
+        "string",
         0,
-        "cmp",
-        4230
+        null,
+        null,
+        ".findnumber",
+        "jg"
     ],
     [
         ".text",
-        4,
-        null,
-        null,
-        16,
-        "jg",
-        16904
-    ],
-    [
-        ".text",
+        "number",
         3,
         0,
-        null,
-        2,
-        "addi",
-        2096
+        "2",
+        "2",
+        "addi"
     ],
     [
         ".text",
+        "string",
         2,
         1,
-        3,
+        "x3",
+        "x3",
+        "rem"
+    ],
+    [
+        ".text",
+        "string",
         0,
-        "rem",
-        3234
+        null,
+        null,
+        ".findprime",
+        "beq"
     ],
     [
         ".text",
-        2,
-        null,
-        null,
-        4,
-        "beq",
-        4362
-    ],
-    [
-        ".text",
+        "number",
         3,
         3,
-        null,
-        1,
-        "addi",
-        1456
+        "1",
+        "1",
+        "addi"
     ],
     [
         ".text",
+        "number",
         3,
         1,
         null,
+        "0",
+        "cmp"
+    ],
+    [
+        ".text",
+        "string",
         0,
-        "cmp",
-        3206
+        null,
+        null,
+        ".mulstep",
+        "beq"
     ],
     [
         ".text",
-        3,
+        "string",
+        0,
         null,
         null,
-        14,
-        "beq",
-        14730
+        ".findprime",
+        "jmp"
     ],
     [
         ".text",
-        3,
-        null,
-        null,
-        4,
-        "jmp",
-        4487
-    ],
-    [
-        ".text",
+        "string",
         5,
         5,
-        1,
-        0,
-        "mul",
-        1746
+        "x1",
+        "x1",
+        "mul"
     ],
     [
         ".text",
-        5,
-        null,
-        null,
-        4,
-        "jmp",
-        4743
-    ],
-    [
-        ".text",
-        1,
+        "string",
         0,
         null,
-        0,
-        "addi",
-        16
+        null,
+        ".findprime",
+        "jmp"
     ],
     [
         ".text",
+        "number",
         1,
-        1,
-        5,
         0,
-        "add",
-        5265
+        "0",
+        "0",
+        "addi"
     ],
     [
         ".text",
+        "string",
+        1,
+        1,
+        "x5",
+        "x5",
+        "add"
+    ],
+    [
+        ".text",
+        "number",
         3,
         0,
-        null,
-        0,
-        "addi",
-        48
+        "0",
+        "0",
+        "addi"
     ],
     [
         ".text",
+        "number",
         3,
         3,
-        null,
-        1,
-        "addi",
-        1456
+        "1",
+        "1",
+        "addi"
     ],
     [
         ".text",
+        "string",
         2,
         1,
-        3,
+        "x3",
+        "x3",
+        "rem"
+    ],
+    [
+        ".text",
+        "string",
         0,
-        "rem",
-        3234
+        null,
+        null,
+        ".nextnumber",
+        "bne"
     ],
     [
         ".text",
-        2,
-        null,
-        null,
-        17,
-        "bne",
-        17673
-    ],
-    [
-        ".text",
+        "number",
         3,
         4,
         null,
+        "0",
+        "cmp"
+    ],
+    [
+        ".text",
+        "string",
         0,
-        "cmp",
-        3590
+        null,
+        null,
+        ".exit",
+        "beq"
     ],
     [
         ".text",
-        3,
+        "string",
+        0,
         null,
         null,
-        25,
-        "beq",
-        25994
+        ".nextdivider",
+        "jmp"
     ],
     [
         ".text",
-        3,
-        null,
-        null,
-        19,
-        "jmp",
-        19847
-    ],
-    [
-        ".text",
+        "number",
         1,
         0,
         null,
-        121,
-        "sw",
-        123925
+        "121",
+        "sw"
     ],
     [
         ".text",
+        "nothing",
         0,
         0,
         0,
         0,
-        "halt",
-        11
+        "halt"
     ]
 ]

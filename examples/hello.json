@@ -1,12 +1,12 @@
 [
     [
         ".text",
+        "string",
         0,
         null,
         null,
-        9,
-        "JMP",
-        9223
+        "_start",
+        "jmp"
     ],
     [
         ".data",
@@ -82,209 +82,209 @@
     ],
     [
         ".text",
+        "string",
         4,
         0,
         null,
-        1,
-        "ld",
-        1092
+        "h",
+        "ld"
     ],
     [
         ".text",
+        "number",
         4,
         0,
         null,
-        121,
-        "sw",
-        126997
+        "121",
+        "sw"
     ],
     [
         ".text",
+        "string",
         4,
         0,
         null,
-        2,
-        "ld",
-        2116
+        "e",
+        "ld"
     ],
     [
         ".text",
+        "number",
         4,
         0,
         null,
-        121,
-        "sw",
-        126997
+        "121",
+        "sw"
     ],
     [
         ".text",
+        "string",
         4,
         0,
         null,
-        3,
-        "ld",
-        3140
+        "l",
+        "ld"
     ],
     [
         ".text",
+        "number",
         4,
         0,
         null,
-        121,
-        "sw",
-        126997
+        "121",
+        "sw"
     ],
     [
         ".text",
+        "string",
         4,
         0,
         null,
-        3,
-        "ld",
-        3140
+        "l",
+        "ld"
     ],
     [
         ".text",
+        "number",
         4,
         0,
         null,
-        121,
-        "sw",
-        126997
+        "121",
+        "sw"
     ],
     [
         ".text",
+        "string",
         4,
         0,
         null,
-        4,
-        "ld",
-        4164
+        "o",
+        "ld"
     ],
     [
         ".text",
+        "number",
         4,
         0,
         null,
-        121,
-        "sw",
-        126997
+        "121",
+        "sw"
     ],
     [
         ".text",
+        "string",
         4,
         0,
         null,
-        5,
-        "ld",
-        5188
+        "space",
+        "ld"
     ],
     [
         ".text",
+        "number",
         4,
         0,
         null,
-        121,
-        "sw",
-        126997
+        "121",
+        "sw"
     ],
     [
         ".text",
+        "string",
         4,
         0,
         null,
-        6,
-        "ld",
-        6212
+        "w",
+        "ld"
     ],
     [
         ".text",
+        "number",
         4,
         0,
         null,
-        121,
-        "sw",
-        126997
+        "121",
+        "sw"
     ],
     [
         ".text",
+        "string",
         4,
         0,
         null,
-        4,
-        "ld",
-        4164
+        "o",
+        "ld"
     ],
     [
         ".text",
-        4,
-        0,
-        null,
-        121,
-        "sw",
-        126997
-    ],
-    [
-        ".text",
+        "number",
         4,
         0,
         null,
-        7,
-        "ld",
-        7236
+        "121",
+        "sw"
     ],
     [
         ".text",
+        "string",
         4,
         0,
         null,
-        121,
-        "sw",
-        126997
+        "r",
+        "ld"
     ],
     [
         ".text",
+        "number",
         4,
         0,
         null,
-        3,
-        "ld",
-        3140
+        "121",
+        "sw"
     ],
     [
         ".text",
+        "string",
         4,
         0,
         null,
-        121,
-        "sw",
-        126997
+        "l",
+        "ld"
     ],
     [
         ".text",
+        "number",
         4,
         0,
         null,
-        8,
-        "ld",
-        8260
+        "121",
+        "sw"
     ],
     [
         ".text",
+        "string",
         4,
         0,
         null,
-        121,
-        "sw",
-        126997
+        "d",
+        "ld"
     ],
     [
         ".text",
+        "number",
+        4,
+        0,
+        null,
+        "121",
+        "sw"
+    ],
+    [
+        ".text",
+        "nothing",
         0,
         0,
         0,
         0,
-        "halt",
-        11
+        "halt"
     ]
 ]
