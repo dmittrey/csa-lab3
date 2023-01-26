@@ -65,6 +65,10 @@ Virtual machine and interpreter
 - `.text` - секция для кода
 - `.data` - секция для данных
 
+# Устройство сигналов
+
+
+
 # Организация памяти
 
 ## Работа с памятью
@@ -125,47 +129,21 @@ Virtual machine and interpreter
 - Машина поддерживает только абсолютную адресацию.
 - Присутствует флаг Z (zero), PositiveFlag(flag if alu result is positive) для команд перехода.
 
-## Набор инструкций
+## Набор инструкций и способ кодирования
 
-| №   | Тип команды | Название команды     | Назначение                      | 4 бит    | 3 бит    | 3 бит | 3 бит    | 4 бит  |
-| --- | ----------- | -------------------- | ------------------------------- | -------- | -------- | ----- | -------- | ------ |
-| 0   | Type B      | ADDI reg1, reg2, IMM | reg1 = reg2 + IMM               | IMM[6:3] | IMM[2:0] | reg2  | reg1     | OPCODE |
-| 1   | Type A      | ADD reg1, reg2, reg3 | reg1 = reg2 + reg3              |          | reg3     | reg2  | reg1     | OPCODE |
-| 2   | Type A      | REM reg1, reg2, reg3 | reg1 = reg2 % reg3              |          | reg3     | reg2  | reg1     | OPCODE |
-| 3   | Type A      | MUL reg1, reg2, reg3 | reg1 = reg2 \* reg3             |          | reg3     | reg2  | reg1     | OPCODE |
-| 4   | Type B      | LD reg1, IMM(reg2)   | reg1 = MEM(reg2 + IMM)          | IMM[6:3] | IMM[2:0] | reg2  | reg1     | OPCODE |
-| 5   | Type C      | SW reg1, IMM(reg2)   | MEM(reg2 + IMM) = reg1          | IMM[6:3] | reg1     | reg2  | IMM[2:0] | OPCODE |
-| 6   |             | CMP reg1, IMM(reg2)  | SET FLAGS (reg1 - reg2)         | IMM[6:3] | reg2     | reg1  | IMM[2:0] | OPCODE |
-| 7   |             | JMP IMM(reg1)        | PC = reg1 + IMM                 | IMM[6:3] | IMM[2:0] | reg1  |          | OPCODE |
-| 8   |             | JG IMM(reg1)         | PC = reg1 + IMM IF PositiveFlag | IMM[6:3] | IMM[2:0] | reg1  |          | OPCODE |
-| 9   |             | BNE IMM(reg1)        | PC = reg1 + IMM IF NOT ZeroFlag | IMM[6:3] | IMM[2:0] | reg1  |          | OPCODE |
-| 10  |             | BEQ IMM(reg1)        | PC = reg1 + IMM IF ZeroFlag     | IMM[6:3] | IMM[2:0] | reg1  |          | OPCODE |
-| 11  |             | HALT                 | Останов.                        |          |          |       |          | OPCODE |
-
-## Способ кодирования
-
-- **_Type A_**
-
-| 4 бит(13:16) | 3 бит(10:12) | 3 бит(7:9) | 3 бит(4:6) | 4 бит(0:3) |
-| ------------ | ------------ | ---------- | ---------- | ---------- |
-| IMM[3:0]     | RS2          | RS1        | RD         | OPCODE     |
-
-- **_Type B_**
-
-Команды типа I (immediate, непосредственные)
-используют два регистровых операнда и один
-непосредственный операнд (константу)
-
-| 4 бит(13:16) | 3 бит(10:12) | 3 бит(7:9) | 3 бит(4:6) | 4 бит(0:3) |
-| ------------ | ------------ | ---------- | ---------- | ---------- |
-| IMM[6:3]     | IMM[2:0]     | RS         | RD         | OPCODE     |
-
-- **_Type C_**
-
-Инструкции типа S/B (store/branch, хранение слова в памяти / условный пе- реход) используют два регистровых операнда и один непосредственный операнд (константу)
-
-| 4 бит(13:16) | 3 бит(10:12) | 3 бит(7:9) | 3 бит(4:6) | 4 бит(0:3) |
-| ------------ | ------------ | ---------- | ---------- | ---------- |
-| IMM[6:3]     | RS2          | RS1        | IMM[2:0]   | OPCODE     |
+| №   | Название команды     | Назначение                      | 4 бит    | 3 бит    | 3 бит | 3 бит    | 4 бит  |
+| --- | -------------------- | ------------------------------- | -------- | -------- | ----- | -------- | ------ |
+| 0   | ADDI reg1, reg2, IMM | reg1 = reg2 + IMM               | IMM[6:3] | IMM[2:0] | reg2  | reg1     | OPCODE |
+| 1   | ADD reg1, reg2, reg3 | reg1 = reg2 + reg3              |          | reg3     | reg2  | reg1     | OPCODE |
+| 2   | REM reg1, reg2, reg3 | reg1 = reg2 % reg3              |          | reg3     | reg2  | reg1     | OPCODE |
+| 3   | MUL reg1, reg2, reg3 | reg1 = reg2 \* reg3             |          | reg3     | reg2  | reg1     | OPCODE |
+| 4   | LD reg1, IMM(reg2)   | reg1 = MEM(reg2 + IMM)          | IMM[6:3] | IMM[2:0] | reg2  | reg1     | OPCODE |
+| 5   | SW reg1, IMM(reg2)   | MEM(reg2 + IMM) = reg1          | IMM[6:3] | reg1     | reg2  | IMM[2:0] | OPCODE |
+| 6   | CMP reg1, IMM(reg2)  | SET FLAGS (reg1 - reg2)         | IMM[6:3] | reg2     | reg1  | IMM[2:0] | OPCODE |
+| 7   | JMP IMM(reg1)        | PC = reg1 + IMM                 | IMM[6:3] | IMM[2:0] | reg1  |          | OPCODE |
+| 8   | JG IMM(reg1)         | PC = reg1 + IMM IF PositiveFlag | IMM[6:3] | IMM[2:0] | reg1  |          | OPCODE |
+| 9   | BNE IMM(reg1)        | PC = reg1 + IMM IF NOT ZeroFlag | IMM[6:3] | IMM[2:0] | reg1  |          | OPCODE |
+| 10  | BEQ IMM(reg1)        | PC = reg1 + IMM IF ZeroFlag     | IMM[6:3] | IMM[2:0] | reg1  |          | OPCODE |
+| 11  | HALT                 | Останов.                        |          |          |       |          | OPCODE |
 
 ---
