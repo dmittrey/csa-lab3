@@ -30,6 +30,13 @@ class TokenType(str, Enum):
     WHITESPACE = 'whitespace'
 
 
+class ImmType(str, Enum):
+    STRING = 'string'
+    NUMBER = 'number'
+
+    NOTHING = 'nothing'
+
+
 class SectionType(str, Enum):
     DATA = '.data'
     CODE = '.text'
@@ -39,7 +46,7 @@ class Token(namedtuple('Token', 'TokenType value')):
     """Класс для токенов"""
 
 
-class MemoryCell(namedtuple('MemoryCell', 'section reg1 reg2 reg3 imm opcode value')):
+class MemoryCell(namedtuple('MemoryCell', 'section imm_type reg1 reg2 reg3 imm opcode')):
     """Класс для парсинга в код ячеек памяти"""
 
 
@@ -70,7 +77,7 @@ def lexical_analysis(code: str) -> List[Token]:
                 end_pos = cur_pos + res.end()
                 if lexem_type not in (TokenType.COMMENT, TokenType.WHITESPACE):
                     tokens.append(
-                        Token(lexem_type, code[cur_pos:end_pos].strip()))
+                        Token(lexem_type, code[cur_pos:end_pos].strip().lower()))
                 break
 
         cur_pos = end_pos
@@ -86,11 +93,11 @@ def shift_and_mask(value: int, shift_length: int, mask: int, length: int) -> int
     return masked_value << shift_length
 
 
-def generate(tokens: List[Token]) -> List[MemoryCell]:
+def generate(tokens: List[Token]) -> any:
     memory: List[MemoryCell] = []
 
     # Add stub to later put it jmp on .start
-    jump_stub = MemoryCell(None, None, None, None, None, 'JMP', 6)
+    jump_stub = MemoryCell(None, None, None, None, None, None, 'JMP')
     memory.append(jump_stub)
 
     # Map with label and its cell
@@ -113,7 +120,7 @@ def generate(tokens: List[Token]) -> List[MemoryCell]:
     ]
 
     registers: Dict[str, int] = {
-        'x0': 0, 'ZR': 0,
+        'x0': 0, 'zr': 0, 'ZR': 0,
         'x1': 1,
         'x2': 2,
         'x3': 3,
@@ -183,169 +190,143 @@ def generate(tokens: List[Token]) -> List[MemoryCell]:
                             raise Exception(
                                 'Unable to parse expression in text section')
                         # Парсинг лексем составляющих инструкцию
-                        if tokens[num].value in no_args_op:
-                            res = 11
+                        elif tokens[num].value in no_args_op:
                             memory.append(MemoryCell(
-                                SectionType.CODE, 0, 0, 0, 0, 'halt', res))
+                                SectionType.CODE, ImmType.NOTHING, 0, 0, 0, 0, 'halt'))
                             num += 1
-                        if tokens[num].value in one_args_op:
-                            if tokens[num + 1].TokenType != TokenType.NUMBER_LITERAL:
+                        elif tokens[num].value in one_args_op:
+                            if tokens[num + 1].TokenType != TokenType.NUMBER_LITERAL and tokens[num + 1].TokenType != TokenType.STRING_LITERAL:
                                 raise Exception(
                                     'Unable to parse instruction ' + str(tokens[num: num + 7]))
-                            imm = int(tokens[num + 1].value)
                             reg1 = 0
-                            match (tokens[num].value):
-                                case 'jmp':
-                                    res = 0
-                                    res += shift_and_mask(imm, 10, 127, 7)
-                                    res += shift_and_mask(reg1, 7, 7, 3)
-                                    res += 7
-                                    memory.append(
-                                        MemoryCell(
-                                            SectionType.CODE, reg1, None, None, imm,
-                                            tokens[num].value, res))
-                                case 'jg':
-                                    res = 0
-                                    res += shift_and_mask(imm, 10, 127, 7)
-                                    res += shift_and_mask(reg1, 7, 7, 3)
-                                    res += 8
-                                    memory.append(
-                                        MemoryCell(
-                                            SectionType.CODE, reg1, None, None, imm,
-                                            tokens[num].value, res))
-                                case 'bne':
-                                    res = 0
-                                    res += shift_and_mask(imm, 10, 127, 7)
-                                    res += shift_and_mask(reg1, 7, 7, 3)
-                                    res += 9
-                                    memory.append(
-                                        MemoryCell(
-                                            SectionType.CODE, reg1, None, None, imm,
-                                            tokens[num].value, res))
-                                case 'beq':
-                                    res = 0
-                                    res += shift_and_mask(imm, 10, 127, 7)
-                                    res += shift_and_mask(reg1, 7, 7, 3)
-                                    res += 10
-                                    memory.append(
-                                        MemoryCell(
-                                            SectionType.CODE, reg1, None, None, imm,
-                                            tokens[num].value, res))
+                            imm = tokens[num + 1].value
+                            imm_type = ImmType.NOTHING
+                            if tokens[num + 1].TokenType == TokenType.NUMBER_LITERAL:
+                                imm_type = ImmType.NUMBER
+                            else:
+                                imm_type = ImmType.STRING
+
+                            memory.append(
+                                MemoryCell(
+                                    SectionType.CODE, imm_type, reg1, None, None, imm,
+                                    tokens[num].value))
+
                             num += 2
-                        if tokens[num].value in two_args_op:
+                        elif tokens[num].value in two_args_op:
                             if (tokens[num + 1].TokenType != TokenType.STRING_LITERAL or tokens[num + 2].value != ',' or tokens[num + 3].value not in ['+', '-'] or tokens[num + 4].TokenType not in [TokenType.STRING_LITERAL, TokenType.NUMBER_LITERAL] or tokens[num + 5].value != '(' or tokens[num + 6].TokenType != TokenType.STRING_LITERAL or tokens[num + 7].value != ')'):
                                 raise Exception(
                                     'Unable to parse instruction ' + str(tokens[num: num + 7]))
-                            # Skip <instr>(1) <reg>(1) <comma>(1) <shift>(5)
                             reg1 = registers[tokens[num + 1].value]
                             reg2 = registers[tokens[num + 6].value]
-                            imm = 0
+                            imm = tokens[num + 4].value
+                            imm_type = ImmType.NOTHING
                             if tokens[num + 4].TokenType == TokenType.NUMBER_LITERAL:
-                                imm = int(tokens[num + 4].value)
+                                imm_type = ImmType.NUMBER
                             else:
-                                imm = label_to_cell[tokens[num + 4].value]
-                            match (tokens[num].value):
-                                case 'ld':
-                                    res = int()
-                                    res += shift_and_mask(imm, 10, 127, 7)
-                                    res += shift_and_mask(reg2, 7, 7, 3)
-                                    res += shift_and_mask(reg1, 4, 7, 3)
-                                    res += 4
-                                    memory.append(MemoryCell(
-                                        SectionType.CODE, reg1, reg2, None, imm,
-                                        tokens[num].value, res))
-                                case 'sw':
-                                    res = int()
-                                    res += shift_and_mask(imm, 13, 120, 4)
-                                    res += shift_and_mask(reg1, 10, 7, 3)
-                                    res += shift_and_mask(reg2, 7, 7, 3)
-                                    res += shift_and_mask(imm, 4, 7, 3)
-                                    res += 5
-                                    memory.append(MemoryCell(
-                                        SectionType.CODE, reg1, reg2, None, imm,
-                                        tokens[num].value, res))
-                                case 'cmp':
-                                    res = int()
-                                    res += shift_and_mask(imm, 13, 120, 4)
-                                    res += shift_and_mask(reg1, 10, 7, 3)
-                                    res += shift_and_mask(reg2, 7, 7, 3)
-                                    res += shift_and_mask(imm, 4, 7, 3)
-                                    res += 6
-                                    memory.append(MemoryCell(
-                                        SectionType.CODE, reg1, reg2, None, imm,
-                                        tokens[num].value, res))
+                                imm_type = ImmType.STRING
+
+                            memory.append(MemoryCell(
+                                SectionType.CODE, imm_type, reg1, reg2, None, imm,
+                                tokens[num].value))
                             num += 8
-                        if tokens[num].value in three_args_op:
+                        elif tokens[num].value in three_args_op:
                             if (tokens[num + 1].TokenType != TokenType.STRING_LITERAL or tokens[num + 2].value != ',' or tokens[num + 3].TokenType != TokenType.STRING_LITERAL or tokens[num + 4].value != ',' or tokens[num + 5].TokenType not in (TokenType.STRING_LITERAL, TokenType.NUMBER_LITERAL)):
                                 raise Exception(
                                     'Unable to parse instruction ' + str(tokens[num: num + 6]))
                             reg1 = registers[tokens[num + 1].value]
                             reg2 = registers[tokens[num + 3].value]
-                            imm = 0
-                            if tokens[num].value in ['addi']:
-                                if tokens[num + 5].TokenType == TokenType.NUMBER_LITERAL:
-                                    imm = int(tokens[num + 5].value)
-                                else:
-                                    if memory[label_to_cell[tokens[num + 5].value]].section == SectionType.DATA:
-                                        imm = int(
-                                            memory[label_to_cell[tokens[num + 5].value]].value.encode(), 2)
-                                    else:
-                                        imm = label_to_cell[tokens[num + 5].value]
-                            match (tokens[num].value):
-                                case 'addi':
-                                    res = 0
-                                    res += shift_and_mask(imm, 10, 127, 7)
-                                    res += shift_and_mask(reg2, 7, 7, 3)
-                                    res += shift_and_mask(reg1, 4, 7, 3)
-                                    res += 0
-                                    memory.append(MemoryCell(
-                                        SectionType.CODE, reg1, reg2, None, imm,
-                                        tokens[num].value, res))
-                                case 'add':
-                                    reg3 = registers[tokens[num + 5].value]
-                                    res = 0
-                                    res += shift_and_mask(reg3, 10, 7, 3)
-                                    res += shift_and_mask(reg2, 7, 7, 3)
-                                    res += shift_and_mask(reg1, 4, 7, 3)
-                                    res += 1
-                                    memory.append(MemoryCell(
-                                        SectionType.CODE, reg1, reg2, reg3, imm,
-                                        tokens[num].value, res))
-                                case 'rem':
-                                    reg3 = registers[tokens[num + 5].value]
-                                    res = 0
-                                    res += shift_and_mask(reg3, 10, 7, 3)
-                                    res += shift_and_mask(reg2, 7, 7, 3)
-                                    res += shift_and_mask(reg1, 4, 7, 3)
-                                    res += 2
-                                    memory.append(MemoryCell(
-                                        SectionType.CODE, reg1, reg2, reg3, imm,
-                                        tokens[num].value, res))
-                                case 'mul':
-                                    reg3 = registers[tokens[num + 5].value]
-                                    res = 0
-                                    res += shift_and_mask(reg3, 10, 7, 3)
-                                    res += shift_and_mask(reg2, 7, 7, 3)
-                                    res += shift_and_mask(reg1, 4, 7, 3)
-                                    res += 2
-                                    memory.append(MemoryCell(
-                                        SectionType.CODE, reg1, reg2, reg3, imm,
-                                        tokens[num].value, res))
+                            reg3 = tokens[num + 5].value
+                            imm = tokens[num + 5].value
+                            imm_type = ImmType.NOTHING
+                            if tokens[num + 5].TokenType == TokenType.NUMBER_LITERAL:
+                                imm_type = ImmType.NUMBER
+                            else:
+                                imm_type = ImmType.STRING
+
+                            memory.append(MemoryCell(
+                                SectionType.CODE, imm_type, reg1, reg2, reg3, imm,
+                                tokens[num].value))
                             num += 6
                         else:
                             raise Exception(
                                 'Unable to find instruction ' + str(tokens[num]))
                 case _:
                     pass
-        num += 1
 
-    res = 0
-    res += shift_and_mask(label_to_cell['_start'], 10, 127, 7)
-    res += shift_and_mask(0, 7, 15, 3)
-    res += 7
-    memory[0] = MemoryCell(SectionType.CODE, 0, None,
-                           None, label_to_cell['_start'], 'JMP', res)
-    return memory
+    memory[0] = MemoryCell(SectionType.CODE, ImmType.STRING, 0, None,
+                           None, '_start', 'jmp')
+
+    values = []
+    for cell in memory:
+        res = 0
+        imm = 0
+
+        if (cell.section == SectionType.DATA):
+            values.append(cell.opcode)
+        else:
+            if cell.opcode in one_args_op:
+                if (cell.imm_type == ImmType.NUMBER):
+                    imm = int(cell.imm)
+                else:
+                    imm = label_to_cell[cell.imm]
+
+                res += shift_and_mask(imm, 10, 127, 7)
+                res += shift_and_mask(cell.reg1, 7, 7, 3)
+
+            if cell.opcode in two_args_op:
+                if (cell.imm_type == ImmType.NUMBER):
+                    imm = int(cell.imm)
+                else:
+                    imm = label_to_cell[cell.imm]
+
+                if cell.opcode in ['sw', 'cmp']:
+                    res += shift_and_mask(imm, 13, 120, 4)
+                    res += shift_and_mask(cell.reg1, 10, 7, 3)
+                    res += shift_and_mask(imm, 4, 7, 3)
+                else:
+                    res += shift_and_mask(imm, 10, 127, 7)
+                    res += shift_and_mask(cell.reg1, 4, 7, 3)
+                res += shift_and_mask(cell.reg2, 7, 7, 3)
+
+            if cell.opcode in three_args_op:
+                if cell.opcode in ['mul', 'rem', 'add']:
+                    reg3 = registers[cell.imm]
+                    res += shift_and_mask(reg3, 10, 7, 3)
+                else:
+                    if (cell.imm_type == ImmType.NUMBER):
+                        imm = int(cell.imm)
+                    else:
+                        imm = label_to_cell[cell.imm]
+                    res += shift_and_mask(imm, 10, 127, 7)
+                res += shift_and_mask(cell.reg2, 7, 7, 3)
+                res += shift_and_mask(cell.reg1, 4, 7, 3)
+
+            if cell.opcode == 'addi':
+                res += 0
+            elif cell.opcode == 'add':
+                res += 1
+            elif cell.opcode == 'rem':
+                res += 2
+            elif cell.opcode == 'mul':
+                res += 3
+            elif cell.opcode == 'ld':
+                res += 4
+            elif cell.opcode == 'sw':
+                res += 5
+            elif cell.opcode == 'cmp':
+                res += 6
+            elif cell.opcode == 'jmp':
+                res += 7
+            elif cell.opcode == 'jg':
+                res += 8
+            elif cell.opcode == 'bne':
+                res += 9
+            elif cell.opcode == 'beq':
+                res += 10
+            else:
+                res += 11
+            values.append(res)
+    return memory, values
 
 
 def translate(code: str) -> List[MemoryCell]:
@@ -356,17 +337,17 @@ def translate(code: str) -> List[MemoryCell]:
 
 
 def main(args):
-    source, target, logs = args
+    source, target, logs = ['examples/prob5.asm', 'examples/prob5.out', 'examples/prob5.json']
 
     with open(source, mode='r', encoding='utf-8') as file:
         code = file.read()
 
-    codes: List[MemoryCell] = translate(code)
+    details, codes  = translate(code)
 
     with open(logs, mode='w', encoding='utf-8') as file:
-        file.write(json.dumps(codes, indent=4))
+        file.write(json.dumps(details, indent=4))
 
-    isa.write_code(target, [x.value for x in codes])
+    isa.write_code(target, codes)
 
 
 if __name__ == '__main__':
