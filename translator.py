@@ -195,7 +195,7 @@ def generate(tokens: List[Token]) -> any:
                                 SectionType.CODE, ImmType.NOTHING, 0, 0, 0, 0, 'halt'))
                             num += 1
                         elif tokens[num].value in one_args_op:
-                            if tokens[num + 1].TokenType != TokenType.NUMBER_LITERAL and tokens[num + 1].TokenType != TokenType.STRING_LITERAL:
+                            if tokens[num + 1].TokenType not in (TokenType.NUMBER_LITERAL, TokenType.STRING_LITERAL):
                                 raise Exception(
                                     'Unable to parse instruction ' + str(tokens[num: num + 7]))
                             reg1 = 0
@@ -261,11 +261,11 @@ def generate(tokens: List[Token]) -> any:
         res = 0
         imm = 0
 
-        if (cell.section == SectionType.DATA):
+        if cell.section == SectionType.DATA:
             values.append(cell.opcode)
         else:
             if cell.opcode in one_args_op:
-                if (cell.imm_type == ImmType.NUMBER):
+                if cell.imm_type == ImmType.NUMBER:
                     imm = int(cell.imm)
                 else:
                     imm = label_to_cell[cell.imm]
@@ -274,7 +274,7 @@ def generate(tokens: List[Token]) -> any:
                 res += shift_and_mask(cell.reg1, 7, 7, 3)
 
             if cell.opcode in two_args_op:
-                if (cell.imm_type == ImmType.NUMBER):
+                if cell.imm_type == ImmType.NUMBER:
                     imm = int(cell.imm)
                 else:
                     imm = label_to_cell[cell.imm]
@@ -293,7 +293,7 @@ def generate(tokens: List[Token]) -> any:
                     reg3 = registers[cell.imm]
                     res += shift_and_mask(reg3, 10, 7, 3)
                 else:
-                    if (cell.imm_type == ImmType.NUMBER):
+                    if cell.imm_type == ImmType.NUMBER:
                         imm = int(cell.imm)
                     else:
                         imm = label_to_cell[cell.imm]
@@ -337,12 +337,12 @@ def translate(code: str) -> List[MemoryCell]:
 
 
 def main(args):
-    source, target, logs = ['examples/prob5.asm', 'examples/prob5.out', 'examples/prob5.json']
+    source, target, logs = args
 
     with open(source, mode='r', encoding='utf-8') as file:
         code = file.read()
 
-    details, codes  = translate(code)
+    details, codes = translate(code)
 
     with open(logs, mode='w', encoding='utf-8') as file:
         file.write(json.dumps(details, indent=4))
