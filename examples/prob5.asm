@@ -1,40 +1,50 @@
 section .text
 _start:
-addi x4, ZR, 20 ; Put 20 in x4
+addi x4, x0, 1    ; d
+addi x5, x0, 2    ; i
+addi x6, x0, 20
 
-addi x5, ZR, 2  ; Set x2 start to 2
-addi x1, ZR, 2  ; Set x1 start to 2
+.prob:
+    cmp x5, +0(x6)
+    jg .exit
+    jmp .nok
+.nokexit:
+    add x4, x0, x3
+    addi x5, x5, 1
+    jmp .prob
 
-.findprime:
-    addi x1, x1, 1  ; Inc x1
-    cmp x4, +0(x1)  ; x1 - x4
-    jg .findnumber  ; 16
-    addi x3, ZR, 2  ; 
-    .checkmod:
-        rem x2, x1, x3
-        beq .findprime
-        addi x3, x3, 1
-        cmp x3, +0(x1)
-        beq .mulstep ; 14
-        jmp .findprime
-    .mulstep:
-            mul x5, x5, x1
-            jmp .findprime
 
-.findnumber:
-    addi x1, ZR, 0 ;16
-    .nextnumber:
-        add x1, x1, x5
-        addi x3, ZR, 0
-    .nextdivider:
-        addi x3, x3, 1
-        rem x2, x1, x3
-        bne .nextnumber   
+; uses x1, x2, x3 -> x3 - nok, x2 - nod
+.nok:
+    add x1, x0, x4
+    add x2, x0, x5
 
-        cmp x3, +0(x4)
-        beq .exit      ;25
+    jmp .nod
+.nodexit:
+    mul x3, x4, x5
+    div x3, x3, x2
+    jmp .nokexit
 
-        jmp .nextdivider
+.nod:
+    .looptop:
+        cmp x1, +0(x0)  ; x1 - x, x2 - y
+        beq .goback
+        cmp x1, +0(x2)
+        jg .modulo
+        add x3, x0, x1
+        add x1, x0, x2
+        add x2, x0, x3
+
+    .modulo:
+        rem x1, x1, x2
+        jmp .looptop
+
+    .goback:
+        jmp .nodexit
+
 .exit:
-    sw x1, +121(ZR)
+    sw x3, +121(ZR) ; print nok
+    sw x2, +121(ZR) ; print nod
+    sw x4, +121(ZR) ; print d
     halt
+
