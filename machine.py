@@ -250,7 +250,7 @@ class ControlUnit(CircuitComponent):
                     self.change_state(data_path, valves_state)
             else:
                 raise AttributeError('Unsupported opcode: ' + str(opcode))
-            
+
             logging.info(Opcode(opcode).name)
             data_path.log_state()
 
