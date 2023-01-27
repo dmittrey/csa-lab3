@@ -116,7 +116,7 @@ def generate(tokens: List[Token]) -> any:
     ]
 
     three_args_op: List[str] = [
-        'addi', 'add', 'rem', 'mul'
+        'addi', 'add', 'rem', 'mul', 'div'
     ]
 
     registers: Dict[str, int] = {
@@ -236,6 +236,7 @@ def generate(tokens: List[Token]) -> any:
                             reg1 = registers[tokens[num + 1].value]
                             reg2 = registers[tokens[num + 3].value]
                             reg3 = tokens[num + 5].value
+
                             imm = tokens[num + 5].value
                             imm_type = ImmType.NOTHING
                             if tokens[num + 5].TokenType == TokenType.NUMBER_LITERAL:
@@ -289,15 +290,15 @@ def generate(tokens: List[Token]) -> any:
                 res += shift_and_mask(cell.reg2, 7, 7, 3)
 
             if cell.opcode in three_args_op:
-                if cell.opcode in ['mul', 'rem', 'add']:
-                    reg3 = registers[cell.imm]
-                    res += shift_and_mask(reg3, 10, 7, 3)
-                else:
+                if cell.opcode == 'addi':
                     if cell.imm_type == ImmType.NUMBER:
                         imm = int(cell.imm)
                     else:
                         imm = label_to_cell[cell.imm]
                     res += shift_and_mask(imm, 10, 127, 7)
+                else:
+                    reg3 = registers[cell.imm]
+                    res += shift_and_mask(reg3, 10, 7, 3)
                 res += shift_and_mask(cell.reg2, 7, 7, 3)
                 res += shift_and_mask(cell.reg1, 4, 7, 3)
 
@@ -309,22 +310,24 @@ def generate(tokens: List[Token]) -> any:
                 res += 2
             elif cell.opcode == 'mul':
                 res += 3
-            elif cell.opcode == 'ld':
+            elif cell.opcode == 'div':
                 res += 4
-            elif cell.opcode == 'sw':
+            elif cell.opcode == 'ld':
                 res += 5
-            elif cell.opcode == 'cmp':
+            elif cell.opcode == 'sw':
                 res += 6
-            elif cell.opcode == 'jmp':
+            elif cell.opcode == 'cmp':
                 res += 7
-            elif cell.opcode == 'jg':
+            elif cell.opcode == 'jmp':
                 res += 8
-            elif cell.opcode == 'bne':
+            elif cell.opcode == 'jg':
                 res += 9
-            elif cell.opcode == 'beq':
+            elif cell.opcode == 'bne':
                 res += 10
-            else:
+            elif cell.opcode == 'beq':
                 res += 11
+            else:
+                res += 12
             values.append(res)
     return memory, values
 

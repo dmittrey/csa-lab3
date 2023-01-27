@@ -79,7 +79,7 @@ halt
 # Устройство сигналов
 
 | Название управляющего сигнала | Назнчение                                      |
-|-------------------------------|------------------------------------------------|
+| ----------------------------- | ---------------------------------------------- |
 | PCWrite                       | Разрешение защелкнуть значение в регистре PC   |
 | AdrSrc                        | Коммутировать мультиплексор ведущий от PC      |
 | IOOp                          | Выставление флага операции на КВУ              |
@@ -162,13 +162,14 @@ halt
 | 1   | ADD reg1, reg2, reg3 | reg1 = reg2 + reg3              |          | reg3     | reg2  | reg1     | OPCODE | 4             |
 | 2   | REM reg1, reg2, reg3 | reg1 = reg2 % reg3              |          | reg3     | reg2  | reg1     | OPCODE | 4             |
 | 3   | MUL reg1, reg2, reg3 | reg1 = reg2 \* reg3             |          | reg3     | reg2  | reg1     | OPCODE | 4             |
-| 4   | LD reg1, IMM(reg2)   | reg1 = MEM(reg2 + IMM)          | IMM[6:3] | IMM[2:0] | reg2  | reg1     | OPCODE | 4             |
-| 5   | SW reg1, IMM(reg2)   | MEM(reg2 + IMM) = reg1          | IMM[6:3] | reg1     | reg2  | IMM[2:0] | OPCODE | 4             |
-| 6   | CMP reg1, IMM(reg2)  | SET FLAGS (reg1 - reg2)         | IMM[6:3] | reg2     | reg1  | IMM[2:0] | OPCODE | 4             |
-| 7   | JMP IMM(reg1)        | PC = reg1 + IMM                 | IMM[6:3] | IMM[2:0] | reg1  |          | OPCODE | 3             |
-| 8   | JG IMM(reg1)         | PC = reg1 + IMM IF PositiveFlag | IMM[6:3] | IMM[2:0] | reg1  |          | OPCODE | 3             |
-| 9   | BNE IMM(reg1)        | PC = reg1 + IMM IF NOT ZeroFlag | IMM[6:3] | IMM[2:0] | reg1  |          | OPCODE | 3             |
-| 10  | BEQ IMM(reg1)        | PC = reg1 + IMM IF ZeroFlag     | IMM[6:3] | IMM[2:0] | reg1  |          | OPCODE | 3             |
-| 11  | HALT                 | Останов.                        |          |          |       |          | OPCODE | 2             |
+| 4   | DIV reg1, reg2, reg3 | reg1 = reg2 // reg3             |          | reg3     | reg2  | reg1     | OPCODE | 4             |
+| 5   | LD reg1, IMM(reg2)   | reg1 = MEM(reg2 + IMM)          | IMM[6:3] | IMM[2:0] | reg2  | reg1     | OPCODE | 4             |
+| 6   | SW reg1, IMM(reg2)   | MEM(reg2 + IMM) = reg1          | IMM[6:3] | reg1     | reg2  | IMM[2:0] | OPCODE | 4             |
+| 7   | CMP reg1, IMM(reg2)  | SET FLAGS (reg1 - reg2)         | IMM[6:3] | reg1     | reg2  | IMM[2:0] | OPCODE | 4             |
+| 8   | JMP IMM(reg1)        | PC = reg1 + IMM                 | IMM[6:3] | IMM[2:0] | reg1  |          | OPCODE | 3             |
+| 9   | JG IMM(reg1)         | PC = reg1 + IMM IF PositiveFlag | IMM[6:3] | IMM[2:0] | reg1  |          | OPCODE | 3             |
+| 10  | BNE IMM(reg1)        | PC = reg1 + IMM IF NOT ZeroFlag | IMM[6:3] | IMM[2:0] | reg1  |          | OPCODE | 3             |
+| 11  | BEQ IMM(reg1)        | PC = reg1 + IMM IF ZeroFlag     | IMM[6:3] | IMM[2:0] | reg1  |          | OPCODE | 3             |
+| 12  | HALT                 | Останов.                        |          |          |       |          | OPCODE | 2             |
 
 ---

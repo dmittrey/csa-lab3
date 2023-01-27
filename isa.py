@@ -18,28 +18,21 @@ class Opcode(int, Enum):
     ADD = 1
     REM = 2
     MUL = 3
-    LD = 4
-    SW = 5
-    CMP = 6
-    JMP = 7
-    JG = 8
-    BNE = 9
-    BEQ = 10
+    DIV = 4
+    LD = 5
+    SW = 6
+    CMP = 7
+    JMP = 8
+    JG = 9
+    BNE = 10
+    BEQ = 11
 
     # Операция остановки процессора
-    HALT = 11
+    HALT = 12
 
 
 class Term(namedtuple('Term', 'line pos symbol')):
     """Описание выражения из исходного текста программы."""
-
-
-# def write_logs(filename, code: List[int16], terms: List[Term]):
-#     with open(filename, "w", encoding="utf-8") as file:
-#         file.write(json.dumps({
-#             'code': binary_repr(code, 16),
-#             'term': terms
-#         }, indent=4))
 
 def write_logs(filename, instrs: List[str], terms: List[Term]):
     """Записать машинный код в файл."""

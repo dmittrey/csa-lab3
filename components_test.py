@@ -176,17 +176,37 @@ class ALUTests(unittest.TestCase):
 
         alu.do_tick()
 
-        self.assertEqual(alu.get_register('Result'), -5)
+        self.assertEqual(alu.get_register('Result'), 5)
 
     def test_ALUControlIsTwo_CalculateRem(self):
         alu = ALU()
         alu.set_register('srcA', 5)
-        alu.set_register('srcB', 10)
+        alu.set_register('srcB', 12)
         alu.set_register('ALUControl', 2)
 
         alu.do_tick()
 
-        self.assertEqual(alu.get_register('Result'), 5)
+        self.assertEqual(alu.get_register('Result'), 2)
+
+    def test_ALUControlIsThree_CalculateMul(self):
+        alu = ALU()
+        alu.set_register('srcA', 5)
+        alu.set_register('srcB', 10)
+        alu.set_register('ALUControl', 3)
+
+        alu.do_tick()
+
+        self.assertEqual(alu.get_register('Result'), 50)
+
+    def test_ALUControlIsFour_CalculateDiv(self):
+        alu = ALU()
+        alu.set_register('srcA', 5)
+        alu.set_register('srcB', 12)
+        alu.set_register('ALUControl', 4)
+
+        alu.do_tick()
+
+        self.assertEqual(alu.get_register('Result'), 2)
 
     def test_ResultIsZero_ZeroFlagIsActive(self):
         alu = ALU()

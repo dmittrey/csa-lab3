@@ -112,7 +112,7 @@ class ALU(CircuitComponent):
         super().__init__(['srcA', 'srcB', 'Result',
                           'ALUControl', 'ZeroFlag', 'PositiveFlag', 'EF'])
 
-    # 0 - SUM, 1 - SUB, 2 - REM, 3 - MUL
+    # 0 - SUM, 1 - SUB, 2 - REM, 3 - MUL 4 - DIV
     def do_tick(self) -> None:
         super().do_tick()
 
@@ -122,13 +122,16 @@ class ALU(CircuitComponent):
                     'srcA') + self.get_register('srcB'))
             case 1:
                 self.set_register('Result', self.get_register(
-                    'srcA') - self.get_register('srcB'))
+                    'srcB') - self.get_register('srcA'))
             case 2:
                 self.set_register('Result', self.get_register(
                     'srcA') % self.get_register('srcB'))
             case 3:
                 self.set_register('Result', self.get_register(
                     'srcA') * self.get_register('srcB'))
+            case 4:
+                self.set_register('Result', self.get_register(
+                    'srcA') // self.get_register('srcB'))
             case _:
                 raise AssertionError('ALU operation not permitted')
 
@@ -224,9 +227,10 @@ class IOHandler(CircuitComponent):
 
             # SW operation on 121 cell
             if self.get_register('In') == IOMemoryCell.OUT:
-                self.saved_tokens.append(chr(self.get_register('WD')))
+                # self.saved_tokens.append(chr(self.get_register('WD')))
                 self.dip_value = self.get_register('WD')
-                logging.info('Saved: %s', chr(self.get_register("WD")))
+                logging.info('Saved: %d', self.get_register("WD"))
+                # logging.info('Saved: %s', chr(self.get_register("WD")))
         else:
             # Address IO memory addresses without access signal
             if self.get_register('In') in [120, 121]:

@@ -160,8 +160,6 @@ class DataPath():
         self.Alu_Src_B_Mux.do_tick()
         self.ALU.do_tick()
 
-        self.__log_state()
-
     def enter_interrupt(self) -> None:
         self.in_interrupt = True
         # Save PC
@@ -183,7 +181,7 @@ class DataPath():
         # Restore prev instr
         self.IR.state = self.Memory.memory[257]
 
-    def __log_state(self) -> None:
+    def log_state(self) -> None:
         msg = (f'Tick {self.tick}\tPC: {self.PC.state}\tRegisters: {list(self.Register_File.inner_registers.values())}\tSrcA: {self.ALU.get_register("srcA")} | SrcB: {self.ALU.get_register("srcB")} | Result: {self.ALU.get_register("Result")}\tA1: {self.Register_File.get_register("A1")} | A2: {self.Register_File.get_register("A2")} | A3: {self.Register_File.get_register("A3")}PF: {self.ALU.get_register("PositiveFlag")} | ZF: {self.ALU.get_register("ZeroFlag")}')
         if self.in_interrupt:
             logging.warning('(Int) %s', msg)
@@ -214,6 +212,10 @@ class ControlUnit(CircuitComponent):
                          {'WDSrc': 1, 'RegWrite': 1,
                           'ALUSrcA': 1, 'ALUSrcB': 2},
                          {'PCWrite': 1}],
+            Opcode.DIV: [{'IRWrite': 1, 'ALUControl': 4, 'EF': 1},
+                         {'WDSrc': 1, 'RegWrite': 1,
+                          'ALUSrcA': 1, 'ALUSrcB': 2},
+                         {'PCWrite': 1}],
             Opcode.LD: [{'IRWrite': 1, 'ALUSrcB': 1},
                         {'AdrSrc': 1, 'RegWrite': 1, 'IOOp': 1,
                          'ALUSrcA': 1, 'ALUSrcB': 2},
@@ -225,7 +227,7 @@ class ControlUnit(CircuitComponent):
             Opcode.CMP: [{'IRWrite': 1, 'ALUControl': 1, 'EF': 1},
                          {'ALUSrcA': 1, 'ALUSrcB': 2, 'ALUControl': 0},
                          {'PCWrite': 1}],
-            Opcode.JMP: [{'ALUSrcA': 1, 'ALUSrcB': 1, 'ALUControl': 0},
+            Opcode.JMP: [{'ALUSrcA': 0, 'ALUSrcB': 1, 'ALUControl': 0},
                          {'PCWrite': 1}],
         }
 
@@ -248,6 +250,9 @@ class ControlUnit(CircuitComponent):
                     self.change_state(data_path, valves_state)
             else:
                 raise AttributeError('Unsupported opcode: ' + str(opcode))
+            
+            logging.info(Opcode(opcode).name)
+            data_path.log_state()
 
     def update(self):
         for wire_name, wire in self._wires.items():
@@ -308,6 +313,7 @@ class ControlUnit(CircuitComponent):
     def __get_op_transitions(self, op: int) -> None | List[Dict[str, int]]:
         skip_transitions = [{'ALUSrcA': 1, 'ALUSrcB': 2, 'ALUControl': 0},
                             {'PCWrite': 1}]
+
         match op:
             case Opcode.JG:
                 if self.get_register('PositiveFlag') == 1:
@@ -332,12 +338,10 @@ def simulation(program: List[int], text_start_adr: int = 0, is_interrupts_allowe
     data_path.Memory.load_program(program, 0)
     data_path.PC.state = text_start_adr
 
-    interrupt_program = [122900, 11]
+    interrupt_program = [122901, 12]
     # Interrupt vector address
     data_path.Register_File.inner_registers[6] = 200
     data_path.Memory.load_program(interrupt_program, 200)
-    # Interrupt buffer
-    # data_path.Register_File._inner_registers[7] = 256
 
     control_unit.start(data_path)
 
@@ -346,7 +350,7 @@ def main(args):
     logging.basicConfig(level=logging.INFO,
                         filename="py_log.log", filemode="w", format="%(levelname)s %(message)s")
 
-    filename, start_code, is_interrupts_enabled = args
+    filename, start_code, is_interrupts_enabled = ['examples/prob5.out', 0, False]
 
     codes = read_code(filename)
 
