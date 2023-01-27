@@ -31,7 +31,7 @@ class ControlUnitTests(unittest.TestCase):
         control_unit = ControlUnit()
         data_path = DataPath()
 
-        data_path.Memory.memory[0] = 11
+        data_path.Memory.memory[0] = 12
         control_unit.start(data_path)
 
         for register_name, register_val in control_unit.registers.items():

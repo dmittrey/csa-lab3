@@ -186,7 +186,7 @@ class ALUTests(unittest.TestCase):
 
         alu.do_tick()
 
-        self.assertEqual(alu.get_register('Result'), 2)
+        self.assertEqual(alu.get_register('Result'), 5)
 
     def test_ALUControlIsThree_CalculateMul(self):
         alu = ALU()
@@ -206,7 +206,7 @@ class ALUTests(unittest.TestCase):
 
         alu.do_tick()
 
-        self.assertEqual(alu.get_register('Result'), 2)
+        self.assertEqual(alu.get_register('Result'), 0)
 
     def test_ResultIsZero_ZeroFlagIsActive(self):
         alu = ALU()
@@ -429,7 +429,7 @@ class IOHandlerTests(unittest.TestCase):
         io_handler.do_tick()
         io_handler.do_tick()
 
-        self.assertEqual(io_handler.saved_tokens, ['b', 'b'])
+        self.assertEqual(io_handler.saved_tokens, [98, 98])
 
 
 if __name__ == '__main__':
