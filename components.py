@@ -223,14 +223,13 @@ class IOHandler(CircuitComponent):
             # LD operation on 120 cell
             if self.get_register('In') == IOMemoryCell.IN:
                 self.set_register('Out', self.dip_value)
-                logging.info('Readed: %s', chr(self.dip_value))
+                logging.info('Readed: %s', self.dip_value)
 
             # SW operation on 121 cell
             if self.get_register('In') == IOMemoryCell.OUT:
-                # self.saved_tokens.append(chr(self.get_register('WD')))
+                self.saved_tokens.append(self.get_register('WD'))
                 self.dip_value = self.get_register('WD')
                 logging.info('Saved: %d', self.get_register("WD"))
-                # logging.info('Saved: %s', chr(self.get_register("WD")))
         else:
             # Address IO memory addresses without access signal
             if self.get_register('In') in [120, 121]:
