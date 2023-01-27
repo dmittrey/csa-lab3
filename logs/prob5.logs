@@ -1,0 +1,1191 @@
+INFO JMP
+INFO Tick 3	PC: 1	Registers: [0, 0, 0, 0, 0, 0, 200, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 1 | A3: 0PF: 0 | ZF: 0
+INFO ADDI
+INFO Tick 7	PC: 2	Registers: [0, 0, 0, 0, 1, 0, 200, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 1 | A3: 4PF: 1 | ZF: 0
+INFO ADDI
+INFO Tick 11	PC: 3	Registers: [0, 0, 0, 0, 1, 2, 200, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 2 | A3: 5PF: 1 | ZF: 0
+INFO ADDI
+INFO Tick 15	PC: 4	Registers: [0, 0, 0, 0, 1, 2, 20, 0]	SrcA: 0 | SrcB: 1 | Result: 1	A1: 0 | A2: 4 | A3: 6PF: 1 | ZF: 0
+INFO CMP
+INFO Tick 19	PC: 5	Registers: [0, 0, 0, 0, 1, 2, 20, 0]	SrcA: 20 | SrcB: 2 | Result: 22	A1: 6 | A2: 5 | A3: 0PF: 0 | ZF: 0
+INFO JG
+INFO Tick 22	PC: 6	Registers: [0, 0, 0, 0, 1, 2, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 2 | A3: 0PF: 0 | ZF: 0
+INFO JMP
+INFO Tick 25	PC: 10	Registers: [0, 0, 0, 0, 1, 2, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 2 | A3: 0PF: 0 | ZF: 0
+INFO ADD
+INFO Tick 29	PC: 11	Registers: [0, 1, 0, 0, 1, 2, 20, 0]	SrcA: 0 | SrcB: 1 | Result: 1	A1: 0 | A2: 4 | A3: 1PF: 1 | ZF: 0
+INFO ADD
+INFO Tick 33	PC: 12	Registers: [0, 1, 2, 0, 1, 2, 20, 0]	SrcA: 0 | SrcB: 2 | Result: 2	A1: 0 | A2: 5 | A3: 2PF: 1 | ZF: 0
+INFO JMP
+INFO Tick 36	PC: 16	Registers: [0, 1, 2, 0, 1, 2, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 0 | A3: 0PF: 1 | ZF: 0
+INFO CMP
+INFO Tick 40	PC: 17	Registers: [0, 1, 2, 0, 1, 2, 20, 0]	SrcA: 0 | SrcB: 1 | Result: 1	A1: 0 | A2: 1 | A3: 0PF: 1 | ZF: 0
+INFO BEQ
+INFO Tick 43	PC: 18	Registers: [0, 1, 2, 0, 1, 2, 20, 0]	SrcA: 0 | SrcB: 1 | Result: 1	A1: 0 | A2: 1 | A3: 0PF: 1 | ZF: 0
+INFO CMP
+INFO Tick 47	PC: 19	Registers: [0, 1, 2, 0, 1, 2, 20, 0]	SrcA: 2 | SrcB: 1 | Result: 3	A1: 2 | A2: 1 | A3: 0PF: 0 | ZF: 0
+INFO JG
+INFO Tick 50	PC: 20	Registers: [0, 1, 2, 0, 1, 2, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 7 | A3: 0PF: 0 | ZF: 0
+INFO ADD
+INFO Tick 54	PC: 21	Registers: [0, 1, 2, 1, 1, 2, 20, 0]	SrcA: 0 | SrcB: 1 | Result: 1	A1: 0 | A2: 1 | A3: 3PF: 1 | ZF: 0
+INFO ADD
+INFO Tick 58	PC: 22	Registers: [0, 2, 2, 1, 1, 2, 20, 0]	SrcA: 0 | SrcB: 2 | Result: 2	A1: 0 | A2: 2 | A3: 1PF: 1 | ZF: 0
+INFO ADD
+INFO Tick 62	PC: 23	Registers: [0, 2, 1, 1, 1, 2, 20, 0]	SrcA: 0 | SrcB: 1 | Result: 1	A1: 0 | A2: 3 | A3: 2PF: 1 | ZF: 0
+INFO REM
+INFO Tick 66	PC: 24	Registers: [0, 0, 1, 1, 1, 2, 20, 0]	SrcA: 0 | SrcB: 1 | Result: 1	A1: 1 | A2: 2 | A3: 1PF: 0 | ZF: 1
+INFO JMP
+INFO Tick 69	PC: 16	Registers: [0, 0, 1, 1, 1, 2, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 0 | A3: 0PF: 0 | ZF: 1
+INFO CMP
+INFO Tick 73	PC: 17	Registers: [0, 0, 1, 1, 1, 2, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 1 | A3: 0PF: 0 | ZF: 1
+INFO BEQ
+INFO Tick 76	PC: 25	Registers: [0, 0, 1, 1, 1, 2, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 1 | A3: 0PF: 0 | ZF: 1
+INFO JMP
+INFO Tick 79	PC: 13	Registers: [0, 0, 1, 1, 1, 2, 20, 0]	SrcA: 0 | SrcB: 2 | Result: 2	A1: 0 | A2: 5 | A3: 0PF: 0 | ZF: 1
+INFO MUL
+INFO Tick 83	PC: 14	Registers: [0, 0, 1, 2, 1, 2, 20, 0]	SrcA: 1 | SrcB: 2 | Result: 3	A1: 4 | A2: 5 | A3: 3PF: 1 | ZF: 0
+INFO DIV
+INFO Tick 87	PC: 15	Registers: [0, 0, 1, 2, 1, 2, 20, 0]	SrcA: 2 | SrcB: 1 | Result: 3	A1: 3 | A2: 2 | A3: 3PF: 1 | ZF: 0
+INFO JMP
+INFO Tick 90	PC: 7	Registers: [0, 0, 1, 2, 1, 2, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 7 | A3: 0PF: 1 | ZF: 0
+INFO ADD
+INFO Tick 94	PC: 8	Registers: [0, 0, 1, 2, 2, 2, 20, 0]	SrcA: 0 | SrcB: 2 | Result: 2	A1: 0 | A2: 3 | A3: 4PF: 1 | ZF: 0
+INFO ADDI
+INFO Tick 98	PC: 9	Registers: [0, 0, 1, 2, 2, 3, 20, 0]	SrcA: 3 | SrcB: 0 | Result: 3	A1: 5 | A2: 1 | A3: 5PF: 1 | ZF: 0
+INFO JMP
+INFO Tick 101	PC: 4	Registers: [0, 0, 1, 2, 2, 3, 20, 0]	SrcA: 0 | SrcB: 2 | Result: 2	A1: 0 | A2: 4 | A3: 0PF: 1 | ZF: 0
+INFO CMP
+INFO Tick 105	PC: 5	Registers: [0, 0, 1, 2, 2, 3, 20, 0]	SrcA: 20 | SrcB: 3 | Result: 23	A1: 6 | A2: 5 | A3: 0PF: 0 | ZF: 0
+INFO JG
+INFO Tick 108	PC: 6	Registers: [0, 0, 1, 2, 2, 3, 20, 0]	SrcA: 0 | SrcB: 1 | Result: 1	A1: 0 | A2: 2 | A3: 0PF: 0 | ZF: 0
+INFO JMP
+INFO Tick 111	PC: 10	Registers: [0, 0, 1, 2, 2, 3, 20, 0]	SrcA: 0 | SrcB: 1 | Result: 1	A1: 0 | A2: 2 | A3: 0PF: 0 | ZF: 0
+INFO ADD
+INFO Tick 115	PC: 11	Registers: [0, 2, 1, 2, 2, 3, 20, 0]	SrcA: 0 | SrcB: 2 | Result: 2	A1: 0 | A2: 4 | A3: 1PF: 1 | ZF: 0
+INFO ADD
+INFO Tick 119	PC: 12	Registers: [0, 2, 3, 2, 2, 3, 20, 0]	SrcA: 0 | SrcB: 3 | Result: 3	A1: 0 | A2: 5 | A3: 2PF: 1 | ZF: 0
+INFO JMP
+INFO Tick 122	PC: 16	Registers: [0, 2, 3, 2, 2, 3, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 0 | A3: 0PF: 1 | ZF: 0
+INFO CMP
+INFO Tick 126	PC: 17	Registers: [0, 2, 3, 2, 2, 3, 20, 0]	SrcA: 0 | SrcB: 2 | Result: 2	A1: 0 | A2: 1 | A3: 0PF: 1 | ZF: 0
+INFO BEQ
+INFO Tick 129	PC: 18	Registers: [0, 2, 3, 2, 2, 3, 20, 0]	SrcA: 0 | SrcB: 2 | Result: 2	A1: 0 | A2: 1 | A3: 0PF: 1 | ZF: 0
+INFO CMP
+INFO Tick 133	PC: 19	Registers: [0, 2, 3, 2, 2, 3, 20, 0]	SrcA: 3 | SrcB: 2 | Result: 5	A1: 2 | A2: 1 | A3: 0PF: 0 | ZF: 0
+INFO JG
+INFO Tick 136	PC: 20	Registers: [0, 2, 3, 2, 2, 3, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 7 | A3: 0PF: 0 | ZF: 0
+INFO ADD
+INFO Tick 140	PC: 21	Registers: [0, 2, 3, 2, 2, 3, 20, 0]	SrcA: 0 | SrcB: 2 | Result: 2	A1: 0 | A2: 1 | A3: 3PF: 1 | ZF: 0
+INFO ADD
+INFO Tick 144	PC: 22	Registers: [0, 3, 3, 2, 2, 3, 20, 0]	SrcA: 0 | SrcB: 3 | Result: 3	A1: 0 | A2: 2 | A3: 1PF: 1 | ZF: 0
+INFO ADD
+INFO Tick 148	PC: 23	Registers: [0, 3, 2, 2, 2, 3, 20, 0]	SrcA: 0 | SrcB: 2 | Result: 2	A1: 0 | A2: 3 | A3: 2PF: 1 | ZF: 0
+INFO REM
+INFO Tick 152	PC: 24	Registers: [0, 1, 2, 2, 2, 3, 20, 0]	SrcA: 1 | SrcB: 2 | Result: 3	A1: 1 | A2: 2 | A3: 1PF: 1 | ZF: 0
+INFO JMP
+INFO Tick 155	PC: 16	Registers: [0, 1, 2, 2, 2, 3, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 0 | A3: 0PF: 1 | ZF: 0
+INFO CMP
+INFO Tick 159	PC: 17	Registers: [0, 1, 2, 2, 2, 3, 20, 0]	SrcA: 0 | SrcB: 1 | Result: 1	A1: 0 | A2: 1 | A3: 0PF: 1 | ZF: 0
+INFO BEQ
+INFO Tick 162	PC: 18	Registers: [0, 1, 2, 2, 2, 3, 20, 0]	SrcA: 0 | SrcB: 1 | Result: 1	A1: 0 | A2: 1 | A3: 0PF: 1 | ZF: 0
+INFO CMP
+INFO Tick 166	PC: 19	Registers: [0, 1, 2, 2, 2, 3, 20, 0]	SrcA: 2 | SrcB: 1 | Result: 3	A1: 2 | A2: 1 | A3: 0PF: 0 | ZF: 0
+INFO JG
+INFO Tick 169	PC: 20	Registers: [0, 1, 2, 2, 2, 3, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 7 | A3: 0PF: 0 | ZF: 0
+INFO ADD
+INFO Tick 173	PC: 21	Registers: [0, 1, 2, 1, 2, 3, 20, 0]	SrcA: 0 | SrcB: 1 | Result: 1	A1: 0 | A2: 1 | A3: 3PF: 1 | ZF: 0
+INFO ADD
+INFO Tick 177	PC: 22	Registers: [0, 2, 2, 1, 2, 3, 20, 0]	SrcA: 0 | SrcB: 2 | Result: 2	A1: 0 | A2: 2 | A3: 1PF: 1 | ZF: 0
+INFO ADD
+INFO Tick 181	PC: 23	Registers: [0, 2, 1, 1, 2, 3, 20, 0]	SrcA: 0 | SrcB: 1 | Result: 1	A1: 0 | A2: 3 | A3: 2PF: 1 | ZF: 0
+INFO REM
+INFO Tick 185	PC: 24	Registers: [0, 0, 1, 1, 2, 3, 20, 0]	SrcA: 0 | SrcB: 1 | Result: 1	A1: 1 | A2: 2 | A3: 1PF: 0 | ZF: 1
+INFO JMP
+INFO Tick 188	PC: 16	Registers: [0, 0, 1, 1, 2, 3, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 0 | A3: 0PF: 0 | ZF: 1
+INFO CMP
+INFO Tick 192	PC: 17	Registers: [0, 0, 1, 1, 2, 3, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 1 | A3: 0PF: 0 | ZF: 1
+INFO BEQ
+INFO Tick 195	PC: 25	Registers: [0, 0, 1, 1, 2, 3, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 1 | A3: 0PF: 0 | ZF: 1
+INFO JMP
+INFO Tick 198	PC: 13	Registers: [0, 0, 1, 1, 2, 3, 20, 0]	SrcA: 0 | SrcB: 3 | Result: 3	A1: 0 | A2: 5 | A3: 0PF: 0 | ZF: 1
+INFO MUL
+INFO Tick 202	PC: 14	Registers: [0, 0, 1, 6, 2, 3, 20, 0]	SrcA: 2 | SrcB: 3 | Result: 5	A1: 4 | A2: 5 | A3: 3PF: 1 | ZF: 0
+INFO DIV
+INFO Tick 206	PC: 15	Registers: [0, 0, 1, 6, 2, 3, 20, 0]	SrcA: 6 | SrcB: 1 | Result: 7	A1: 3 | A2: 2 | A3: 3PF: 1 | ZF: 0
+INFO JMP
+INFO Tick 209	PC: 7	Registers: [0, 0, 1, 6, 2, 3, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 7 | A3: 0PF: 1 | ZF: 0
+INFO ADD
+INFO Tick 213	PC: 8	Registers: [0, 0, 1, 6, 6, 3, 20, 0]	SrcA: 0 | SrcB: 6 | Result: 6	A1: 0 | A2: 3 | A3: 4PF: 1 | ZF: 0
+INFO ADDI
+INFO Tick 217	PC: 9	Registers: [0, 0, 1, 6, 6, 4, 20, 0]	SrcA: 4 | SrcB: 0 | Result: 4	A1: 5 | A2: 1 | A3: 5PF: 1 | ZF: 0
+INFO JMP
+INFO Tick 220	PC: 4	Registers: [0, 0, 1, 6, 6, 4, 20, 0]	SrcA: 0 | SrcB: 6 | Result: 6	A1: 0 | A2: 4 | A3: 0PF: 1 | ZF: 0
+INFO CMP
+INFO Tick 224	PC: 5	Registers: [0, 0, 1, 6, 6, 4, 20, 0]	SrcA: 20 | SrcB: 4 | Result: 24	A1: 6 | A2: 5 | A3: 0PF: 0 | ZF: 0
+INFO JG
+INFO Tick 227	PC: 6	Registers: [0, 0, 1, 6, 6, 4, 20, 0]	SrcA: 0 | SrcB: 1 | Result: 1	A1: 0 | A2: 2 | A3: 0PF: 0 | ZF: 0
+INFO JMP
+INFO Tick 230	PC: 10	Registers: [0, 0, 1, 6, 6, 4, 20, 0]	SrcA: 0 | SrcB: 1 | Result: 1	A1: 0 | A2: 2 | A3: 0PF: 0 | ZF: 0
+INFO ADD
+INFO Tick 234	PC: 11	Registers: [0, 6, 1, 6, 6, 4, 20, 0]	SrcA: 0 | SrcB: 6 | Result: 6	A1: 0 | A2: 4 | A3: 1PF: 1 | ZF: 0
+INFO ADD
+INFO Tick 238	PC: 12	Registers: [0, 6, 4, 6, 6, 4, 20, 0]	SrcA: 0 | SrcB: 4 | Result: 4	A1: 0 | A2: 5 | A3: 2PF: 1 | ZF: 0
+INFO JMP
+INFO Tick 241	PC: 16	Registers: [0, 6, 4, 6, 6, 4, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 0 | A3: 0PF: 1 | ZF: 0
+INFO CMP
+INFO Tick 245	PC: 17	Registers: [0, 6, 4, 6, 6, 4, 20, 0]	SrcA: 0 | SrcB: 6 | Result: 6	A1: 0 | A2: 1 | A3: 0PF: 1 | ZF: 0
+INFO BEQ
+INFO Tick 248	PC: 18	Registers: [0, 6, 4, 6, 6, 4, 20, 0]	SrcA: 0 | SrcB: 6 | Result: 6	A1: 0 | A2: 1 | A3: 0PF: 1 | ZF: 0
+INFO CMP
+INFO Tick 252	PC: 19	Registers: [0, 6, 4, 6, 6, 4, 20, 0]	SrcA: 4 | SrcB: 6 | Result: 10	A1: 2 | A2: 1 | A3: 0PF: 1 | ZF: 0
+INFO JG
+INFO Tick 255	PC: 23	Registers: [0, 6, 4, 6, 6, 4, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 7 | A3: 0PF: 1 | ZF: 0
+INFO REM
+INFO Tick 259	PC: 24	Registers: [0, 2, 4, 6, 6, 4, 20, 0]	SrcA: 2 | SrcB: 4 | Result: 6	A1: 1 | A2: 2 | A3: 1PF: 1 | ZF: 0
+INFO JMP
+INFO Tick 262	PC: 16	Registers: [0, 2, 4, 6, 6, 4, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 0 | A3: 0PF: 1 | ZF: 0
+INFO CMP
+INFO Tick 266	PC: 17	Registers: [0, 2, 4, 6, 6, 4, 20, 0]	SrcA: 0 | SrcB: 2 | Result: 2	A1: 0 | A2: 1 | A3: 0PF: 1 | ZF: 0
+INFO BEQ
+INFO Tick 269	PC: 18	Registers: [0, 2, 4, 6, 6, 4, 20, 0]	SrcA: 0 | SrcB: 2 | Result: 2	A1: 0 | A2: 1 | A3: 0PF: 1 | ZF: 0
+INFO CMP
+INFO Tick 273	PC: 19	Registers: [0, 2, 4, 6, 6, 4, 20, 0]	SrcA: 4 | SrcB: 2 | Result: 6	A1: 2 | A2: 1 | A3: 0PF: 0 | ZF: 0
+INFO JG
+INFO Tick 276	PC: 20	Registers: [0, 2, 4, 6, 6, 4, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 7 | A3: 0PF: 0 | ZF: 0
+INFO ADD
+INFO Tick 280	PC: 21	Registers: [0, 2, 4, 2, 6, 4, 20, 0]	SrcA: 0 | SrcB: 2 | Result: 2	A1: 0 | A2: 1 | A3: 3PF: 1 | ZF: 0
+INFO ADD
+INFO Tick 284	PC: 22	Registers: [0, 4, 4, 2, 6, 4, 20, 0]	SrcA: 0 | SrcB: 4 | Result: 4	A1: 0 | A2: 2 | A3: 1PF: 1 | ZF: 0
+INFO ADD
+INFO Tick 288	PC: 23	Registers: [0, 4, 2, 2, 6, 4, 20, 0]	SrcA: 0 | SrcB: 2 | Result: 2	A1: 0 | A2: 3 | A3: 2PF: 1 | ZF: 0
+INFO REM
+INFO Tick 292	PC: 24	Registers: [0, 0, 2, 2, 6, 4, 20, 0]	SrcA: 0 | SrcB: 2 | Result: 2	A1: 1 | A2: 2 | A3: 1PF: 0 | ZF: 1
+INFO JMP
+INFO Tick 295	PC: 16	Registers: [0, 0, 2, 2, 6, 4, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 0 | A3: 0PF: 0 | ZF: 1
+INFO CMP
+INFO Tick 299	PC: 17	Registers: [0, 0, 2, 2, 6, 4, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 1 | A3: 0PF: 0 | ZF: 1
+INFO BEQ
+INFO Tick 302	PC: 25	Registers: [0, 0, 2, 2, 6, 4, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 1 | A3: 0PF: 0 | ZF: 1
+INFO JMP
+INFO Tick 305	PC: 13	Registers: [0, 0, 2, 2, 6, 4, 20, 0]	SrcA: 0 | SrcB: 4 | Result: 4	A1: 0 | A2: 5 | A3: 0PF: 0 | ZF: 1
+INFO MUL
+INFO Tick 309	PC: 14	Registers: [0, 0, 2, 24, 6, 4, 20, 0]	SrcA: 6 | SrcB: 4 | Result: 10	A1: 4 | A2: 5 | A3: 3PF: 1 | ZF: 0
+INFO DIV
+INFO Tick 313	PC: 15	Registers: [0, 0, 2, 12, 6, 4, 20, 0]	SrcA: 12 | SrcB: 2 | Result: 14	A1: 3 | A2: 2 | A3: 3PF: 1 | ZF: 0
+INFO JMP
+INFO Tick 316	PC: 7	Registers: [0, 0, 2, 12, 6, 4, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 7 | A3: 0PF: 1 | ZF: 0
+INFO ADD
+INFO Tick 320	PC: 8	Registers: [0, 0, 2, 12, 12, 4, 20, 0]	SrcA: 0 | SrcB: 12 | Result: 12	A1: 0 | A2: 3 | A3: 4PF: 1 | ZF: 0
+INFO ADDI
+INFO Tick 324	PC: 9	Registers: [0, 0, 2, 12, 12, 5, 20, 0]	SrcA: 5 | SrcB: 0 | Result: 5	A1: 5 | A2: 1 | A3: 5PF: 1 | ZF: 0
+INFO JMP
+INFO Tick 327	PC: 4	Registers: [0, 0, 2, 12, 12, 5, 20, 0]	SrcA: 0 | SrcB: 12 | Result: 12	A1: 0 | A2: 4 | A3: 0PF: 1 | ZF: 0
+INFO CMP
+INFO Tick 331	PC: 5	Registers: [0, 0, 2, 12, 12, 5, 20, 0]	SrcA: 20 | SrcB: 5 | Result: 25	A1: 6 | A2: 5 | A3: 0PF: 0 | ZF: 0
+INFO JG
+INFO Tick 334	PC: 6	Registers: [0, 0, 2, 12, 12, 5, 20, 0]	SrcA: 0 | SrcB: 2 | Result: 2	A1: 0 | A2: 2 | A3: 0PF: 0 | ZF: 0
+INFO JMP
+INFO Tick 337	PC: 10	Registers: [0, 0, 2, 12, 12, 5, 20, 0]	SrcA: 0 | SrcB: 2 | Result: 2	A1: 0 | A2: 2 | A3: 0PF: 0 | ZF: 0
+INFO ADD
+INFO Tick 341	PC: 11	Registers: [0, 12, 2, 12, 12, 5, 20, 0]	SrcA: 0 | SrcB: 12 | Result: 12	A1: 0 | A2: 4 | A3: 1PF: 1 | ZF: 0
+INFO ADD
+INFO Tick 345	PC: 12	Registers: [0, 12, 5, 12, 12, 5, 20, 0]	SrcA: 0 | SrcB: 5 | Result: 5	A1: 0 | A2: 5 | A3: 2PF: 1 | ZF: 0
+INFO JMP
+INFO Tick 348	PC: 16	Registers: [0, 12, 5, 12, 12, 5, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 0 | A3: 0PF: 1 | ZF: 0
+INFO CMP
+INFO Tick 352	PC: 17	Registers: [0, 12, 5, 12, 12, 5, 20, 0]	SrcA: 0 | SrcB: 12 | Result: 12	A1: 0 | A2: 1 | A3: 0PF: 1 | ZF: 0
+INFO BEQ
+INFO Tick 355	PC: 18	Registers: [0, 12, 5, 12, 12, 5, 20, 0]	SrcA: 0 | SrcB: 12 | Result: 12	A1: 0 | A2: 1 | A3: 0PF: 1 | ZF: 0
+INFO CMP
+INFO Tick 359	PC: 19	Registers: [0, 12, 5, 12, 12, 5, 20, 0]	SrcA: 5 | SrcB: 12 | Result: 17	A1: 2 | A2: 1 | A3: 0PF: 1 | ZF: 0
+INFO JG
+INFO Tick 362	PC: 23	Registers: [0, 12, 5, 12, 12, 5, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 7 | A3: 0PF: 1 | ZF: 0
+INFO REM
+INFO Tick 366	PC: 24	Registers: [0, 2, 5, 12, 12, 5, 20, 0]	SrcA: 2 | SrcB: 5 | Result: 7	A1: 1 | A2: 2 | A3: 1PF: 1 | ZF: 0
+INFO JMP
+INFO Tick 369	PC: 16	Registers: [0, 2, 5, 12, 12, 5, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 0 | A3: 0PF: 1 | ZF: 0
+INFO CMP
+INFO Tick 373	PC: 17	Registers: [0, 2, 5, 12, 12, 5, 20, 0]	SrcA: 0 | SrcB: 2 | Result: 2	A1: 0 | A2: 1 | A3: 0PF: 1 | ZF: 0
+INFO BEQ
+INFO Tick 376	PC: 18	Registers: [0, 2, 5, 12, 12, 5, 20, 0]	SrcA: 0 | SrcB: 2 | Result: 2	A1: 0 | A2: 1 | A3: 0PF: 1 | ZF: 0
+INFO CMP
+INFO Tick 380	PC: 19	Registers: [0, 2, 5, 12, 12, 5, 20, 0]	SrcA: 5 | SrcB: 2 | Result: 7	A1: 2 | A2: 1 | A3: 0PF: 0 | ZF: 0
+INFO JG
+INFO Tick 383	PC: 20	Registers: [0, 2, 5, 12, 12, 5, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 7 | A3: 0PF: 0 | ZF: 0
+INFO ADD
+INFO Tick 387	PC: 21	Registers: [0, 2, 5, 2, 12, 5, 20, 0]	SrcA: 0 | SrcB: 2 | Result: 2	A1: 0 | A2: 1 | A3: 3PF: 1 | ZF: 0
+INFO ADD
+INFO Tick 391	PC: 22	Registers: [0, 5, 5, 2, 12, 5, 20, 0]	SrcA: 0 | SrcB: 5 | Result: 5	A1: 0 | A2: 2 | A3: 1PF: 1 | ZF: 0
+INFO ADD
+INFO Tick 395	PC: 23	Registers: [0, 5, 2, 2, 12, 5, 20, 0]	SrcA: 0 | SrcB: 2 | Result: 2	A1: 0 | A2: 3 | A3: 2PF: 1 | ZF: 0
+INFO REM
+INFO Tick 399	PC: 24	Registers: [0, 1, 2, 2, 12, 5, 20, 0]	SrcA: 1 | SrcB: 2 | Result: 3	A1: 1 | A2: 2 | A3: 1PF: 1 | ZF: 0
+INFO JMP
+INFO Tick 402	PC: 16	Registers: [0, 1, 2, 2, 12, 5, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 0 | A3: 0PF: 1 | ZF: 0
+INFO CMP
+INFO Tick 406	PC: 17	Registers: [0, 1, 2, 2, 12, 5, 20, 0]	SrcA: 0 | SrcB: 1 | Result: 1	A1: 0 | A2: 1 | A3: 0PF: 1 | ZF: 0
+INFO BEQ
+INFO Tick 409	PC: 18	Registers: [0, 1, 2, 2, 12, 5, 20, 0]	SrcA: 0 | SrcB: 1 | Result: 1	A1: 0 | A2: 1 | A3: 0PF: 1 | ZF: 0
+INFO CMP
+INFO Tick 413	PC: 19	Registers: [0, 1, 2, 2, 12, 5, 20, 0]	SrcA: 2 | SrcB: 1 | Result: 3	A1: 2 | A2: 1 | A3: 0PF: 0 | ZF: 0
+INFO JG
+INFO Tick 416	PC: 20	Registers: [0, 1, 2, 2, 12, 5, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 7 | A3: 0PF: 0 | ZF: 0
+INFO ADD
+INFO Tick 420	PC: 21	Registers: [0, 1, 2, 1, 12, 5, 20, 0]	SrcA: 0 | SrcB: 1 | Result: 1	A1: 0 | A2: 1 | A3: 3PF: 1 | ZF: 0
+INFO ADD
+INFO Tick 424	PC: 22	Registers: [0, 2, 2, 1, 12, 5, 20, 0]	SrcA: 0 | SrcB: 2 | Result: 2	A1: 0 | A2: 2 | A3: 1PF: 1 | ZF: 0
+INFO ADD
+INFO Tick 428	PC: 23	Registers: [0, 2, 1, 1, 12, 5, 20, 0]	SrcA: 0 | SrcB: 1 | Result: 1	A1: 0 | A2: 3 | A3: 2PF: 1 | ZF: 0
+INFO REM
+INFO Tick 432	PC: 24	Registers: [0, 0, 1, 1, 12, 5, 20, 0]	SrcA: 0 | SrcB: 1 | Result: 1	A1: 1 | A2: 2 | A3: 1PF: 0 | ZF: 1
+INFO JMP
+INFO Tick 435	PC: 16	Registers: [0, 0, 1, 1, 12, 5, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 0 | A3: 0PF: 0 | ZF: 1
+INFO CMP
+INFO Tick 439	PC: 17	Registers: [0, 0, 1, 1, 12, 5, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 1 | A3: 0PF: 0 | ZF: 1
+INFO BEQ
+INFO Tick 442	PC: 25	Registers: [0, 0, 1, 1, 12, 5, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 1 | A3: 0PF: 0 | ZF: 1
+INFO JMP
+INFO Tick 445	PC: 13	Registers: [0, 0, 1, 1, 12, 5, 20, 0]	SrcA: 0 | SrcB: 5 | Result: 5	A1: 0 | A2: 5 | A3: 0PF: 0 | ZF: 1
+INFO MUL
+INFO Tick 449	PC: 14	Registers: [0, 0, 1, 60, 12, 5, 20, 0]	SrcA: 12 | SrcB: 5 | Result: 17	A1: 4 | A2: 5 | A3: 3PF: 1 | ZF: 0
+INFO DIV
+INFO Tick 453	PC: 15	Registers: [0, 0, 1, 60, 12, 5, 20, 0]	SrcA: 60 | SrcB: 1 | Result: 61	A1: 3 | A2: 2 | A3: 3PF: 1 | ZF: 0
+INFO JMP
+INFO Tick 456	PC: 7	Registers: [0, 0, 1, 60, 12, 5, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 7 | A3: 0PF: 1 | ZF: 0
+INFO ADD
+INFO Tick 460	PC: 8	Registers: [0, 0, 1, 60, 60, 5, 20, 0]	SrcA: 0 | SrcB: 60 | Result: 60	A1: 0 | A2: 3 | A3: 4PF: 1 | ZF: 0
+INFO ADDI
+INFO Tick 464	PC: 9	Registers: [0, 0, 1, 60, 60, 6, 20, 0]	SrcA: 6 | SrcB: 0 | Result: 6	A1: 5 | A2: 1 | A3: 5PF: 1 | ZF: 0
+INFO JMP
+INFO Tick 467	PC: 4	Registers: [0, 0, 1, 60, 60, 6, 20, 0]	SrcA: 0 | SrcB: 60 | Result: 60	A1: 0 | A2: 4 | A3: 0PF: 1 | ZF: 0
+INFO CMP
+INFO Tick 471	PC: 5	Registers: [0, 0, 1, 60, 60, 6, 20, 0]	SrcA: 20 | SrcB: 6 | Result: 26	A1: 6 | A2: 5 | A3: 0PF: 0 | ZF: 0
+INFO JG
+INFO Tick 474	PC: 6	Registers: [0, 0, 1, 60, 60, 6, 20, 0]	SrcA: 0 | SrcB: 1 | Result: 1	A1: 0 | A2: 2 | A3: 0PF: 0 | ZF: 0
+INFO JMP
+INFO Tick 477	PC: 10	Registers: [0, 0, 1, 60, 60, 6, 20, 0]	SrcA: 0 | SrcB: 1 | Result: 1	A1: 0 | A2: 2 | A3: 0PF: 0 | ZF: 0
+INFO ADD
+INFO Tick 481	PC: 11	Registers: [0, 60, 1, 60, 60, 6, 20, 0]	SrcA: 0 | SrcB: 60 | Result: 60	A1: 0 | A2: 4 | A3: 1PF: 1 | ZF: 0
+INFO ADD
+INFO Tick 485	PC: 12	Registers: [0, 60, 6, 60, 60, 6, 20, 0]	SrcA: 0 | SrcB: 6 | Result: 6	A1: 0 | A2: 5 | A3: 2PF: 1 | ZF: 0
+INFO JMP
+INFO Tick 488	PC: 16	Registers: [0, 60, 6, 60, 60, 6, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 0 | A3: 0PF: 1 | ZF: 0
+INFO CMP
+INFO Tick 492	PC: 17	Registers: [0, 60, 6, 60, 60, 6, 20, 0]	SrcA: 0 | SrcB: 60 | Result: 60	A1: 0 | A2: 1 | A3: 0PF: 1 | ZF: 0
+INFO BEQ
+INFO Tick 495	PC: 18	Registers: [0, 60, 6, 60, 60, 6, 20, 0]	SrcA: 0 | SrcB: 60 | Result: 60	A1: 0 | A2: 1 | A3: 0PF: 1 | ZF: 0
+INFO CMP
+INFO Tick 499	PC: 19	Registers: [0, 60, 6, 60, 60, 6, 20, 0]	SrcA: 6 | SrcB: 60 | Result: 66	A1: 2 | A2: 1 | A3: 0PF: 1 | ZF: 0
+INFO JG
+INFO Tick 502	PC: 23	Registers: [0, 60, 6, 60, 60, 6, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 7 | A3: 0PF: 1 | ZF: 0
+INFO REM
+INFO Tick 506	PC: 24	Registers: [0, 0, 6, 60, 60, 6, 20, 0]	SrcA: 0 | SrcB: 6 | Result: 6	A1: 1 | A2: 2 | A3: 1PF: 0 | ZF: 1
+INFO JMP
+INFO Tick 509	PC: 16	Registers: [0, 0, 6, 60, 60, 6, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 0 | A3: 0PF: 0 | ZF: 1
+INFO CMP
+INFO Tick 513	PC: 17	Registers: [0, 0, 6, 60, 60, 6, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 1 | A3: 0PF: 0 | ZF: 1
+INFO BEQ
+INFO Tick 516	PC: 25	Registers: [0, 0, 6, 60, 60, 6, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 1 | A3: 0PF: 0 | ZF: 1
+INFO JMP
+INFO Tick 519	PC: 13	Registers: [0, 0, 6, 60, 60, 6, 20, 0]	SrcA: 0 | SrcB: 6 | Result: 6	A1: 0 | A2: 5 | A3: 0PF: 0 | ZF: 1
+INFO MUL
+INFO Tick 523	PC: 14	Registers: [0, 0, 6, 360, 60, 6, 20, 0]	SrcA: 60 | SrcB: 6 | Result: 66	A1: 4 | A2: 5 | A3: 3PF: 1 | ZF: 0
+INFO DIV
+INFO Tick 527	PC: 15	Registers: [0, 0, 6, 60, 60, 6, 20, 0]	SrcA: 60 | SrcB: 6 | Result: 66	A1: 3 | A2: 2 | A3: 3PF: 1 | ZF: 0
+INFO JMP
+INFO Tick 530	PC: 7	Registers: [0, 0, 6, 60, 60, 6, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 7 | A3: 0PF: 1 | ZF: 0
+INFO ADD
+INFO Tick 534	PC: 8	Registers: [0, 0, 6, 60, 60, 6, 20, 0]	SrcA: 0 | SrcB: 60 | Result: 60	A1: 0 | A2: 3 | A3: 4PF: 1 | ZF: 0
+INFO ADDI
+INFO Tick 538	PC: 9	Registers: [0, 0, 6, 60, 60, 7, 20, 0]	SrcA: 7 | SrcB: 0 | Result: 7	A1: 5 | A2: 1 | A3: 5PF: 1 | ZF: 0
+INFO JMP
+INFO Tick 541	PC: 4	Registers: [0, 0, 6, 60, 60, 7, 20, 0]	SrcA: 0 | SrcB: 60 | Result: 60	A1: 0 | A2: 4 | A3: 0PF: 1 | ZF: 0
+INFO CMP
+INFO Tick 545	PC: 5	Registers: [0, 0, 6, 60, 60, 7, 20, 0]	SrcA: 20 | SrcB: 7 | Result: 27	A1: 6 | A2: 5 | A3: 0PF: 0 | ZF: 0
+INFO JG
+INFO Tick 548	PC: 6	Registers: [0, 0, 6, 60, 60, 7, 20, 0]	SrcA: 0 | SrcB: 6 | Result: 6	A1: 0 | A2: 2 | A3: 0PF: 0 | ZF: 0
+INFO JMP
+INFO Tick 551	PC: 10	Registers: [0, 0, 6, 60, 60, 7, 20, 0]	SrcA: 0 | SrcB: 6 | Result: 6	A1: 0 | A2: 2 | A3: 0PF: 0 | ZF: 0
+INFO ADD
+INFO Tick 555	PC: 11	Registers: [0, 60, 6, 60, 60, 7, 20, 0]	SrcA: 0 | SrcB: 60 | Result: 60	A1: 0 | A2: 4 | A3: 1PF: 1 | ZF: 0
+INFO ADD
+INFO Tick 559	PC: 12	Registers: [0, 60, 7, 60, 60, 7, 20, 0]	SrcA: 0 | SrcB: 7 | Result: 7	A1: 0 | A2: 5 | A3: 2PF: 1 | ZF: 0
+INFO JMP
+INFO Tick 562	PC: 16	Registers: [0, 60, 7, 60, 60, 7, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 0 | A3: 0PF: 1 | ZF: 0
+INFO CMP
+INFO Tick 566	PC: 17	Registers: [0, 60, 7, 60, 60, 7, 20, 0]	SrcA: 0 | SrcB: 60 | Result: 60	A1: 0 | A2: 1 | A3: 0PF: 1 | ZF: 0
+INFO BEQ
+INFO Tick 569	PC: 18	Registers: [0, 60, 7, 60, 60, 7, 20, 0]	SrcA: 0 | SrcB: 60 | Result: 60	A1: 0 | A2: 1 | A3: 0PF: 1 | ZF: 0
+INFO CMP
+INFO Tick 573	PC: 19	Registers: [0, 60, 7, 60, 60, 7, 20, 0]	SrcA: 7 | SrcB: 60 | Result: 67	A1: 2 | A2: 1 | A3: 0PF: 1 | ZF: 0
+INFO JG
+INFO Tick 576	PC: 23	Registers: [0, 60, 7, 60, 60, 7, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 7 | A3: 0PF: 1 | ZF: 0
+INFO REM
+INFO Tick 580	PC: 24	Registers: [0, 4, 7, 60, 60, 7, 20, 0]	SrcA: 4 | SrcB: 7 | Result: 11	A1: 1 | A2: 2 | A3: 1PF: 1 | ZF: 0
+INFO JMP
+INFO Tick 583	PC: 16	Registers: [0, 4, 7, 60, 60, 7, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 0 | A3: 0PF: 1 | ZF: 0
+INFO CMP
+INFO Tick 587	PC: 17	Registers: [0, 4, 7, 60, 60, 7, 20, 0]	SrcA: 0 | SrcB: 4 | Result: 4	A1: 0 | A2: 1 | A3: 0PF: 1 | ZF: 0
+INFO BEQ
+INFO Tick 590	PC: 18	Registers: [0, 4, 7, 60, 60, 7, 20, 0]	SrcA: 0 | SrcB: 4 | Result: 4	A1: 0 | A2: 1 | A3: 0PF: 1 | ZF: 0
+INFO CMP
+INFO Tick 594	PC: 19	Registers: [0, 4, 7, 60, 60, 7, 20, 0]	SrcA: 7 | SrcB: 4 | Result: 11	A1: 2 | A2: 1 | A3: 0PF: 0 | ZF: 0
+INFO JG
+INFO Tick 597	PC: 20	Registers: [0, 4, 7, 60, 60, 7, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 7 | A3: 0PF: 0 | ZF: 0
+INFO ADD
+INFO Tick 601	PC: 21	Registers: [0, 4, 7, 4, 60, 7, 20, 0]	SrcA: 0 | SrcB: 4 | Result: 4	A1: 0 | A2: 1 | A3: 3PF: 1 | ZF: 0
+INFO ADD
+INFO Tick 605	PC: 22	Registers: [0, 7, 7, 4, 60, 7, 20, 0]	SrcA: 0 | SrcB: 7 | Result: 7	A1: 0 | A2: 2 | A3: 1PF: 1 | ZF: 0
+INFO ADD
+INFO Tick 609	PC: 23	Registers: [0, 7, 4, 4, 60, 7, 20, 0]	SrcA: 0 | SrcB: 4 | Result: 4	A1: 0 | A2: 3 | A3: 2PF: 1 | ZF: 0
+INFO REM
+INFO Tick 613	PC: 24	Registers: [0, 3, 4, 4, 60, 7, 20, 0]	SrcA: 3 | SrcB: 4 | Result: 7	A1: 1 | A2: 2 | A3: 1PF: 1 | ZF: 0
+INFO JMP
+INFO Tick 616	PC: 16	Registers: [0, 3, 4, 4, 60, 7, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 0 | A3: 0PF: 1 | ZF: 0
+INFO CMP
+INFO Tick 620	PC: 17	Registers: [0, 3, 4, 4, 60, 7, 20, 0]	SrcA: 0 | SrcB: 3 | Result: 3	A1: 0 | A2: 1 | A3: 0PF: 1 | ZF: 0
+INFO BEQ
+INFO Tick 623	PC: 18	Registers: [0, 3, 4, 4, 60, 7, 20, 0]	SrcA: 0 | SrcB: 3 | Result: 3	A1: 0 | A2: 1 | A3: 0PF: 1 | ZF: 0
+INFO CMP
+INFO Tick 627	PC: 19	Registers: [0, 3, 4, 4, 60, 7, 20, 0]	SrcA: 4 | SrcB: 3 | Result: 7	A1: 2 | A2: 1 | A3: 0PF: 0 | ZF: 0
+INFO JG
+INFO Tick 630	PC: 20	Registers: [0, 3, 4, 4, 60, 7, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 7 | A3: 0PF: 0 | ZF: 0
+INFO ADD
+INFO Tick 634	PC: 21	Registers: [0, 3, 4, 3, 60, 7, 20, 0]	SrcA: 0 | SrcB: 3 | Result: 3	A1: 0 | A2: 1 | A3: 3PF: 1 | ZF: 0
+INFO ADD
+INFO Tick 638	PC: 22	Registers: [0, 4, 4, 3, 60, 7, 20, 0]	SrcA: 0 | SrcB: 4 | Result: 4	A1: 0 | A2: 2 | A3: 1PF: 1 | ZF: 0
+INFO ADD
+INFO Tick 642	PC: 23	Registers: [0, 4, 3, 3, 60, 7, 20, 0]	SrcA: 0 | SrcB: 3 | Result: 3	A1: 0 | A2: 3 | A3: 2PF: 1 | ZF: 0
+INFO REM
+INFO Tick 646	PC: 24	Registers: [0, 1, 3, 3, 60, 7, 20, 0]	SrcA: 1 | SrcB: 3 | Result: 4	A1: 1 | A2: 2 | A3: 1PF: 1 | ZF: 0
+INFO JMP
+INFO Tick 649	PC: 16	Registers: [0, 1, 3, 3, 60, 7, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 0 | A3: 0PF: 1 | ZF: 0
+INFO CMP
+INFO Tick 653	PC: 17	Registers: [0, 1, 3, 3, 60, 7, 20, 0]	SrcA: 0 | SrcB: 1 | Result: 1	A1: 0 | A2: 1 | A3: 0PF: 1 | ZF: 0
+INFO BEQ
+INFO Tick 656	PC: 18	Registers: [0, 1, 3, 3, 60, 7, 20, 0]	SrcA: 0 | SrcB: 1 | Result: 1	A1: 0 | A2: 1 | A3: 0PF: 1 | ZF: 0
+INFO CMP
+INFO Tick 660	PC: 19	Registers: [0, 1, 3, 3, 60, 7, 20, 0]	SrcA: 3 | SrcB: 1 | Result: 4	A1: 2 | A2: 1 | A3: 0PF: 0 | ZF: 0
+INFO JG
+INFO Tick 663	PC: 20	Registers: [0, 1, 3, 3, 60, 7, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 7 | A3: 0PF: 0 | ZF: 0
+INFO ADD
+INFO Tick 667	PC: 21	Registers: [0, 1, 3, 1, 60, 7, 20, 0]	SrcA: 0 | SrcB: 1 | Result: 1	A1: 0 | A2: 1 | A3: 3PF: 1 | ZF: 0
+INFO ADD
+INFO Tick 671	PC: 22	Registers: [0, 3, 3, 1, 60, 7, 20, 0]	SrcA: 0 | SrcB: 3 | Result: 3	A1: 0 | A2: 2 | A3: 1PF: 1 | ZF: 0
+INFO ADD
+INFO Tick 675	PC: 23	Registers: [0, 3, 1, 1, 60, 7, 20, 0]	SrcA: 0 | SrcB: 1 | Result: 1	A1: 0 | A2: 3 | A3: 2PF: 1 | ZF: 0
+INFO REM
+INFO Tick 679	PC: 24	Registers: [0, 0, 1, 1, 60, 7, 20, 0]	SrcA: 0 | SrcB: 1 | Result: 1	A1: 1 | A2: 2 | A3: 1PF: 0 | ZF: 1
+INFO JMP
+INFO Tick 682	PC: 16	Registers: [0, 0, 1, 1, 60, 7, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 0 | A3: 0PF: 0 | ZF: 1
+INFO CMP
+INFO Tick 686	PC: 17	Registers: [0, 0, 1, 1, 60, 7, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 1 | A3: 0PF: 0 | ZF: 1
+INFO BEQ
+INFO Tick 689	PC: 25	Registers: [0, 0, 1, 1, 60, 7, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 1 | A3: 0PF: 0 | ZF: 1
+INFO JMP
+INFO Tick 692	PC: 13	Registers: [0, 0, 1, 1, 60, 7, 20, 0]	SrcA: 0 | SrcB: 7 | Result: 7	A1: 0 | A2: 5 | A3: 0PF: 0 | ZF: 1
+INFO MUL
+INFO Tick 696	PC: 14	Registers: [0, 0, 1, 420, 60, 7, 20, 0]	SrcA: 60 | SrcB: 7 | Result: 67	A1: 4 | A2: 5 | A3: 3PF: 1 | ZF: 0
+INFO DIV
+INFO Tick 700	PC: 15	Registers: [0, 0, 1, 420, 60, 7, 20, 0]	SrcA: 420 | SrcB: 1 | Result: 421	A1: 3 | A2: 2 | A3: 3PF: 1 | ZF: 0
+INFO JMP
+INFO Tick 703	PC: 7	Registers: [0, 0, 1, 420, 60, 7, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 7 | A3: 0PF: 1 | ZF: 0
+INFO ADD
+INFO Tick 707	PC: 8	Registers: [0, 0, 1, 420, 420, 7, 20, 0]	SrcA: 0 | SrcB: 420 | Result: 420	A1: 0 | A2: 3 | A3: 4PF: 1 | ZF: 0
+INFO ADDI
+INFO Tick 711	PC: 9	Registers: [0, 0, 1, 420, 420, 8, 20, 0]	SrcA: 8 | SrcB: 0 | Result: 8	A1: 5 | A2: 1 | A3: 5PF: 1 | ZF: 0
+INFO JMP
+INFO Tick 714	PC: 4	Registers: [0, 0, 1, 420, 420, 8, 20, 0]	SrcA: 0 | SrcB: 420 | Result: 420	A1: 0 | A2: 4 | A3: 0PF: 1 | ZF: 0
+INFO CMP
+INFO Tick 718	PC: 5	Registers: [0, 0, 1, 420, 420, 8, 20, 0]	SrcA: 20 | SrcB: 8 | Result: 28	A1: 6 | A2: 5 | A3: 0PF: 0 | ZF: 0
+INFO JG
+INFO Tick 721	PC: 6	Registers: [0, 0, 1, 420, 420, 8, 20, 0]	SrcA: 0 | SrcB: 1 | Result: 1	A1: 0 | A2: 2 | A3: 0PF: 0 | ZF: 0
+INFO JMP
+INFO Tick 724	PC: 10	Registers: [0, 0, 1, 420, 420, 8, 20, 0]	SrcA: 0 | SrcB: 1 | Result: 1	A1: 0 | A2: 2 | A3: 0PF: 0 | ZF: 0
+INFO ADD
+INFO Tick 728	PC: 11	Registers: [0, 420, 1, 420, 420, 8, 20, 0]	SrcA: 0 | SrcB: 420 | Result: 420	A1: 0 | A2: 4 | A3: 1PF: 1 | ZF: 0
+INFO ADD
+INFO Tick 732	PC: 12	Registers: [0, 420, 8, 420, 420, 8, 20, 0]	SrcA: 0 | SrcB: 8 | Result: 8	A1: 0 | A2: 5 | A3: 2PF: 1 | ZF: 0
+INFO JMP
+INFO Tick 735	PC: 16	Registers: [0, 420, 8, 420, 420, 8, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 0 | A3: 0PF: 1 | ZF: 0
+INFO CMP
+INFO Tick 739	PC: 17	Registers: [0, 420, 8, 420, 420, 8, 20, 0]	SrcA: 0 | SrcB: 420 | Result: 420	A1: 0 | A2: 1 | A3: 0PF: 1 | ZF: 0
+INFO BEQ
+INFO Tick 742	PC: 18	Registers: [0, 420, 8, 420, 420, 8, 20, 0]	SrcA: 0 | SrcB: 420 | Result: 420	A1: 0 | A2: 1 | A3: 0PF: 1 | ZF: 0
+INFO CMP
+INFO Tick 746	PC: 19	Registers: [0, 420, 8, 420, 420, 8, 20, 0]	SrcA: 8 | SrcB: 420 | Result: 428	A1: 2 | A2: 1 | A3: 0PF: 1 | ZF: 0
+INFO JG
+INFO Tick 749	PC: 23	Registers: [0, 420, 8, 420, 420, 8, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 7 | A3: 0PF: 1 | ZF: 0
+INFO REM
+INFO Tick 753	PC: 24	Registers: [0, 4, 8, 420, 420, 8, 20, 0]	SrcA: 4 | SrcB: 8 | Result: 12	A1: 1 | A2: 2 | A3: 1PF: 1 | ZF: 0
+INFO JMP
+INFO Tick 756	PC: 16	Registers: [0, 4, 8, 420, 420, 8, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 0 | A3: 0PF: 1 | ZF: 0
+INFO CMP
+INFO Tick 760	PC: 17	Registers: [0, 4, 8, 420, 420, 8, 20, 0]	SrcA: 0 | SrcB: 4 | Result: 4	A1: 0 | A2: 1 | A3: 0PF: 1 | ZF: 0
+INFO BEQ
+INFO Tick 763	PC: 18	Registers: [0, 4, 8, 420, 420, 8, 20, 0]	SrcA: 0 | SrcB: 4 | Result: 4	A1: 0 | A2: 1 | A3: 0PF: 1 | ZF: 0
+INFO CMP
+INFO Tick 767	PC: 19	Registers: [0, 4, 8, 420, 420, 8, 20, 0]	SrcA: 8 | SrcB: 4 | Result: 12	A1: 2 | A2: 1 | A3: 0PF: 0 | ZF: 0
+INFO JG
+INFO Tick 770	PC: 20	Registers: [0, 4, 8, 420, 420, 8, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 7 | A3: 0PF: 0 | ZF: 0
+INFO ADD
+INFO Tick 774	PC: 21	Registers: [0, 4, 8, 4, 420, 8, 20, 0]	SrcA: 0 | SrcB: 4 | Result: 4	A1: 0 | A2: 1 | A3: 3PF: 1 | ZF: 0
+INFO ADD
+INFO Tick 778	PC: 22	Registers: [0, 8, 8, 4, 420, 8, 20, 0]	SrcA: 0 | SrcB: 8 | Result: 8	A1: 0 | A2: 2 | A3: 1PF: 1 | ZF: 0
+INFO ADD
+INFO Tick 782	PC: 23	Registers: [0, 8, 4, 4, 420, 8, 20, 0]	SrcA: 0 | SrcB: 4 | Result: 4	A1: 0 | A2: 3 | A3: 2PF: 1 | ZF: 0
+INFO REM
+INFO Tick 786	PC: 24	Registers: [0, 0, 4, 4, 420, 8, 20, 0]	SrcA: 0 | SrcB: 4 | Result: 4	A1: 1 | A2: 2 | A3: 1PF: 0 | ZF: 1
+INFO JMP
+INFO Tick 789	PC: 16	Registers: [0, 0, 4, 4, 420, 8, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 0 | A3: 0PF: 0 | ZF: 1
+INFO CMP
+INFO Tick 793	PC: 17	Registers: [0, 0, 4, 4, 420, 8, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 1 | A3: 0PF: 0 | ZF: 1
+INFO BEQ
+INFO Tick 796	PC: 25	Registers: [0, 0, 4, 4, 420, 8, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 1 | A3: 0PF: 0 | ZF: 1
+INFO JMP
+INFO Tick 799	PC: 13	Registers: [0, 0, 4, 4, 420, 8, 20, 0]	SrcA: 0 | SrcB: 8 | Result: 8	A1: 0 | A2: 5 | A3: 0PF: 0 | ZF: 1
+INFO MUL
+INFO Tick 803	PC: 14	Registers: [0, 0, 4, 3360, 420, 8, 20, 0]	SrcA: 420 | SrcB: 8 | Result: 428	A1: 4 | A2: 5 | A3: 3PF: 1 | ZF: 0
+INFO DIV
+INFO Tick 807	PC: 15	Registers: [0, 0, 4, 840, 420, 8, 20, 0]	SrcA: 840 | SrcB: 4 | Result: 844	A1: 3 | A2: 2 | A3: 3PF: 1 | ZF: 0
+INFO JMP
+INFO Tick 810	PC: 7	Registers: [0, 0, 4, 840, 420, 8, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 7 | A3: 0PF: 1 | ZF: 0
+INFO ADD
+INFO Tick 814	PC: 8	Registers: [0, 0, 4, 840, 840, 8, 20, 0]	SrcA: 0 | SrcB: 840 | Result: 840	A1: 0 | A2: 3 | A3: 4PF: 1 | ZF: 0
+INFO ADDI
+INFO Tick 818	PC: 9	Registers: [0, 0, 4, 840, 840, 9, 20, 0]	SrcA: 9 | SrcB: 0 | Result: 9	A1: 5 | A2: 1 | A3: 5PF: 1 | ZF: 0
+INFO JMP
+INFO Tick 821	PC: 4	Registers: [0, 0, 4, 840, 840, 9, 20, 0]	SrcA: 0 | SrcB: 840 | Result: 840	A1: 0 | A2: 4 | A3: 0PF: 1 | ZF: 0
+INFO CMP
+INFO Tick 825	PC: 5	Registers: [0, 0, 4, 840, 840, 9, 20, 0]	SrcA: 20 | SrcB: 9 | Result: 29	A1: 6 | A2: 5 | A3: 0PF: 0 | ZF: 0
+INFO JG
+INFO Tick 828	PC: 6	Registers: [0, 0, 4, 840, 840, 9, 20, 0]	SrcA: 0 | SrcB: 4 | Result: 4	A1: 0 | A2: 2 | A3: 0PF: 0 | ZF: 0
+INFO JMP
+INFO Tick 831	PC: 10	Registers: [0, 0, 4, 840, 840, 9, 20, 0]	SrcA: 0 | SrcB: 4 | Result: 4	A1: 0 | A2: 2 | A3: 0PF: 0 | ZF: 0
+INFO ADD
+INFO Tick 835	PC: 11	Registers: [0, 840, 4, 840, 840, 9, 20, 0]	SrcA: 0 | SrcB: 840 | Result: 840	A1: 0 | A2: 4 | A3: 1PF: 1 | ZF: 0
+INFO ADD
+INFO Tick 839	PC: 12	Registers: [0, 840, 9, 840, 840, 9, 20, 0]	SrcA: 0 | SrcB: 9 | Result: 9	A1: 0 | A2: 5 | A3: 2PF: 1 | ZF: 0
+INFO JMP
+INFO Tick 842	PC: 16	Registers: [0, 840, 9, 840, 840, 9, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 0 | A3: 0PF: 1 | ZF: 0
+INFO CMP
+INFO Tick 846	PC: 17	Registers: [0, 840, 9, 840, 840, 9, 20, 0]	SrcA: 0 | SrcB: 840 | Result: 840	A1: 0 | A2: 1 | A3: 0PF: 1 | ZF: 0
+INFO BEQ
+INFO Tick 849	PC: 18	Registers: [0, 840, 9, 840, 840, 9, 20, 0]	SrcA: 0 | SrcB: 840 | Result: 840	A1: 0 | A2: 1 | A3: 0PF: 1 | ZF: 0
+INFO CMP
+INFO Tick 853	PC: 19	Registers: [0, 840, 9, 840, 840, 9, 20, 0]	SrcA: 9 | SrcB: 840 | Result: 849	A1: 2 | A2: 1 | A3: 0PF: 1 | ZF: 0
+INFO JG
+INFO Tick 856	PC: 23	Registers: [0, 840, 9, 840, 840, 9, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 7 | A3: 0PF: 1 | ZF: 0
+INFO REM
+INFO Tick 860	PC: 24	Registers: [0, 3, 9, 840, 840, 9, 20, 0]	SrcA: 3 | SrcB: 9 | Result: 12	A1: 1 | A2: 2 | A3: 1PF: 1 | ZF: 0
+INFO JMP
+INFO Tick 863	PC: 16	Registers: [0, 3, 9, 840, 840, 9, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 0 | A3: 0PF: 1 | ZF: 0
+INFO CMP
+INFO Tick 867	PC: 17	Registers: [0, 3, 9, 840, 840, 9, 20, 0]	SrcA: 0 | SrcB: 3 | Result: 3	A1: 0 | A2: 1 | A3: 0PF: 1 | ZF: 0
+INFO BEQ
+INFO Tick 870	PC: 18	Registers: [0, 3, 9, 840, 840, 9, 20, 0]	SrcA: 0 | SrcB: 3 | Result: 3	A1: 0 | A2: 1 | A3: 0PF: 1 | ZF: 0
+INFO CMP
+INFO Tick 874	PC: 19	Registers: [0, 3, 9, 840, 840, 9, 20, 0]	SrcA: 9 | SrcB: 3 | Result: 12	A1: 2 | A2: 1 | A3: 0PF: 0 | ZF: 0
+INFO JG
+INFO Tick 877	PC: 20	Registers: [0, 3, 9, 840, 840, 9, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 7 | A3: 0PF: 0 | ZF: 0
+INFO ADD
+INFO Tick 881	PC: 21	Registers: [0, 3, 9, 3, 840, 9, 20, 0]	SrcA: 0 | SrcB: 3 | Result: 3	A1: 0 | A2: 1 | A3: 3PF: 1 | ZF: 0
+INFO ADD
+INFO Tick 885	PC: 22	Registers: [0, 9, 9, 3, 840, 9, 20, 0]	SrcA: 0 | SrcB: 9 | Result: 9	A1: 0 | A2: 2 | A3: 1PF: 1 | ZF: 0
+INFO ADD
+INFO Tick 889	PC: 23	Registers: [0, 9, 3, 3, 840, 9, 20, 0]	SrcA: 0 | SrcB: 3 | Result: 3	A1: 0 | A2: 3 | A3: 2PF: 1 | ZF: 0
+INFO REM
+INFO Tick 893	PC: 24	Registers: [0, 0, 3, 3, 840, 9, 20, 0]	SrcA: 0 | SrcB: 3 | Result: 3	A1: 1 | A2: 2 | A3: 1PF: 0 | ZF: 1
+INFO JMP
+INFO Tick 896	PC: 16	Registers: [0, 0, 3, 3, 840, 9, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 0 | A3: 0PF: 0 | ZF: 1
+INFO CMP
+INFO Tick 900	PC: 17	Registers: [0, 0, 3, 3, 840, 9, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 1 | A3: 0PF: 0 | ZF: 1
+INFO BEQ
+INFO Tick 903	PC: 25	Registers: [0, 0, 3, 3, 840, 9, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 1 | A3: 0PF: 0 | ZF: 1
+INFO JMP
+INFO Tick 906	PC: 13	Registers: [0, 0, 3, 3, 840, 9, 20, 0]	SrcA: 0 | SrcB: 9 | Result: 9	A1: 0 | A2: 5 | A3: 0PF: 0 | ZF: 1
+INFO MUL
+INFO Tick 910	PC: 14	Registers: [0, 0, 3, 7560, 840, 9, 20, 0]	SrcA: 840 | SrcB: 9 | Result: 849	A1: 4 | A2: 5 | A3: 3PF: 1 | ZF: 0
+INFO DIV
+INFO Tick 914	PC: 15	Registers: [0, 0, 3, 2520, 840, 9, 20, 0]	SrcA: 2520 | SrcB: 3 | Result: 2523	A1: 3 | A2: 2 | A3: 3PF: 1 | ZF: 0
+INFO JMP
+INFO Tick 917	PC: 7	Registers: [0, 0, 3, 2520, 840, 9, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 7 | A3: 0PF: 1 | ZF: 0
+INFO ADD
+INFO Tick 921	PC: 8	Registers: [0, 0, 3, 2520, 2520, 9, 20, 0]	SrcA: 0 | SrcB: 2520 | Result: 2520	A1: 0 | A2: 3 | A3: 4PF: 1 | ZF: 0
+INFO ADDI
+INFO Tick 925	PC: 9	Registers: [0, 0, 3, 2520, 2520, 10, 20, 0]	SrcA: 10 | SrcB: 0 | Result: 10	A1: 5 | A2: 1 | A3: 5PF: 1 | ZF: 0
+INFO JMP
+INFO Tick 928	PC: 4	Registers: [0, 0, 3, 2520, 2520, 10, 20, 0]	SrcA: 0 | SrcB: 2520 | Result: 2520	A1: 0 | A2: 4 | A3: 0PF: 1 | ZF: 0
+INFO CMP
+INFO Tick 932	PC: 5	Registers: [0, 0, 3, 2520, 2520, 10, 20, 0]	SrcA: 20 | SrcB: 10 | Result: 30	A1: 6 | A2: 5 | A3: 0PF: 0 | ZF: 0
+INFO JG
+INFO Tick 935	PC: 6	Registers: [0, 0, 3, 2520, 2520, 10, 20, 0]	SrcA: 0 | SrcB: 3 | Result: 3	A1: 0 | A2: 2 | A3: 0PF: 0 | ZF: 0
+INFO JMP
+INFO Tick 938	PC: 10	Registers: [0, 0, 3, 2520, 2520, 10, 20, 0]	SrcA: 0 | SrcB: 3 | Result: 3	A1: 0 | A2: 2 | A3: 0PF: 0 | ZF: 0
+INFO ADD
+INFO Tick 942	PC: 11	Registers: [0, 2520, 3, 2520, 2520, 10, 20, 0]	SrcA: 0 | SrcB: 2520 | Result: 2520	A1: 0 | A2: 4 | A3: 1PF: 1 | ZF: 0
+INFO ADD
+INFO Tick 946	PC: 12	Registers: [0, 2520, 10, 2520, 2520, 10, 20, 0]	SrcA: 0 | SrcB: 10 | Result: 10	A1: 0 | A2: 5 | A3: 2PF: 1 | ZF: 0
+INFO JMP
+INFO Tick 949	PC: 16	Registers: [0, 2520, 10, 2520, 2520, 10, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 0 | A3: 0PF: 1 | ZF: 0
+INFO CMP
+INFO Tick 953	PC: 17	Registers: [0, 2520, 10, 2520, 2520, 10, 20, 0]	SrcA: 0 | SrcB: 2520 | Result: 2520	A1: 0 | A2: 1 | A3: 0PF: 1 | ZF: 0
+INFO BEQ
+INFO Tick 956	PC: 18	Registers: [0, 2520, 10, 2520, 2520, 10, 20, 0]	SrcA: 0 | SrcB: 2520 | Result: 2520	A1: 0 | A2: 1 | A3: 0PF: 1 | ZF: 0
+INFO CMP
+INFO Tick 960	PC: 19	Registers: [0, 2520, 10, 2520, 2520, 10, 20, 0]	SrcA: 10 | SrcB: 2520 | Result: 2530	A1: 2 | A2: 1 | A3: 0PF: 1 | ZF: 0
+INFO JG
+INFO Tick 963	PC: 23	Registers: [0, 2520, 10, 2520, 2520, 10, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 7 | A3: 0PF: 1 | ZF: 0
+INFO REM
+INFO Tick 967	PC: 24	Registers: [0, 0, 10, 2520, 2520, 10, 20, 0]	SrcA: 0 | SrcB: 10 | Result: 10	A1: 1 | A2: 2 | A3: 1PF: 0 | ZF: 1
+INFO JMP
+INFO Tick 970	PC: 16	Registers: [0, 0, 10, 2520, 2520, 10, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 0 | A3: 0PF: 0 | ZF: 1
+INFO CMP
+INFO Tick 974	PC: 17	Registers: [0, 0, 10, 2520, 2520, 10, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 1 | A3: 0PF: 0 | ZF: 1
+INFO BEQ
+INFO Tick 977	PC: 25	Registers: [0, 0, 10, 2520, 2520, 10, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 1 | A3: 0PF: 0 | ZF: 1
+INFO JMP
+INFO Tick 980	PC: 13	Registers: [0, 0, 10, 2520, 2520, 10, 20, 0]	SrcA: 0 | SrcB: 10 | Result: 10	A1: 0 | A2: 5 | A3: 0PF: 0 | ZF: 1
+INFO MUL
+INFO Tick 984	PC: 14	Registers: [0, 0, 10, 25200, 2520, 10, 20, 0]	SrcA: 2520 | SrcB: 10 | Result: 2530	A1: 4 | A2: 5 | A3: 3PF: 1 | ZF: 0
+INFO DIV
+INFO Tick 988	PC: 15	Registers: [0, 0, 10, 2520, 2520, 10, 20, 0]	SrcA: 2520 | SrcB: 10 | Result: 2530	A1: 3 | A2: 2 | A3: 3PF: 1 | ZF: 0
+INFO JMP
+INFO Tick 991	PC: 7	Registers: [0, 0, 10, 2520, 2520, 10, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 7 | A3: 0PF: 1 | ZF: 0
+INFO ADD
+INFO Tick 995	PC: 8	Registers: [0, 0, 10, 2520, 2520, 10, 20, 0]	SrcA: 0 | SrcB: 2520 | Result: 2520	A1: 0 | A2: 3 | A3: 4PF: 1 | ZF: 0
+INFO ADDI
+INFO Tick 999	PC: 9	Registers: [0, 0, 10, 2520, 2520, 11, 20, 0]	SrcA: 11 | SrcB: 0 | Result: 11	A1: 5 | A2: 1 | A3: 5PF: 1 | ZF: 0
+INFO JMP
+INFO Tick 1002	PC: 4	Registers: [0, 0, 10, 2520, 2520, 11, 20, 0]	SrcA: 0 | SrcB: 2520 | Result: 2520	A1: 0 | A2: 4 | A3: 0PF: 1 | ZF: 0
+INFO CMP
+INFO Tick 1006	PC: 5	Registers: [0, 0, 10, 2520, 2520, 11, 20, 0]	SrcA: 20 | SrcB: 11 | Result: 31	A1: 6 | A2: 5 | A3: 0PF: 0 | ZF: 0
+INFO JG
+INFO Tick 1009	PC: 6	Registers: [0, 0, 10, 2520, 2520, 11, 20, 0]	SrcA: 0 | SrcB: 10 | Result: 10	A1: 0 | A2: 2 | A3: 0PF: 0 | ZF: 0
+INFO JMP
+INFO Tick 1012	PC: 10	Registers: [0, 0, 10, 2520, 2520, 11, 20, 0]	SrcA: 0 | SrcB: 10 | Result: 10	A1: 0 | A2: 2 | A3: 0PF: 0 | ZF: 0
+INFO ADD
+INFO Tick 1016	PC: 11	Registers: [0, 2520, 10, 2520, 2520, 11, 20, 0]	SrcA: 0 | SrcB: 2520 | Result: 2520	A1: 0 | A2: 4 | A3: 1PF: 1 | ZF: 0
+INFO ADD
+INFO Tick 1020	PC: 12	Registers: [0, 2520, 11, 2520, 2520, 11, 20, 0]	SrcA: 0 | SrcB: 11 | Result: 11	A1: 0 | A2: 5 | A3: 2PF: 1 | ZF: 0
+INFO JMP
+INFO Tick 1023	PC: 16	Registers: [0, 2520, 11, 2520, 2520, 11, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 0 | A3: 0PF: 1 | ZF: 0
+INFO CMP
+INFO Tick 1027	PC: 17	Registers: [0, 2520, 11, 2520, 2520, 11, 20, 0]	SrcA: 0 | SrcB: 2520 | Result: 2520	A1: 0 | A2: 1 | A3: 0PF: 1 | ZF: 0
+INFO BEQ
+INFO Tick 1030	PC: 18	Registers: [0, 2520, 11, 2520, 2520, 11, 20, 0]	SrcA: 0 | SrcB: 2520 | Result: 2520	A1: 0 | A2: 1 | A3: 0PF: 1 | ZF: 0
+INFO CMP
+INFO Tick 1034	PC: 19	Registers: [0, 2520, 11, 2520, 2520, 11, 20, 0]	SrcA: 11 | SrcB: 2520 | Result: 2531	A1: 2 | A2: 1 | A3: 0PF: 1 | ZF: 0
+INFO JG
+INFO Tick 1037	PC: 23	Registers: [0, 2520, 11, 2520, 2520, 11, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 7 | A3: 0PF: 1 | ZF: 0
+INFO REM
+INFO Tick 1041	PC: 24	Registers: [0, 1, 11, 2520, 2520, 11, 20, 0]	SrcA: 1 | SrcB: 11 | Result: 12	A1: 1 | A2: 2 | A3: 1PF: 1 | ZF: 0
+INFO JMP
+INFO Tick 1044	PC: 16	Registers: [0, 1, 11, 2520, 2520, 11, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 0 | A3: 0PF: 1 | ZF: 0
+INFO CMP
+INFO Tick 1048	PC: 17	Registers: [0, 1, 11, 2520, 2520, 11, 20, 0]	SrcA: 0 | SrcB: 1 | Result: 1	A1: 0 | A2: 1 | A3: 0PF: 1 | ZF: 0
+INFO BEQ
+INFO Tick 1051	PC: 18	Registers: [0, 1, 11, 2520, 2520, 11, 20, 0]	SrcA: 0 | SrcB: 1 | Result: 1	A1: 0 | A2: 1 | A3: 0PF: 1 | ZF: 0
+INFO CMP
+INFO Tick 1055	PC: 19	Registers: [0, 1, 11, 2520, 2520, 11, 20, 0]	SrcA: 11 | SrcB: 1 | Result: 12	A1: 2 | A2: 1 | A3: 0PF: 0 | ZF: 0
+INFO JG
+INFO Tick 1058	PC: 20	Registers: [0, 1, 11, 2520, 2520, 11, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 7 | A3: 0PF: 0 | ZF: 0
+INFO ADD
+INFO Tick 1062	PC: 21	Registers: [0, 1, 11, 1, 2520, 11, 20, 0]	SrcA: 0 | SrcB: 1 | Result: 1	A1: 0 | A2: 1 | A3: 3PF: 1 | ZF: 0
+INFO ADD
+INFO Tick 1066	PC: 22	Registers: [0, 11, 11, 1, 2520, 11, 20, 0]	SrcA: 0 | SrcB: 11 | Result: 11	A1: 0 | A2: 2 | A3: 1PF: 1 | ZF: 0
+INFO ADD
+INFO Tick 1070	PC: 23	Registers: [0, 11, 1, 1, 2520, 11, 20, 0]	SrcA: 0 | SrcB: 1 | Result: 1	A1: 0 | A2: 3 | A3: 2PF: 1 | ZF: 0
+INFO REM
+INFO Tick 1074	PC: 24	Registers: [0, 0, 1, 1, 2520, 11, 20, 0]	SrcA: 0 | SrcB: 1 | Result: 1	A1: 1 | A2: 2 | A3: 1PF: 0 | ZF: 1
+INFO JMP
+INFO Tick 1077	PC: 16	Registers: [0, 0, 1, 1, 2520, 11, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 0 | A3: 0PF: 0 | ZF: 1
+INFO CMP
+INFO Tick 1081	PC: 17	Registers: [0, 0, 1, 1, 2520, 11, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 1 | A3: 0PF: 0 | ZF: 1
+INFO BEQ
+INFO Tick 1084	PC: 25	Registers: [0, 0, 1, 1, 2520, 11, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 1 | A3: 0PF: 0 | ZF: 1
+INFO JMP
+INFO Tick 1087	PC: 13	Registers: [0, 0, 1, 1, 2520, 11, 20, 0]	SrcA: 0 | SrcB: 11 | Result: 11	A1: 0 | A2: 5 | A3: 0PF: 0 | ZF: 1
+INFO MUL
+INFO Tick 1091	PC: 14	Registers: [0, 0, 1, 27720, 2520, 11, 20, 0]	SrcA: 2520 | SrcB: 11 | Result: 2531	A1: 4 | A2: 5 | A3: 3PF: 1 | ZF: 0
+INFO DIV
+INFO Tick 1095	PC: 15	Registers: [0, 0, 1, 27720, 2520, 11, 20, 0]	SrcA: 27720 | SrcB: 1 | Result: 27721	A1: 3 | A2: 2 | A3: 3PF: 1 | ZF: 0
+INFO JMP
+INFO Tick 1098	PC: 7	Registers: [0, 0, 1, 27720, 2520, 11, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 7 | A3: 0PF: 1 | ZF: 0
+INFO ADD
+INFO Tick 1102	PC: 8	Registers: [0, 0, 1, 27720, 27720, 11, 20, 0]	SrcA: 0 | SrcB: 27720 | Result: 27720	A1: 0 | A2: 3 | A3: 4PF: 1 | ZF: 0
+INFO ADDI
+INFO Tick 1106	PC: 9	Registers: [0, 0, 1, 27720, 27720, 12, 20, 0]	SrcA: 12 | SrcB: 0 | Result: 12	A1: 5 | A2: 1 | A3: 5PF: 1 | ZF: 0
+INFO JMP
+INFO Tick 1109	PC: 4	Registers: [0, 0, 1, 27720, 27720, 12, 20, 0]	SrcA: 0 | SrcB: 27720 | Result: 27720	A1: 0 | A2: 4 | A3: 0PF: 1 | ZF: 0
+INFO CMP
+INFO Tick 1113	PC: 5	Registers: [0, 0, 1, 27720, 27720, 12, 20, 0]	SrcA: 20 | SrcB: 12 | Result: 32	A1: 6 | A2: 5 | A3: 0PF: 0 | ZF: 0
+INFO JG
+INFO Tick 1116	PC: 6	Registers: [0, 0, 1, 27720, 27720, 12, 20, 0]	SrcA: 0 | SrcB: 1 | Result: 1	A1: 0 | A2: 2 | A3: 0PF: 0 | ZF: 0
+INFO JMP
+INFO Tick 1119	PC: 10	Registers: [0, 0, 1, 27720, 27720, 12, 20, 0]	SrcA: 0 | SrcB: 1 | Result: 1	A1: 0 | A2: 2 | A3: 0PF: 0 | ZF: 0
+INFO ADD
+INFO Tick 1123	PC: 11	Registers: [0, 27720, 1, 27720, 27720, 12, 20, 0]	SrcA: 0 | SrcB: 27720 | Result: 27720	A1: 0 | A2: 4 | A3: 1PF: 1 | ZF: 0
+INFO ADD
+INFO Tick 1127	PC: 12	Registers: [0, 27720, 12, 27720, 27720, 12, 20, 0]	SrcA: 0 | SrcB: 12 | Result: 12	A1: 0 | A2: 5 | A3: 2PF: 1 | ZF: 0
+INFO JMP
+INFO Tick 1130	PC: 16	Registers: [0, 27720, 12, 27720, 27720, 12, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 0 | A3: 0PF: 1 | ZF: 0
+INFO CMP
+INFO Tick 1134	PC: 17	Registers: [0, 27720, 12, 27720, 27720, 12, 20, 0]	SrcA: 0 | SrcB: 27720 | Result: 27720	A1: 0 | A2: 1 | A3: 0PF: 1 | ZF: 0
+INFO BEQ
+INFO Tick 1137	PC: 18	Registers: [0, 27720, 12, 27720, 27720, 12, 20, 0]	SrcA: 0 | SrcB: 27720 | Result: 27720	A1: 0 | A2: 1 | A3: 0PF: 1 | ZF: 0
+INFO CMP
+INFO Tick 1141	PC: 19	Registers: [0, 27720, 12, 27720, 27720, 12, 20, 0]	SrcA: 12 | SrcB: 27720 | Result: 27732	A1: 2 | A2: 1 | A3: 0PF: 1 | ZF: 0
+INFO JG
+INFO Tick 1144	PC: 23	Registers: [0, 27720, 12, 27720, 27720, 12, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 7 | A3: 0PF: 1 | ZF: 0
+INFO REM
+INFO Tick 1148	PC: 24	Registers: [0, 0, 12, 27720, 27720, 12, 20, 0]	SrcA: 0 | SrcB: 12 | Result: 12	A1: 1 | A2: 2 | A3: 1PF: 0 | ZF: 1
+INFO JMP
+INFO Tick 1151	PC: 16	Registers: [0, 0, 12, 27720, 27720, 12, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 0 | A3: 0PF: 0 | ZF: 1
+INFO CMP
+INFO Tick 1155	PC: 17	Registers: [0, 0, 12, 27720, 27720, 12, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 1 | A3: 0PF: 0 | ZF: 1
+INFO BEQ
+INFO Tick 1158	PC: 25	Registers: [0, 0, 12, 27720, 27720, 12, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 1 | A3: 0PF: 0 | ZF: 1
+INFO JMP
+INFO Tick 1161	PC: 13	Registers: [0, 0, 12, 27720, 27720, 12, 20, 0]	SrcA: 0 | SrcB: 12 | Result: 12	A1: 0 | A2: 5 | A3: 0PF: 0 | ZF: 1
+INFO MUL
+INFO Tick 1165	PC: 14	Registers: [0, 0, 12, 332640, 27720, 12, 20, 0]	SrcA: 27720 | SrcB: 12 | Result: 27732	A1: 4 | A2: 5 | A3: 3PF: 1 | ZF: 0
+INFO DIV
+INFO Tick 1169	PC: 15	Registers: [0, 0, 12, 27720, 27720, 12, 20, 0]	SrcA: 27720 | SrcB: 12 | Result: 27732	A1: 3 | A2: 2 | A3: 3PF: 1 | ZF: 0
+INFO JMP
+INFO Tick 1172	PC: 7	Registers: [0, 0, 12, 27720, 27720, 12, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 7 | A3: 0PF: 1 | ZF: 0
+INFO ADD
+INFO Tick 1176	PC: 8	Registers: [0, 0, 12, 27720, 27720, 12, 20, 0]	SrcA: 0 | SrcB: 27720 | Result: 27720	A1: 0 | A2: 3 | A3: 4PF: 1 | ZF: 0
+INFO ADDI
+INFO Tick 1180	PC: 9	Registers: [0, 0, 12, 27720, 27720, 13, 20, 0]	SrcA: 13 | SrcB: 0 | Result: 13	A1: 5 | A2: 1 | A3: 5PF: 1 | ZF: 0
+INFO JMP
+INFO Tick 1183	PC: 4	Registers: [0, 0, 12, 27720, 27720, 13, 20, 0]	SrcA: 0 | SrcB: 27720 | Result: 27720	A1: 0 | A2: 4 | A3: 0PF: 1 | ZF: 0
+INFO CMP
+INFO Tick 1187	PC: 5	Registers: [0, 0, 12, 27720, 27720, 13, 20, 0]	SrcA: 20 | SrcB: 13 | Result: 33	A1: 6 | A2: 5 | A3: 0PF: 0 | ZF: 0
+INFO JG
+INFO Tick 1190	PC: 6	Registers: [0, 0, 12, 27720, 27720, 13, 20, 0]	SrcA: 0 | SrcB: 12 | Result: 12	A1: 0 | A2: 2 | A3: 0PF: 0 | ZF: 0
+INFO JMP
+INFO Tick 1193	PC: 10	Registers: [0, 0, 12, 27720, 27720, 13, 20, 0]	SrcA: 0 | SrcB: 12 | Result: 12	A1: 0 | A2: 2 | A3: 0PF: 0 | ZF: 0
+INFO ADD
+INFO Tick 1197	PC: 11	Registers: [0, 27720, 12, 27720, 27720, 13, 20, 0]	SrcA: 0 | SrcB: 27720 | Result: 27720	A1: 0 | A2: 4 | A3: 1PF: 1 | ZF: 0
+INFO ADD
+INFO Tick 1201	PC: 12	Registers: [0, 27720, 13, 27720, 27720, 13, 20, 0]	SrcA: 0 | SrcB: 13 | Result: 13	A1: 0 | A2: 5 | A3: 2PF: 1 | ZF: 0
+INFO JMP
+INFO Tick 1204	PC: 16	Registers: [0, 27720, 13, 27720, 27720, 13, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 0 | A3: 0PF: 1 | ZF: 0
+INFO CMP
+INFO Tick 1208	PC: 17	Registers: [0, 27720, 13, 27720, 27720, 13, 20, 0]	SrcA: 0 | SrcB: 27720 | Result: 27720	A1: 0 | A2: 1 | A3: 0PF: 1 | ZF: 0
+INFO BEQ
+INFO Tick 1211	PC: 18	Registers: [0, 27720, 13, 27720, 27720, 13, 20, 0]	SrcA: 0 | SrcB: 27720 | Result: 27720	A1: 0 | A2: 1 | A3: 0PF: 1 | ZF: 0
+INFO CMP
+INFO Tick 1215	PC: 19	Registers: [0, 27720, 13, 27720, 27720, 13, 20, 0]	SrcA: 13 | SrcB: 27720 | Result: 27733	A1: 2 | A2: 1 | A3: 0PF: 1 | ZF: 0
+INFO JG
+INFO Tick 1218	PC: 23	Registers: [0, 27720, 13, 27720, 27720, 13, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 7 | A3: 0PF: 1 | ZF: 0
+INFO REM
+INFO Tick 1222	PC: 24	Registers: [0, 4, 13, 27720, 27720, 13, 20, 0]	SrcA: 4 | SrcB: 13 | Result: 17	A1: 1 | A2: 2 | A3: 1PF: 1 | ZF: 0
+INFO JMP
+INFO Tick 1225	PC: 16	Registers: [0, 4, 13, 27720, 27720, 13, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 0 | A3: 0PF: 1 | ZF: 0
+INFO CMP
+INFO Tick 1229	PC: 17	Registers: [0, 4, 13, 27720, 27720, 13, 20, 0]	SrcA: 0 | SrcB: 4 | Result: 4	A1: 0 | A2: 1 | A3: 0PF: 1 | ZF: 0
+INFO BEQ
+INFO Tick 1232	PC: 18	Registers: [0, 4, 13, 27720, 27720, 13, 20, 0]	SrcA: 0 | SrcB: 4 | Result: 4	A1: 0 | A2: 1 | A3: 0PF: 1 | ZF: 0
+INFO CMP
+INFO Tick 1236	PC: 19	Registers: [0, 4, 13, 27720, 27720, 13, 20, 0]	SrcA: 13 | SrcB: 4 | Result: 17	A1: 2 | A2: 1 | A3: 0PF: 0 | ZF: 0
+INFO JG
+INFO Tick 1239	PC: 20	Registers: [0, 4, 13, 27720, 27720, 13, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 7 | A3: 0PF: 0 | ZF: 0
+INFO ADD
+INFO Tick 1243	PC: 21	Registers: [0, 4, 13, 4, 27720, 13, 20, 0]	SrcA: 0 | SrcB: 4 | Result: 4	A1: 0 | A2: 1 | A3: 3PF: 1 | ZF: 0
+INFO ADD
+INFO Tick 1247	PC: 22	Registers: [0, 13, 13, 4, 27720, 13, 20, 0]	SrcA: 0 | SrcB: 13 | Result: 13	A1: 0 | A2: 2 | A3: 1PF: 1 | ZF: 0
+INFO ADD
+INFO Tick 1251	PC: 23	Registers: [0, 13, 4, 4, 27720, 13, 20, 0]	SrcA: 0 | SrcB: 4 | Result: 4	A1: 0 | A2: 3 | A3: 2PF: 1 | ZF: 0
+INFO REM
+INFO Tick 1255	PC: 24	Registers: [0, 1, 4, 4, 27720, 13, 20, 0]	SrcA: 1 | SrcB: 4 | Result: 5	A1: 1 | A2: 2 | A3: 1PF: 1 | ZF: 0
+INFO JMP
+INFO Tick 1258	PC: 16	Registers: [0, 1, 4, 4, 27720, 13, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 0 | A3: 0PF: 1 | ZF: 0
+INFO CMP
+INFO Tick 1262	PC: 17	Registers: [0, 1, 4, 4, 27720, 13, 20, 0]	SrcA: 0 | SrcB: 1 | Result: 1	A1: 0 | A2: 1 | A3: 0PF: 1 | ZF: 0
+INFO BEQ
+INFO Tick 1265	PC: 18	Registers: [0, 1, 4, 4, 27720, 13, 20, 0]	SrcA: 0 | SrcB: 1 | Result: 1	A1: 0 | A2: 1 | A3: 0PF: 1 | ZF: 0
+INFO CMP
+INFO Tick 1269	PC: 19	Registers: [0, 1, 4, 4, 27720, 13, 20, 0]	SrcA: 4 | SrcB: 1 | Result: 5	A1: 2 | A2: 1 | A3: 0PF: 0 | ZF: 0
+INFO JG
+INFO Tick 1272	PC: 20	Registers: [0, 1, 4, 4, 27720, 13, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 7 | A3: 0PF: 0 | ZF: 0
+INFO ADD
+INFO Tick 1276	PC: 21	Registers: [0, 1, 4, 1, 27720, 13, 20, 0]	SrcA: 0 | SrcB: 1 | Result: 1	A1: 0 | A2: 1 | A3: 3PF: 1 | ZF: 0
+INFO ADD
+INFO Tick 1280	PC: 22	Registers: [0, 4, 4, 1, 27720, 13, 20, 0]	SrcA: 0 | SrcB: 4 | Result: 4	A1: 0 | A2: 2 | A3: 1PF: 1 | ZF: 0
+INFO ADD
+INFO Tick 1284	PC: 23	Registers: [0, 4, 1, 1, 27720, 13, 20, 0]	SrcA: 0 | SrcB: 1 | Result: 1	A1: 0 | A2: 3 | A3: 2PF: 1 | ZF: 0
+INFO REM
+INFO Tick 1288	PC: 24	Registers: [0, 0, 1, 1, 27720, 13, 20, 0]	SrcA: 0 | SrcB: 1 | Result: 1	A1: 1 | A2: 2 | A3: 1PF: 0 | ZF: 1
+INFO JMP
+INFO Tick 1291	PC: 16	Registers: [0, 0, 1, 1, 27720, 13, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 0 | A3: 0PF: 0 | ZF: 1
+INFO CMP
+INFO Tick 1295	PC: 17	Registers: [0, 0, 1, 1, 27720, 13, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 1 | A3: 0PF: 0 | ZF: 1
+INFO BEQ
+INFO Tick 1298	PC: 25	Registers: [0, 0, 1, 1, 27720, 13, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 1 | A3: 0PF: 0 | ZF: 1
+INFO JMP
+INFO Tick 1301	PC: 13	Registers: [0, 0, 1, 1, 27720, 13, 20, 0]	SrcA: 0 | SrcB: 13 | Result: 13	A1: 0 | A2: 5 | A3: 0PF: 0 | ZF: 1
+INFO MUL
+INFO Tick 1305	PC: 14	Registers: [0, 0, 1, 360360, 27720, 13, 20, 0]	SrcA: 27720 | SrcB: 13 | Result: 27733	A1: 4 | A2: 5 | A3: 3PF: 1 | ZF: 0
+INFO DIV
+INFO Tick 1309	PC: 15	Registers: [0, 0, 1, 360360, 27720, 13, 20, 0]	SrcA: 360360 | SrcB: 1 | Result: 360361	A1: 3 | A2: 2 | A3: 3PF: 1 | ZF: 0
+INFO JMP
+INFO Tick 1312	PC: 7	Registers: [0, 0, 1, 360360, 27720, 13, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 7 | A3: 0PF: 1 | ZF: 0
+INFO ADD
+INFO Tick 1316	PC: 8	Registers: [0, 0, 1, 360360, 360360, 13, 20, 0]	SrcA: 0 | SrcB: 360360 | Result: 360360	A1: 0 | A2: 3 | A3: 4PF: 1 | ZF: 0
+INFO ADDI
+INFO Tick 1320	PC: 9	Registers: [0, 0, 1, 360360, 360360, 14, 20, 0]	SrcA: 14 | SrcB: 0 | Result: 14	A1: 5 | A2: 1 | A3: 5PF: 1 | ZF: 0
+INFO JMP
+INFO Tick 1323	PC: 4	Registers: [0, 0, 1, 360360, 360360, 14, 20, 0]	SrcA: 0 | SrcB: 360360 | Result: 360360	A1: 0 | A2: 4 | A3: 0PF: 1 | ZF: 0
+INFO CMP
+INFO Tick 1327	PC: 5	Registers: [0, 0, 1, 360360, 360360, 14, 20, 0]	SrcA: 20 | SrcB: 14 | Result: 34	A1: 6 | A2: 5 | A3: 0PF: 0 | ZF: 0
+INFO JG
+INFO Tick 1330	PC: 6	Registers: [0, 0, 1, 360360, 360360, 14, 20, 0]	SrcA: 0 | SrcB: 1 | Result: 1	A1: 0 | A2: 2 | A3: 0PF: 0 | ZF: 0
+INFO JMP
+INFO Tick 1333	PC: 10	Registers: [0, 0, 1, 360360, 360360, 14, 20, 0]	SrcA: 0 | SrcB: 1 | Result: 1	A1: 0 | A2: 2 | A3: 0PF: 0 | ZF: 0
+INFO ADD
+INFO Tick 1337	PC: 11	Registers: [0, 360360, 1, 360360, 360360, 14, 20, 0]	SrcA: 0 | SrcB: 360360 | Result: 360360	A1: 0 | A2: 4 | A3: 1PF: 1 | ZF: 0
+INFO ADD
+INFO Tick 1341	PC: 12	Registers: [0, 360360, 14, 360360, 360360, 14, 20, 0]	SrcA: 0 | SrcB: 14 | Result: 14	A1: 0 | A2: 5 | A3: 2PF: 1 | ZF: 0
+INFO JMP
+INFO Tick 1344	PC: 16	Registers: [0, 360360, 14, 360360, 360360, 14, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 0 | A3: 0PF: 1 | ZF: 0
+INFO CMP
+INFO Tick 1348	PC: 17	Registers: [0, 360360, 14, 360360, 360360, 14, 20, 0]	SrcA: 0 | SrcB: 360360 | Result: 360360	A1: 0 | A2: 1 | A3: 0PF: 1 | ZF: 0
+INFO BEQ
+INFO Tick 1351	PC: 18	Registers: [0, 360360, 14, 360360, 360360, 14, 20, 0]	SrcA: 0 | SrcB: 360360 | Result: 360360	A1: 0 | A2: 1 | A3: 0PF: 1 | ZF: 0
+INFO CMP
+INFO Tick 1355	PC: 19	Registers: [0, 360360, 14, 360360, 360360, 14, 20, 0]	SrcA: 14 | SrcB: 360360 | Result: 360374	A1: 2 | A2: 1 | A3: 0PF: 1 | ZF: 0
+INFO JG
+INFO Tick 1358	PC: 23	Registers: [0, 360360, 14, 360360, 360360, 14, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 7 | A3: 0PF: 1 | ZF: 0
+INFO REM
+INFO Tick 1362	PC: 24	Registers: [0, 0, 14, 360360, 360360, 14, 20, 0]	SrcA: 0 | SrcB: 14 | Result: 14	A1: 1 | A2: 2 | A3: 1PF: 0 | ZF: 1
+INFO JMP
+INFO Tick 1365	PC: 16	Registers: [0, 0, 14, 360360, 360360, 14, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 0 | A3: 0PF: 0 | ZF: 1
+INFO CMP
+INFO Tick 1369	PC: 17	Registers: [0, 0, 14, 360360, 360360, 14, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 1 | A3: 0PF: 0 | ZF: 1
+INFO BEQ
+INFO Tick 1372	PC: 25	Registers: [0, 0, 14, 360360, 360360, 14, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 1 | A3: 0PF: 0 | ZF: 1
+INFO JMP
+INFO Tick 1375	PC: 13	Registers: [0, 0, 14, 360360, 360360, 14, 20, 0]	SrcA: 0 | SrcB: 14 | Result: 14	A1: 0 | A2: 5 | A3: 0PF: 0 | ZF: 1
+INFO MUL
+INFO Tick 1379	PC: 14	Registers: [0, 0, 14, 5045040, 360360, 14, 20, 0]	SrcA: 360360 | SrcB: 14 | Result: 360374	A1: 4 | A2: 5 | A3: 3PF: 1 | ZF: 0
+INFO DIV
+INFO Tick 1383	PC: 15	Registers: [0, 0, 14, 360360, 360360, 14, 20, 0]	SrcA: 360360 | SrcB: 14 | Result: 360374	A1: 3 | A2: 2 | A3: 3PF: 1 | ZF: 0
+INFO JMP
+INFO Tick 1386	PC: 7	Registers: [0, 0, 14, 360360, 360360, 14, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 7 | A3: 0PF: 1 | ZF: 0
+INFO ADD
+INFO Tick 1390	PC: 8	Registers: [0, 0, 14, 360360, 360360, 14, 20, 0]	SrcA: 0 | SrcB: 360360 | Result: 360360	A1: 0 | A2: 3 | A3: 4PF: 1 | ZF: 0
+INFO ADDI
+INFO Tick 1394	PC: 9	Registers: [0, 0, 14, 360360, 360360, 15, 20, 0]	SrcA: 15 | SrcB: 0 | Result: 15	A1: 5 | A2: 1 | A3: 5PF: 1 | ZF: 0
+INFO JMP
+INFO Tick 1397	PC: 4	Registers: [0, 0, 14, 360360, 360360, 15, 20, 0]	SrcA: 0 | SrcB: 360360 | Result: 360360	A1: 0 | A2: 4 | A3: 0PF: 1 | ZF: 0
+INFO CMP
+INFO Tick 1401	PC: 5	Registers: [0, 0, 14, 360360, 360360, 15, 20, 0]	SrcA: 20 | SrcB: 15 | Result: 35	A1: 6 | A2: 5 | A3: 0PF: 0 | ZF: 0
+INFO JG
+INFO Tick 1404	PC: 6	Registers: [0, 0, 14, 360360, 360360, 15, 20, 0]	SrcA: 0 | SrcB: 14 | Result: 14	A1: 0 | A2: 2 | A3: 0PF: 0 | ZF: 0
+INFO JMP
+INFO Tick 1407	PC: 10	Registers: [0, 0, 14, 360360, 360360, 15, 20, 0]	SrcA: 0 | SrcB: 14 | Result: 14	A1: 0 | A2: 2 | A3: 0PF: 0 | ZF: 0
+INFO ADD
+INFO Tick 1411	PC: 11	Registers: [0, 360360, 14, 360360, 360360, 15, 20, 0]	SrcA: 0 | SrcB: 360360 | Result: 360360	A1: 0 | A2: 4 | A3: 1PF: 1 | ZF: 0
+INFO ADD
+INFO Tick 1415	PC: 12	Registers: [0, 360360, 15, 360360, 360360, 15, 20, 0]	SrcA: 0 | SrcB: 15 | Result: 15	A1: 0 | A2: 5 | A3: 2PF: 1 | ZF: 0
+INFO JMP
+INFO Tick 1418	PC: 16	Registers: [0, 360360, 15, 360360, 360360, 15, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 0 | A3: 0PF: 1 | ZF: 0
+INFO CMP
+INFO Tick 1422	PC: 17	Registers: [0, 360360, 15, 360360, 360360, 15, 20, 0]	SrcA: 0 | SrcB: 360360 | Result: 360360	A1: 0 | A2: 1 | A3: 0PF: 1 | ZF: 0
+INFO BEQ
+INFO Tick 1425	PC: 18	Registers: [0, 360360, 15, 360360, 360360, 15, 20, 0]	SrcA: 0 | SrcB: 360360 | Result: 360360	A1: 0 | A2: 1 | A3: 0PF: 1 | ZF: 0
+INFO CMP
+INFO Tick 1429	PC: 19	Registers: [0, 360360, 15, 360360, 360360, 15, 20, 0]	SrcA: 15 | SrcB: 360360 | Result: 360375	A1: 2 | A2: 1 | A3: 0PF: 1 | ZF: 0
+INFO JG
+INFO Tick 1432	PC: 23	Registers: [0, 360360, 15, 360360, 360360, 15, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 7 | A3: 0PF: 1 | ZF: 0
+INFO REM
+INFO Tick 1436	PC: 24	Registers: [0, 0, 15, 360360, 360360, 15, 20, 0]	SrcA: 0 | SrcB: 15 | Result: 15	A1: 1 | A2: 2 | A3: 1PF: 0 | ZF: 1
+INFO JMP
+INFO Tick 1439	PC: 16	Registers: [0, 0, 15, 360360, 360360, 15, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 0 | A3: 0PF: 0 | ZF: 1
+INFO CMP
+INFO Tick 1443	PC: 17	Registers: [0, 0, 15, 360360, 360360, 15, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 1 | A3: 0PF: 0 | ZF: 1
+INFO BEQ
+INFO Tick 1446	PC: 25	Registers: [0, 0, 15, 360360, 360360, 15, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 1 | A3: 0PF: 0 | ZF: 1
+INFO JMP
+INFO Tick 1449	PC: 13	Registers: [0, 0, 15, 360360, 360360, 15, 20, 0]	SrcA: 0 | SrcB: 15 | Result: 15	A1: 0 | A2: 5 | A3: 0PF: 0 | ZF: 1
+INFO MUL
+INFO Tick 1453	PC: 14	Registers: [0, 0, 15, 5405400, 360360, 15, 20, 0]	SrcA: 360360 | SrcB: 15 | Result: 360375	A1: 4 | A2: 5 | A3: 3PF: 1 | ZF: 0
+INFO DIV
+INFO Tick 1457	PC: 15	Registers: [0, 0, 15, 360360, 360360, 15, 20, 0]	SrcA: 360360 | SrcB: 15 | Result: 360375	A1: 3 | A2: 2 | A3: 3PF: 1 | ZF: 0
+INFO JMP
+INFO Tick 1460	PC: 7	Registers: [0, 0, 15, 360360, 360360, 15, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 7 | A3: 0PF: 1 | ZF: 0
+INFO ADD
+INFO Tick 1464	PC: 8	Registers: [0, 0, 15, 360360, 360360, 15, 20, 0]	SrcA: 0 | SrcB: 360360 | Result: 360360	A1: 0 | A2: 3 | A3: 4PF: 1 | ZF: 0
+INFO ADDI
+INFO Tick 1468	PC: 9	Registers: [0, 0, 15, 360360, 360360, 16, 20, 0]	SrcA: 16 | SrcB: 0 | Result: 16	A1: 5 | A2: 1 | A3: 5PF: 1 | ZF: 0
+INFO JMP
+INFO Tick 1471	PC: 4	Registers: [0, 0, 15, 360360, 360360, 16, 20, 0]	SrcA: 0 | SrcB: 360360 | Result: 360360	A1: 0 | A2: 4 | A3: 0PF: 1 | ZF: 0
+INFO CMP
+INFO Tick 1475	PC: 5	Registers: [0, 0, 15, 360360, 360360, 16, 20, 0]	SrcA: 20 | SrcB: 16 | Result: 36	A1: 6 | A2: 5 | A3: 0PF: 0 | ZF: 0
+INFO JG
+INFO Tick 1478	PC: 6	Registers: [0, 0, 15, 360360, 360360, 16, 20, 0]	SrcA: 0 | SrcB: 15 | Result: 15	A1: 0 | A2: 2 | A3: 0PF: 0 | ZF: 0
+INFO JMP
+INFO Tick 1481	PC: 10	Registers: [0, 0, 15, 360360, 360360, 16, 20, 0]	SrcA: 0 | SrcB: 15 | Result: 15	A1: 0 | A2: 2 | A3: 0PF: 0 | ZF: 0
+INFO ADD
+INFO Tick 1485	PC: 11	Registers: [0, 360360, 15, 360360, 360360, 16, 20, 0]	SrcA: 0 | SrcB: 360360 | Result: 360360	A1: 0 | A2: 4 | A3: 1PF: 1 | ZF: 0
+INFO ADD
+INFO Tick 1489	PC: 12	Registers: [0, 360360, 16, 360360, 360360, 16, 20, 0]	SrcA: 0 | SrcB: 16 | Result: 16	A1: 0 | A2: 5 | A3: 2PF: 1 | ZF: 0
+INFO JMP
+INFO Tick 1492	PC: 16	Registers: [0, 360360, 16, 360360, 360360, 16, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 0 | A3: 0PF: 1 | ZF: 0
+INFO CMP
+INFO Tick 1496	PC: 17	Registers: [0, 360360, 16, 360360, 360360, 16, 20, 0]	SrcA: 0 | SrcB: 360360 | Result: 360360	A1: 0 | A2: 1 | A3: 0PF: 1 | ZF: 0
+INFO BEQ
+INFO Tick 1499	PC: 18	Registers: [0, 360360, 16, 360360, 360360, 16, 20, 0]	SrcA: 0 | SrcB: 360360 | Result: 360360	A1: 0 | A2: 1 | A3: 0PF: 1 | ZF: 0
+INFO CMP
+INFO Tick 1503	PC: 19	Registers: [0, 360360, 16, 360360, 360360, 16, 20, 0]	SrcA: 16 | SrcB: 360360 | Result: 360376	A1: 2 | A2: 1 | A3: 0PF: 1 | ZF: 0
+INFO JG
+INFO Tick 1506	PC: 23	Registers: [0, 360360, 16, 360360, 360360, 16, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 7 | A3: 0PF: 1 | ZF: 0
+INFO REM
+INFO Tick 1510	PC: 24	Registers: [0, 8, 16, 360360, 360360, 16, 20, 0]	SrcA: 8 | SrcB: 16 | Result: 24	A1: 1 | A2: 2 | A3: 1PF: 1 | ZF: 0
+INFO JMP
+INFO Tick 1513	PC: 16	Registers: [0, 8, 16, 360360, 360360, 16, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 0 | A3: 0PF: 1 | ZF: 0
+INFO CMP
+INFO Tick 1517	PC: 17	Registers: [0, 8, 16, 360360, 360360, 16, 20, 0]	SrcA: 0 | SrcB: 8 | Result: 8	A1: 0 | A2: 1 | A3: 0PF: 1 | ZF: 0
+INFO BEQ
+INFO Tick 1520	PC: 18	Registers: [0, 8, 16, 360360, 360360, 16, 20, 0]	SrcA: 0 | SrcB: 8 | Result: 8	A1: 0 | A2: 1 | A3: 0PF: 1 | ZF: 0
+INFO CMP
+INFO Tick 1524	PC: 19	Registers: [0, 8, 16, 360360, 360360, 16, 20, 0]	SrcA: 16 | SrcB: 8 | Result: 24	A1: 2 | A2: 1 | A3: 0PF: 0 | ZF: 0
+INFO JG
+INFO Tick 1527	PC: 20	Registers: [0, 8, 16, 360360, 360360, 16, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 7 | A3: 0PF: 0 | ZF: 0
+INFO ADD
+INFO Tick 1531	PC: 21	Registers: [0, 8, 16, 8, 360360, 16, 20, 0]	SrcA: 0 | SrcB: 8 | Result: 8	A1: 0 | A2: 1 | A3: 3PF: 1 | ZF: 0
+INFO ADD
+INFO Tick 1535	PC: 22	Registers: [0, 16, 16, 8, 360360, 16, 20, 0]	SrcA: 0 | SrcB: 16 | Result: 16	A1: 0 | A2: 2 | A3: 1PF: 1 | ZF: 0
+INFO ADD
+INFO Tick 1539	PC: 23	Registers: [0, 16, 8, 8, 360360, 16, 20, 0]	SrcA: 0 | SrcB: 8 | Result: 8	A1: 0 | A2: 3 | A3: 2PF: 1 | ZF: 0
+INFO REM
+INFO Tick 1543	PC: 24	Registers: [0, 0, 8, 8, 360360, 16, 20, 0]	SrcA: 0 | SrcB: 8 | Result: 8	A1: 1 | A2: 2 | A3: 1PF: 0 | ZF: 1
+INFO JMP
+INFO Tick 1546	PC: 16	Registers: [0, 0, 8, 8, 360360, 16, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 0 | A3: 0PF: 0 | ZF: 1
+INFO CMP
+INFO Tick 1550	PC: 17	Registers: [0, 0, 8, 8, 360360, 16, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 1 | A3: 0PF: 0 | ZF: 1
+INFO BEQ
+INFO Tick 1553	PC: 25	Registers: [0, 0, 8, 8, 360360, 16, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 1 | A3: 0PF: 0 | ZF: 1
+INFO JMP
+INFO Tick 1556	PC: 13	Registers: [0, 0, 8, 8, 360360, 16, 20, 0]	SrcA: 0 | SrcB: 16 | Result: 16	A1: 0 | A2: 5 | A3: 0PF: 0 | ZF: 1
+INFO MUL
+INFO Tick 1560	PC: 14	Registers: [0, 0, 8, 5765760, 360360, 16, 20, 0]	SrcA: 360360 | SrcB: 16 | Result: 360376	A1: 4 | A2: 5 | A3: 3PF: 1 | ZF: 0
+INFO DIV
+INFO Tick 1564	PC: 15	Registers: [0, 0, 8, 720720, 360360, 16, 20, 0]	SrcA: 720720 | SrcB: 8 | Result: 720728	A1: 3 | A2: 2 | A3: 3PF: 1 | ZF: 0
+INFO JMP
+INFO Tick 1567	PC: 7	Registers: [0, 0, 8, 720720, 360360, 16, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 7 | A3: 0PF: 1 | ZF: 0
+INFO ADD
+INFO Tick 1571	PC: 8	Registers: [0, 0, 8, 720720, 720720, 16, 20, 0]	SrcA: 0 | SrcB: 720720 | Result: 720720	A1: 0 | A2: 3 | A3: 4PF: 1 | ZF: 0
+INFO ADDI
+INFO Tick 1575	PC: 9	Registers: [0, 0, 8, 720720, 720720, 17, 20, 0]	SrcA: 17 | SrcB: 0 | Result: 17	A1: 5 | A2: 1 | A3: 5PF: 1 | ZF: 0
+INFO JMP
+INFO Tick 1578	PC: 4	Registers: [0, 0, 8, 720720, 720720, 17, 20, 0]	SrcA: 0 | SrcB: 720720 | Result: 720720	A1: 0 | A2: 4 | A3: 0PF: 1 | ZF: 0
+INFO CMP
+INFO Tick 1582	PC: 5	Registers: [0, 0, 8, 720720, 720720, 17, 20, 0]	SrcA: 20 | SrcB: 17 | Result: 37	A1: 6 | A2: 5 | A3: 0PF: 0 | ZF: 0
+INFO JG
+INFO Tick 1585	PC: 6	Registers: [0, 0, 8, 720720, 720720, 17, 20, 0]	SrcA: 0 | SrcB: 8 | Result: 8	A1: 0 | A2: 2 | A3: 0PF: 0 | ZF: 0
+INFO JMP
+INFO Tick 1588	PC: 10	Registers: [0, 0, 8, 720720, 720720, 17, 20, 0]	SrcA: 0 | SrcB: 8 | Result: 8	A1: 0 | A2: 2 | A3: 0PF: 0 | ZF: 0
+INFO ADD
+INFO Tick 1592	PC: 11	Registers: [0, 720720, 8, 720720, 720720, 17, 20, 0]	SrcA: 0 | SrcB: 720720 | Result: 720720	A1: 0 | A2: 4 | A3: 1PF: 1 | ZF: 0
+INFO ADD
+INFO Tick 1596	PC: 12	Registers: [0, 720720, 17, 720720, 720720, 17, 20, 0]	SrcA: 0 | SrcB: 17 | Result: 17	A1: 0 | A2: 5 | A3: 2PF: 1 | ZF: 0
+INFO JMP
+INFO Tick 1599	PC: 16	Registers: [0, 720720, 17, 720720, 720720, 17, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 0 | A3: 0PF: 1 | ZF: 0
+INFO CMP
+INFO Tick 1603	PC: 17	Registers: [0, 720720, 17, 720720, 720720, 17, 20, 0]	SrcA: 0 | SrcB: 720720 | Result: 720720	A1: 0 | A2: 1 | A3: 0PF: 1 | ZF: 0
+INFO BEQ
+INFO Tick 1606	PC: 18	Registers: [0, 720720, 17, 720720, 720720, 17, 20, 0]	SrcA: 0 | SrcB: 720720 | Result: 720720	A1: 0 | A2: 1 | A3: 0PF: 1 | ZF: 0
+INFO CMP
+INFO Tick 1610	PC: 19	Registers: [0, 720720, 17, 720720, 720720, 17, 20, 0]	SrcA: 17 | SrcB: 720720 | Result: 720737	A1: 2 | A2: 1 | A3: 0PF: 1 | ZF: 0
+INFO JG
+INFO Tick 1613	PC: 23	Registers: [0, 720720, 17, 720720, 720720, 17, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 7 | A3: 0PF: 1 | ZF: 0
+INFO REM
+INFO Tick 1617	PC: 24	Registers: [0, 5, 17, 720720, 720720, 17, 20, 0]	SrcA: 5 | SrcB: 17 | Result: 22	A1: 1 | A2: 2 | A3: 1PF: 1 | ZF: 0
+INFO JMP
+INFO Tick 1620	PC: 16	Registers: [0, 5, 17, 720720, 720720, 17, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 0 | A3: 0PF: 1 | ZF: 0
+INFO CMP
+INFO Tick 1624	PC: 17	Registers: [0, 5, 17, 720720, 720720, 17, 20, 0]	SrcA: 0 | SrcB: 5 | Result: 5	A1: 0 | A2: 1 | A3: 0PF: 1 | ZF: 0
+INFO BEQ
+INFO Tick 1627	PC: 18	Registers: [0, 5, 17, 720720, 720720, 17, 20, 0]	SrcA: 0 | SrcB: 5 | Result: 5	A1: 0 | A2: 1 | A3: 0PF: 1 | ZF: 0
+INFO CMP
+INFO Tick 1631	PC: 19	Registers: [0, 5, 17, 720720, 720720, 17, 20, 0]	SrcA: 17 | SrcB: 5 | Result: 22	A1: 2 | A2: 1 | A3: 0PF: 0 | ZF: 0
+INFO JG
+INFO Tick 1634	PC: 20	Registers: [0, 5, 17, 720720, 720720, 17, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 7 | A3: 0PF: 0 | ZF: 0
+INFO ADD
+INFO Tick 1638	PC: 21	Registers: [0, 5, 17, 5, 720720, 17, 20, 0]	SrcA: 0 | SrcB: 5 | Result: 5	A1: 0 | A2: 1 | A3: 3PF: 1 | ZF: 0
+INFO ADD
+INFO Tick 1642	PC: 22	Registers: [0, 17, 17, 5, 720720, 17, 20, 0]	SrcA: 0 | SrcB: 17 | Result: 17	A1: 0 | A2: 2 | A3: 1PF: 1 | ZF: 0
+INFO ADD
+INFO Tick 1646	PC: 23	Registers: [0, 17, 5, 5, 720720, 17, 20, 0]	SrcA: 0 | SrcB: 5 | Result: 5	A1: 0 | A2: 3 | A3: 2PF: 1 | ZF: 0
+INFO REM
+INFO Tick 1650	PC: 24	Registers: [0, 2, 5, 5, 720720, 17, 20, 0]	SrcA: 2 | SrcB: 5 | Result: 7	A1: 1 | A2: 2 | A3: 1PF: 1 | ZF: 0
+INFO JMP
+INFO Tick 1653	PC: 16	Registers: [0, 2, 5, 5, 720720, 17, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 0 | A3: 0PF: 1 | ZF: 0
+INFO CMP
+INFO Tick 1657	PC: 17	Registers: [0, 2, 5, 5, 720720, 17, 20, 0]	SrcA: 0 | SrcB: 2 | Result: 2	A1: 0 | A2: 1 | A3: 0PF: 1 | ZF: 0
+INFO BEQ
+INFO Tick 1660	PC: 18	Registers: [0, 2, 5, 5, 720720, 17, 20, 0]	SrcA: 0 | SrcB: 2 | Result: 2	A1: 0 | A2: 1 | A3: 0PF: 1 | ZF: 0
+INFO CMP
+INFO Tick 1664	PC: 19	Registers: [0, 2, 5, 5, 720720, 17, 20, 0]	SrcA: 5 | SrcB: 2 | Result: 7	A1: 2 | A2: 1 | A3: 0PF: 0 | ZF: 0
+INFO JG
+INFO Tick 1667	PC: 20	Registers: [0, 2, 5, 5, 720720, 17, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 7 | A3: 0PF: 0 | ZF: 0
+INFO ADD
+INFO Tick 1671	PC: 21	Registers: [0, 2, 5, 2, 720720, 17, 20, 0]	SrcA: 0 | SrcB: 2 | Result: 2	A1: 0 | A2: 1 | A3: 3PF: 1 | ZF: 0
+INFO ADD
+INFO Tick 1675	PC: 22	Registers: [0, 5, 5, 2, 720720, 17, 20, 0]	SrcA: 0 | SrcB: 5 | Result: 5	A1: 0 | A2: 2 | A3: 1PF: 1 | ZF: 0
+INFO ADD
+INFO Tick 1679	PC: 23	Registers: [0, 5, 2, 2, 720720, 17, 20, 0]	SrcA: 0 | SrcB: 2 | Result: 2	A1: 0 | A2: 3 | A3: 2PF: 1 | ZF: 0
+INFO REM
+INFO Tick 1683	PC: 24	Registers: [0, 1, 2, 2, 720720, 17, 20, 0]	SrcA: 1 | SrcB: 2 | Result: 3	A1: 1 | A2: 2 | A3: 1PF: 1 | ZF: 0
+INFO JMP
+INFO Tick 1686	PC: 16	Registers: [0, 1, 2, 2, 720720, 17, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 0 | A3: 0PF: 1 | ZF: 0
+INFO CMP
+INFO Tick 1690	PC: 17	Registers: [0, 1, 2, 2, 720720, 17, 20, 0]	SrcA: 0 | SrcB: 1 | Result: 1	A1: 0 | A2: 1 | A3: 0PF: 1 | ZF: 0
+INFO BEQ
+INFO Tick 1693	PC: 18	Registers: [0, 1, 2, 2, 720720, 17, 20, 0]	SrcA: 0 | SrcB: 1 | Result: 1	A1: 0 | A2: 1 | A3: 0PF: 1 | ZF: 0
+INFO CMP
+INFO Tick 1697	PC: 19	Registers: [0, 1, 2, 2, 720720, 17, 20, 0]	SrcA: 2 | SrcB: 1 | Result: 3	A1: 2 | A2: 1 | A3: 0PF: 0 | ZF: 0
+INFO JG
+INFO Tick 1700	PC: 20	Registers: [0, 1, 2, 2, 720720, 17, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 7 | A3: 0PF: 0 | ZF: 0
+INFO ADD
+INFO Tick 1704	PC: 21	Registers: [0, 1, 2, 1, 720720, 17, 20, 0]	SrcA: 0 | SrcB: 1 | Result: 1	A1: 0 | A2: 1 | A3: 3PF: 1 | ZF: 0
+INFO ADD
+INFO Tick 1708	PC: 22	Registers: [0, 2, 2, 1, 720720, 17, 20, 0]	SrcA: 0 | SrcB: 2 | Result: 2	A1: 0 | A2: 2 | A3: 1PF: 1 | ZF: 0
+INFO ADD
+INFO Tick 1712	PC: 23	Registers: [0, 2, 1, 1, 720720, 17, 20, 0]	SrcA: 0 | SrcB: 1 | Result: 1	A1: 0 | A2: 3 | A3: 2PF: 1 | ZF: 0
+INFO REM
+INFO Tick 1716	PC: 24	Registers: [0, 0, 1, 1, 720720, 17, 20, 0]	SrcA: 0 | SrcB: 1 | Result: 1	A1: 1 | A2: 2 | A3: 1PF: 0 | ZF: 1
+INFO JMP
+INFO Tick 1719	PC: 16	Registers: [0, 0, 1, 1, 720720, 17, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 0 | A3: 0PF: 0 | ZF: 1
+INFO CMP
+INFO Tick 1723	PC: 17	Registers: [0, 0, 1, 1, 720720, 17, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 1 | A3: 0PF: 0 | ZF: 1
+INFO BEQ
+INFO Tick 1726	PC: 25	Registers: [0, 0, 1, 1, 720720, 17, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 1 | A3: 0PF: 0 | ZF: 1
+INFO JMP
+INFO Tick 1729	PC: 13	Registers: [0, 0, 1, 1, 720720, 17, 20, 0]	SrcA: 0 | SrcB: 17 | Result: 17	A1: 0 | A2: 5 | A3: 0PF: 0 | ZF: 1
+INFO MUL
+INFO Tick 1733	PC: 14	Registers: [0, 0, 1, 12252240, 720720, 17, 20, 0]	SrcA: 720720 | SrcB: 17 | Result: 720737	A1: 4 | A2: 5 | A3: 3PF: 1 | ZF: 0
+INFO DIV
+INFO Tick 1737	PC: 15	Registers: [0, 0, 1, 12252240, 720720, 17, 20, 0]	SrcA: 12252240 | SrcB: 1 | Result: 12252241	A1: 3 | A2: 2 | A3: 3PF: 1 | ZF: 0
+INFO JMP
+INFO Tick 1740	PC: 7	Registers: [0, 0, 1, 12252240, 720720, 17, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 7 | A3: 0PF: 1 | ZF: 0
+INFO ADD
+INFO Tick 1744	PC: 8	Registers: [0, 0, 1, 12252240, 12252240, 17, 20, 0]	SrcA: 0 | SrcB: 12252240 | Result: 12252240	A1: 0 | A2: 3 | A3: 4PF: 1 | ZF: 0
+INFO ADDI
+INFO Tick 1748	PC: 9	Registers: [0, 0, 1, 12252240, 12252240, 18, 20, 0]	SrcA: 18 | SrcB: 0 | Result: 18	A1: 5 | A2: 1 | A3: 5PF: 1 | ZF: 0
+INFO JMP
+INFO Tick 1751	PC: 4	Registers: [0, 0, 1, 12252240, 12252240, 18, 20, 0]	SrcA: 0 | SrcB: 12252240 | Result: 12252240	A1: 0 | A2: 4 | A3: 0PF: 1 | ZF: 0
+INFO CMP
+INFO Tick 1755	PC: 5	Registers: [0, 0, 1, 12252240, 12252240, 18, 20, 0]	SrcA: 20 | SrcB: 18 | Result: 38	A1: 6 | A2: 5 | A3: 0PF: 0 | ZF: 0
+INFO JG
+INFO Tick 1758	PC: 6	Registers: [0, 0, 1, 12252240, 12252240, 18, 20, 0]	SrcA: 0 | SrcB: 1 | Result: 1	A1: 0 | A2: 2 | A3: 0PF: 0 | ZF: 0
+INFO JMP
+INFO Tick 1761	PC: 10	Registers: [0, 0, 1, 12252240, 12252240, 18, 20, 0]	SrcA: 0 | SrcB: 1 | Result: 1	A1: 0 | A2: 2 | A3: 0PF: 0 | ZF: 0
+INFO ADD
+INFO Tick 1765	PC: 11	Registers: [0, 12252240, 1, 12252240, 12252240, 18, 20, 0]	SrcA: 0 | SrcB: 12252240 | Result: 12252240	A1: 0 | A2: 4 | A3: 1PF: 1 | ZF: 0
+INFO ADD
+INFO Tick 1769	PC: 12	Registers: [0, 12252240, 18, 12252240, 12252240, 18, 20, 0]	SrcA: 0 | SrcB: 18 | Result: 18	A1: 0 | A2: 5 | A3: 2PF: 1 | ZF: 0
+INFO JMP
+INFO Tick 1772	PC: 16	Registers: [0, 12252240, 18, 12252240, 12252240, 18, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 0 | A3: 0PF: 1 | ZF: 0
+INFO CMP
+INFO Tick 1776	PC: 17	Registers: [0, 12252240, 18, 12252240, 12252240, 18, 20, 0]	SrcA: 0 | SrcB: 12252240 | Result: 12252240	A1: 0 | A2: 1 | A3: 0PF: 1 | ZF: 0
+INFO BEQ
+INFO Tick 1779	PC: 18	Registers: [0, 12252240, 18, 12252240, 12252240, 18, 20, 0]	SrcA: 0 | SrcB: 12252240 | Result: 12252240	A1: 0 | A2: 1 | A3: 0PF: 1 | ZF: 0
+INFO CMP
+INFO Tick 1783	PC: 19	Registers: [0, 12252240, 18, 12252240, 12252240, 18, 20, 0]	SrcA: 18 | SrcB: 12252240 | Result: 12252258	A1: 2 | A2: 1 | A3: 0PF: 1 | ZF: 0
+INFO JG
+INFO Tick 1786	PC: 23	Registers: [0, 12252240, 18, 12252240, 12252240, 18, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 7 | A3: 0PF: 1 | ZF: 0
+INFO REM
+INFO Tick 1790	PC: 24	Registers: [0, 0, 18, 12252240, 12252240, 18, 20, 0]	SrcA: 0 | SrcB: 18 | Result: 18	A1: 1 | A2: 2 | A3: 1PF: 0 | ZF: 1
+INFO JMP
+INFO Tick 1793	PC: 16	Registers: [0, 0, 18, 12252240, 12252240, 18, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 0 | A3: 0PF: 0 | ZF: 1
+INFO CMP
+INFO Tick 1797	PC: 17	Registers: [0, 0, 18, 12252240, 12252240, 18, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 1 | A3: 0PF: 0 | ZF: 1
+INFO BEQ
+INFO Tick 1800	PC: 25	Registers: [0, 0, 18, 12252240, 12252240, 18, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 1 | A3: 0PF: 0 | ZF: 1
+INFO JMP
+INFO Tick 1803	PC: 13	Registers: [0, 0, 18, 12252240, 12252240, 18, 20, 0]	SrcA: 0 | SrcB: 18 | Result: 18	A1: 0 | A2: 5 | A3: 0PF: 0 | ZF: 1
+INFO MUL
+INFO Tick 1807	PC: 14	Registers: [0, 0, 18, 220540320, 12252240, 18, 20, 0]	SrcA: 12252240 | SrcB: 18 | Result: 12252258	A1: 4 | A2: 5 | A3: 3PF: 1 | ZF: 0
+INFO DIV
+INFO Tick 1811	PC: 15	Registers: [0, 0, 18, 12252240, 12252240, 18, 20, 0]	SrcA: 12252240 | SrcB: 18 | Result: 12252258	A1: 3 | A2: 2 | A3: 3PF: 1 | ZF: 0
+INFO JMP
+INFO Tick 1814	PC: 7	Registers: [0, 0, 18, 12252240, 12252240, 18, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 7 | A3: 0PF: 1 | ZF: 0
+INFO ADD
+INFO Tick 1818	PC: 8	Registers: [0, 0, 18, 12252240, 12252240, 18, 20, 0]	SrcA: 0 | SrcB: 12252240 | Result: 12252240	A1: 0 | A2: 3 | A3: 4PF: 1 | ZF: 0
+INFO ADDI
+INFO Tick 1822	PC: 9	Registers: [0, 0, 18, 12252240, 12252240, 19, 20, 0]	SrcA: 19 | SrcB: 0 | Result: 19	A1: 5 | A2: 1 | A3: 5PF: 1 | ZF: 0
+INFO JMP
+INFO Tick 1825	PC: 4	Registers: [0, 0, 18, 12252240, 12252240, 19, 20, 0]	SrcA: 0 | SrcB: 12252240 | Result: 12252240	A1: 0 | A2: 4 | A3: 0PF: 1 | ZF: 0
+INFO CMP
+INFO Tick 1829	PC: 5	Registers: [0, 0, 18, 12252240, 12252240, 19, 20, 0]	SrcA: 20 | SrcB: 19 | Result: 39	A1: 6 | A2: 5 | A3: 0PF: 0 | ZF: 0
+INFO JG
+INFO Tick 1832	PC: 6	Registers: [0, 0, 18, 12252240, 12252240, 19, 20, 0]	SrcA: 0 | SrcB: 18 | Result: 18	A1: 0 | A2: 2 | A3: 0PF: 0 | ZF: 0
+INFO JMP
+INFO Tick 1835	PC: 10	Registers: [0, 0, 18, 12252240, 12252240, 19, 20, 0]	SrcA: 0 | SrcB: 18 | Result: 18	A1: 0 | A2: 2 | A3: 0PF: 0 | ZF: 0
+INFO ADD
+INFO Tick 1839	PC: 11	Registers: [0, 12252240, 18, 12252240, 12252240, 19, 20, 0]	SrcA: 0 | SrcB: 12252240 | Result: 12252240	A1: 0 | A2: 4 | A3: 1PF: 1 | ZF: 0
+INFO ADD
+INFO Tick 1843	PC: 12	Registers: [0, 12252240, 19, 12252240, 12252240, 19, 20, 0]	SrcA: 0 | SrcB: 19 | Result: 19	A1: 0 | A2: 5 | A3: 2PF: 1 | ZF: 0
+INFO JMP
+INFO Tick 1846	PC: 16	Registers: [0, 12252240, 19, 12252240, 12252240, 19, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 0 | A3: 0PF: 1 | ZF: 0
+INFO CMP
+INFO Tick 1850	PC: 17	Registers: [0, 12252240, 19, 12252240, 12252240, 19, 20, 0]	SrcA: 0 | SrcB: 12252240 | Result: 12252240	A1: 0 | A2: 1 | A3: 0PF: 1 | ZF: 0
+INFO BEQ
+INFO Tick 1853	PC: 18	Registers: [0, 12252240, 19, 12252240, 12252240, 19, 20, 0]	SrcA: 0 | SrcB: 12252240 | Result: 12252240	A1: 0 | A2: 1 | A3: 0PF: 1 | ZF: 0
+INFO CMP
+INFO Tick 1857	PC: 19	Registers: [0, 12252240, 19, 12252240, 12252240, 19, 20, 0]	SrcA: 19 | SrcB: 12252240 | Result: 12252259	A1: 2 | A2: 1 | A3: 0PF: 1 | ZF: 0
+INFO JG
+INFO Tick 1860	PC: 23	Registers: [0, 12252240, 19, 12252240, 12252240, 19, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 7 | A3: 0PF: 1 | ZF: 0
+INFO REM
+INFO Tick 1864	PC: 24	Registers: [0, 14, 19, 12252240, 12252240, 19, 20, 0]	SrcA: 14 | SrcB: 19 | Result: 33	A1: 1 | A2: 2 | A3: 1PF: 1 | ZF: 0
+INFO JMP
+INFO Tick 1867	PC: 16	Registers: [0, 14, 19, 12252240, 12252240, 19, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 0 | A3: 0PF: 1 | ZF: 0
+INFO CMP
+INFO Tick 1871	PC: 17	Registers: [0, 14, 19, 12252240, 12252240, 19, 20, 0]	SrcA: 0 | SrcB: 14 | Result: 14	A1: 0 | A2: 1 | A3: 0PF: 1 | ZF: 0
+INFO BEQ
+INFO Tick 1874	PC: 18	Registers: [0, 14, 19, 12252240, 12252240, 19, 20, 0]	SrcA: 0 | SrcB: 14 | Result: 14	A1: 0 | A2: 1 | A3: 0PF: 1 | ZF: 0
+INFO CMP
+INFO Tick 1878	PC: 19	Registers: [0, 14, 19, 12252240, 12252240, 19, 20, 0]	SrcA: 19 | SrcB: 14 | Result: 33	A1: 2 | A2: 1 | A3: 0PF: 0 | ZF: 0
+INFO JG
+INFO Tick 1881	PC: 20	Registers: [0, 14, 19, 12252240, 12252240, 19, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 7 | A3: 0PF: 0 | ZF: 0
+INFO ADD
+INFO Tick 1885	PC: 21	Registers: [0, 14, 19, 14, 12252240, 19, 20, 0]	SrcA: 0 | SrcB: 14 | Result: 14	A1: 0 | A2: 1 | A3: 3PF: 1 | ZF: 0
+INFO ADD
+INFO Tick 1889	PC: 22	Registers: [0, 19, 19, 14, 12252240, 19, 20, 0]	SrcA: 0 | SrcB: 19 | Result: 19	A1: 0 | A2: 2 | A3: 1PF: 1 | ZF: 0
+INFO ADD
+INFO Tick 1893	PC: 23	Registers: [0, 19, 14, 14, 12252240, 19, 20, 0]	SrcA: 0 | SrcB: 14 | Result: 14	A1: 0 | A2: 3 | A3: 2PF: 1 | ZF: 0
+INFO REM
+INFO Tick 1897	PC: 24	Registers: [0, 5, 14, 14, 12252240, 19, 20, 0]	SrcA: 5 | SrcB: 14 | Result: 19	A1: 1 | A2: 2 | A3: 1PF: 1 | ZF: 0
+INFO JMP
+INFO Tick 1900	PC: 16	Registers: [0, 5, 14, 14, 12252240, 19, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 0 | A3: 0PF: 1 | ZF: 0
+INFO CMP
+INFO Tick 1904	PC: 17	Registers: [0, 5, 14, 14, 12252240, 19, 20, 0]	SrcA: 0 | SrcB: 5 | Result: 5	A1: 0 | A2: 1 | A3: 0PF: 1 | ZF: 0
+INFO BEQ
+INFO Tick 1907	PC: 18	Registers: [0, 5, 14, 14, 12252240, 19, 20, 0]	SrcA: 0 | SrcB: 5 | Result: 5	A1: 0 | A2: 1 | A3: 0PF: 1 | ZF: 0
+INFO CMP
+INFO Tick 1911	PC: 19	Registers: [0, 5, 14, 14, 12252240, 19, 20, 0]	SrcA: 14 | SrcB: 5 | Result: 19	A1: 2 | A2: 1 | A3: 0PF: 0 | ZF: 0
+INFO JG
+INFO Tick 1914	PC: 20	Registers: [0, 5, 14, 14, 12252240, 19, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 7 | A3: 0PF: 0 | ZF: 0
+INFO ADD
+INFO Tick 1918	PC: 21	Registers: [0, 5, 14, 5, 12252240, 19, 20, 0]	SrcA: 0 | SrcB: 5 | Result: 5	A1: 0 | A2: 1 | A3: 3PF: 1 | ZF: 0
+INFO ADD
+INFO Tick 1922	PC: 22	Registers: [0, 14, 14, 5, 12252240, 19, 20, 0]	SrcA: 0 | SrcB: 14 | Result: 14	A1: 0 | A2: 2 | A3: 1PF: 1 | ZF: 0
+INFO ADD
+INFO Tick 1926	PC: 23	Registers: [0, 14, 5, 5, 12252240, 19, 20, 0]	SrcA: 0 | SrcB: 5 | Result: 5	A1: 0 | A2: 3 | A3: 2PF: 1 | ZF: 0
+INFO REM
+INFO Tick 1930	PC: 24	Registers: [0, 4, 5, 5, 12252240, 19, 20, 0]	SrcA: 4 | SrcB: 5 | Result: 9	A1: 1 | A2: 2 | A3: 1PF: 1 | ZF: 0
+INFO JMP
+INFO Tick 1933	PC: 16	Registers: [0, 4, 5, 5, 12252240, 19, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 0 | A3: 0PF: 1 | ZF: 0
+INFO CMP
+INFO Tick 1937	PC: 17	Registers: [0, 4, 5, 5, 12252240, 19, 20, 0]	SrcA: 0 | SrcB: 4 | Result: 4	A1: 0 | A2: 1 | A3: 0PF: 1 | ZF: 0
+INFO BEQ
+INFO Tick 1940	PC: 18	Registers: [0, 4, 5, 5, 12252240, 19, 20, 0]	SrcA: 0 | SrcB: 4 | Result: 4	A1: 0 | A2: 1 | A3: 0PF: 1 | ZF: 0
+INFO CMP
+INFO Tick 1944	PC: 19	Registers: [0, 4, 5, 5, 12252240, 19, 20, 0]	SrcA: 5 | SrcB: 4 | Result: 9	A1: 2 | A2: 1 | A3: 0PF: 0 | ZF: 0
+INFO JG
+INFO Tick 1947	PC: 20	Registers: [0, 4, 5, 5, 12252240, 19, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 7 | A3: 0PF: 0 | ZF: 0
+INFO ADD
+INFO Tick 1951	PC: 21	Registers: [0, 4, 5, 4, 12252240, 19, 20, 0]	SrcA: 0 | SrcB: 4 | Result: 4	A1: 0 | A2: 1 | A3: 3PF: 1 | ZF: 0
+INFO ADD
+INFO Tick 1955	PC: 22	Registers: [0, 5, 5, 4, 12252240, 19, 20, 0]	SrcA: 0 | SrcB: 5 | Result: 5	A1: 0 | A2: 2 | A3: 1PF: 1 | ZF: 0
+INFO ADD
+INFO Tick 1959	PC: 23	Registers: [0, 5, 4, 4, 12252240, 19, 20, 0]	SrcA: 0 | SrcB: 4 | Result: 4	A1: 0 | A2: 3 | A3: 2PF: 1 | ZF: 0
+INFO REM
+INFO Tick 1963	PC: 24	Registers: [0, 1, 4, 4, 12252240, 19, 20, 0]	SrcA: 1 | SrcB: 4 | Result: 5	A1: 1 | A2: 2 | A3: 1PF: 1 | ZF: 0
+INFO JMP
+INFO Tick 1966	PC: 16	Registers: [0, 1, 4, 4, 12252240, 19, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 0 | A3: 0PF: 1 | ZF: 0
+INFO CMP
+INFO Tick 1970	PC: 17	Registers: [0, 1, 4, 4, 12252240, 19, 20, 0]	SrcA: 0 | SrcB: 1 | Result: 1	A1: 0 | A2: 1 | A3: 0PF: 1 | ZF: 0
+INFO BEQ
+INFO Tick 1973	PC: 18	Registers: [0, 1, 4, 4, 12252240, 19, 20, 0]	SrcA: 0 | SrcB: 1 | Result: 1	A1: 0 | A2: 1 | A3: 0PF: 1 | ZF: 0
+INFO CMP
+INFO Tick 1977	PC: 19	Registers: [0, 1, 4, 4, 12252240, 19, 20, 0]	SrcA: 4 | SrcB: 1 | Result: 5	A1: 2 | A2: 1 | A3: 0PF: 0 | ZF: 0
+INFO JG
+INFO Tick 1980	PC: 20	Registers: [0, 1, 4, 4, 12252240, 19, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 7 | A3: 0PF: 0 | ZF: 0
+INFO ADD
+INFO Tick 1984	PC: 21	Registers: [0, 1, 4, 1, 12252240, 19, 20, 0]	SrcA: 0 | SrcB: 1 | Result: 1	A1: 0 | A2: 1 | A3: 3PF: 1 | ZF: 0
+INFO ADD
+INFO Tick 1988	PC: 22	Registers: [0, 4, 4, 1, 12252240, 19, 20, 0]	SrcA: 0 | SrcB: 4 | Result: 4	A1: 0 | A2: 2 | A3: 1PF: 1 | ZF: 0
+INFO ADD
+INFO Tick 1992	PC: 23	Registers: [0, 4, 1, 1, 12252240, 19, 20, 0]	SrcA: 0 | SrcB: 1 | Result: 1	A1: 0 | A2: 3 | A3: 2PF: 1 | ZF: 0
+INFO REM
+INFO Tick 1996	PC: 24	Registers: [0, 0, 1, 1, 12252240, 19, 20, 0]	SrcA: 0 | SrcB: 1 | Result: 1	A1: 1 | A2: 2 | A3: 1PF: 0 | ZF: 1
+INFO JMP
+INFO Tick 1999	PC: 16	Registers: [0, 0, 1, 1, 12252240, 19, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 0 | A3: 0PF: 0 | ZF: 1
+INFO CMP
+INFO Tick 2003	PC: 17	Registers: [0, 0, 1, 1, 12252240, 19, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 1 | A3: 0PF: 0 | ZF: 1
+INFO BEQ
+INFO Tick 2006	PC: 25	Registers: [0, 0, 1, 1, 12252240, 19, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 1 | A3: 0PF: 0 | ZF: 1
+INFO JMP
+INFO Tick 2009	PC: 13	Registers: [0, 0, 1, 1, 12252240, 19, 20, 0]	SrcA: 0 | SrcB: 19 | Result: 19	A1: 0 | A2: 5 | A3: 0PF: 0 | ZF: 1
+INFO MUL
+INFO Tick 2013	PC: 14	Registers: [0, 0, 1, 232792560, 12252240, 19, 20, 0]	SrcA: 12252240 | SrcB: 19 | Result: 12252259	A1: 4 | A2: 5 | A3: 3PF: 1 | ZF: 0
+INFO DIV
+INFO Tick 2017	PC: 15	Registers: [0, 0, 1, 232792560, 12252240, 19, 20, 0]	SrcA: 232792560 | SrcB: 1 | Result: 232792561	A1: 3 | A2: 2 | A3: 3PF: 1 | ZF: 0
+INFO JMP
+INFO Tick 2020	PC: 7	Registers: [0, 0, 1, 232792560, 12252240, 19, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 7 | A3: 0PF: 1 | ZF: 0
+INFO ADD
+INFO Tick 2024	PC: 8	Registers: [0, 0, 1, 232792560, 232792560, 19, 20, 0]	SrcA: 0 | SrcB: 232792560 | Result: 232792560	A1: 0 | A2: 3 | A3: 4PF: 1 | ZF: 0
+INFO ADDI
+INFO Tick 2028	PC: 9	Registers: [0, 0, 1, 232792560, 232792560, 20, 20, 0]	SrcA: 20 | SrcB: 0 | Result: 20	A1: 5 | A2: 1 | A3: 5PF: 1 | ZF: 0
+INFO JMP
+INFO Tick 2031	PC: 4	Registers: [0, 0, 1, 232792560, 232792560, 20, 20, 0]	SrcA: 0 | SrcB: 232792560 | Result: 232792560	A1: 0 | A2: 4 | A3: 0PF: 1 | ZF: 0
+INFO CMP
+INFO Tick 2035	PC: 5	Registers: [0, 0, 1, 232792560, 232792560, 20, 20, 0]	SrcA: 20 | SrcB: 20 | Result: 40	A1: 6 | A2: 5 | A3: 0PF: 0 | ZF: 1
+INFO JG
+INFO Tick 2038	PC: 6	Registers: [0, 0, 1, 232792560, 232792560, 20, 20, 0]	SrcA: 0 | SrcB: 1 | Result: 1	A1: 0 | A2: 2 | A3: 0PF: 0 | ZF: 1
+INFO JMP
+INFO Tick 2041	PC: 10	Registers: [0, 0, 1, 232792560, 232792560, 20, 20, 0]	SrcA: 0 | SrcB: 1 | Result: 1	A1: 0 | A2: 2 | A3: 0PF: 0 | ZF: 1
+INFO ADD
+INFO Tick 2045	PC: 11	Registers: [0, 232792560, 1, 232792560, 232792560, 20, 20, 0]	SrcA: 0 | SrcB: 232792560 | Result: 232792560	A1: 0 | A2: 4 | A3: 1PF: 1 | ZF: 0
+INFO ADD
+INFO Tick 2049	PC: 12	Registers: [0, 232792560, 20, 232792560, 232792560, 20, 20, 0]	SrcA: 0 | SrcB: 20 | Result: 20	A1: 0 | A2: 5 | A3: 2PF: 1 | ZF: 0
+INFO JMP
+INFO Tick 2052	PC: 16	Registers: [0, 232792560, 20, 232792560, 232792560, 20, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 0 | A3: 0PF: 1 | ZF: 0
+INFO CMP
+INFO Tick 2056	PC: 17	Registers: [0, 232792560, 20, 232792560, 232792560, 20, 20, 0]	SrcA: 0 | SrcB: 232792560 | Result: 232792560	A1: 0 | A2: 1 | A3: 0PF: 1 | ZF: 0
+INFO BEQ
+INFO Tick 2059	PC: 18	Registers: [0, 232792560, 20, 232792560, 232792560, 20, 20, 0]	SrcA: 0 | SrcB: 232792560 | Result: 232792560	A1: 0 | A2: 1 | A3: 0PF: 1 | ZF: 0
+INFO CMP
+INFO Tick 2063	PC: 19	Registers: [0, 232792560, 20, 232792560, 232792560, 20, 20, 0]	SrcA: 20 | SrcB: 232792560 | Result: 232792580	A1: 2 | A2: 1 | A3: 0PF: 1 | ZF: 0
+INFO JG
+INFO Tick 2066	PC: 23	Registers: [0, 232792560, 20, 232792560, 232792560, 20, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 7 | A3: 0PF: 1 | ZF: 0
+INFO REM
+INFO Tick 2070	PC: 24	Registers: [0, 0, 20, 232792560, 232792560, 20, 20, 0]	SrcA: 0 | SrcB: 20 | Result: 20	A1: 1 | A2: 2 | A3: 1PF: 0 | ZF: 1
+INFO JMP
+INFO Tick 2073	PC: 16	Registers: [0, 0, 20, 232792560, 232792560, 20, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 0 | A3: 0PF: 0 | ZF: 1
+INFO CMP
+INFO Tick 2077	PC: 17	Registers: [0, 0, 20, 232792560, 232792560, 20, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 1 | A3: 0PF: 0 | ZF: 1
+INFO BEQ
+INFO Tick 2080	PC: 25	Registers: [0, 0, 20, 232792560, 232792560, 20, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 1 | A3: 0PF: 0 | ZF: 1
+INFO JMP
+INFO Tick 2083	PC: 13	Registers: [0, 0, 20, 232792560, 232792560, 20, 20, 0]	SrcA: 0 | SrcB: 20 | Result: 20	A1: 0 | A2: 5 | A3: 0PF: 0 | ZF: 1
+INFO MUL
+INFO Tick 2087	PC: 14	Registers: [0, 0, 20, 4655851200, 232792560, 20, 20, 0]	SrcA: 232792560 | SrcB: 20 | Result: 232792580	A1: 4 | A2: 5 | A3: 3PF: 1 | ZF: 0
+INFO DIV
+INFO Tick 2091	PC: 15	Registers: [0, 0, 20, 232792560, 232792560, 20, 20, 0]	SrcA: 232792560 | SrcB: 20 | Result: 232792580	A1: 3 | A2: 2 | A3: 3PF: 1 | ZF: 0
+INFO JMP
+INFO Tick 2094	PC: 7	Registers: [0, 0, 20, 232792560, 232792560, 20, 20, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 7 | A3: 0PF: 1 | ZF: 0
+INFO ADD
+INFO Tick 2098	PC: 8	Registers: [0, 0, 20, 232792560, 232792560, 20, 20, 0]	SrcA: 0 | SrcB: 232792560 | Result: 232792560	A1: 0 | A2: 3 | A3: 4PF: 1 | ZF: 0
+INFO ADDI
+INFO Tick 2102	PC: 9	Registers: [0, 0, 20, 232792560, 232792560, 21, 20, 0]	SrcA: 21 | SrcB: 0 | Result: 21	A1: 5 | A2: 1 | A3: 5PF: 1 | ZF: 0
+INFO JMP
+INFO Tick 2105	PC: 4	Registers: [0, 0, 20, 232792560, 232792560, 21, 20, 0]	SrcA: 0 | SrcB: 232792560 | Result: 232792560	A1: 0 | A2: 4 | A3: 0PF: 1 | ZF: 0
+INFO CMP
+INFO Tick 2109	PC: 5	Registers: [0, 0, 20, 232792560, 232792560, 21, 20, 0]	SrcA: 20 | SrcB: 21 | Result: 41	A1: 6 | A2: 5 | A3: 0PF: 1 | ZF: 0
+INFO JG
+INFO Tick 2112	PC: 26	Registers: [0, 0, 20, 232792560, 232792560, 21, 20, 0]	SrcA: 0 | SrcB: 20 | Result: 20	A1: 0 | A2: 2 | A3: 0PF: 1 | ZF: 0
+INFO Saved: 232792560
+INFO SW
+INFO Tick 2116	PC: 27	Registers: [0, 0, 20, 232792560, 232792560, 21, 20, 0]	SrcA: 0 | SrcB: 232792560 | Result: 232792560	A1: 0 | A2: 3 | A3: 1PF: 1 | ZF: 0
+INFO Saved: 20
+INFO SW
+INFO Tick 2120	PC: 28	Registers: [0, 0, 20, 232792560, 232792560, 21, 20, 0]	SrcA: 0 | SrcB: 20 | Result: 20	A1: 0 | A2: 2 | A3: 1PF: 1 | ZF: 0
+INFO Saved: 232792560
+INFO SW
+INFO Tick 2124	PC: 29	Registers: [0, 0, 20, 232792560, 232792560, 21, 20, 0]	SrcA: 0 | SrcB: 232792560 | Result: 232792560	A1: 0 | A2: 4 | A3: 1PF: 1 | ZF: 0

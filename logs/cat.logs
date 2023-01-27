@@ -1,0 +1,8 @@
+INFO JMP
+INFO Tick 3	PC: 1	Registers: [0, 0, 0, 0, 0, 0, 200, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 1 | A3: 0PF: 0 | ZF: 0
+INFO Readed: 104
+INFO LD
+INFO Tick 7	PC: 2	Registers: [0, 0, 0, 0, 104, 0, 200, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 0 | A3: 4PF: 0 | ZF: 0
+INFO Saved: 104
+INFO SW
+INFO Tick 11	PC: 3	Registers: [0, 0, 0, 0, 104, 0, 200, 0]	SrcA: 0 | SrcB: 104 | Result: 104	A1: 0 | A2: 4 | A3: 1PF: 0 | ZF: 0

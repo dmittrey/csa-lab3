@@ -1,0 +1,72 @@
+INFO Readed: 104
+INFO LD
+WARNING (Int) Tick 5	PC: 201	Registers: [0, 104, 0, 0, 0, 0, 200, 0]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 0 | A3: 1PF: 0 | ZF: 0
+INFO JMP
+INFO Tick 8	PC: 9	Registers: [0, 104, 0, 0, 0, 0, 200, 0]	SrcA: 0 | SrcB: 104 | Result: 104	A1: 0 | A2: 1 | A3: 0PF: 0 | ZF: 0
+INFO Readed: 101
+INFO LD
+WARNING (Int) Tick 14	PC: 201	Registers: [0, 101, 0, 0, 0, 0, 200, 9]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 0 | A3: 1PF: 0 | ZF: 0
+INFO LD
+INFO Tick 17	PC: 10	Registers: [0, 101, 0, 0, 104, 0, 200, 9]	SrcA: 0 | SrcB: 101 | Result: 101	A1: 0 | A2: 1 | A3: 4PF: 0 | ZF: 0
+INFO Saved: 104
+INFO Readed: 108
+INFO LD
+WARNING (Int) Tick 24	PC: 201	Registers: [0, 108, 0, 0, 104, 0, 200, 10]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 0 | A3: 1PF: 0 | ZF: 0
+INFO Readed: 108
+INFO LD
+WARNING (Int) Tick 30	PC: 201	Registers: [0, 108, 0, 0, 104, 0, 200, 11]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 0 | A3: 1PF: 0 | ZF: 0
+INFO SW
+INFO Tick 31	PC: 11	Registers: [0, 108, 0, 0, 104, 0, 200, 11]	SrcA: 0 | SrcB: 0 | Result: 104	A1: 0 | A2: 0 | A3: 0PF: 0 | ZF: 0
+INFO LD
+INFO Tick 35	PC: 12	Registers: [0, 108, 0, 0, 101, 0, 200, 11]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 2 | A3: 4PF: 0 | ZF: 0
+INFO Saved: 101
+INFO SW
+INFO Tick 39	PC: 13	Registers: [0, 108, 0, 0, 101, 0, 200, 11]	SrcA: 0 | SrcB: 101 | Result: 101	A1: 0 | A2: 4 | A3: 1PF: 0 | ZF: 0
+INFO LD
+INFO Tick 43	PC: 14	Registers: [0, 108, 0, 0, 108, 0, 200, 11]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 3 | A3: 4PF: 0 | ZF: 0
+INFO Saved: 108
+INFO SW
+INFO Tick 47	PC: 15	Registers: [0, 108, 0, 0, 108, 0, 200, 11]	SrcA: 0 | SrcB: 108 | Result: 108	A1: 0 | A2: 4 | A3: 1PF: 0 | ZF: 0
+INFO LD
+INFO Tick 51	PC: 16	Registers: [0, 108, 0, 0, 108, 0, 200, 11]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 3 | A3: 4PF: 0 | ZF: 0
+INFO Saved: 108
+INFO SW
+INFO Tick 55	PC: 17	Registers: [0, 108, 0, 0, 108, 0, 200, 11]	SrcA: 0 | SrcB: 108 | Result: 108	A1: 0 | A2: 4 | A3: 1PF: 0 | ZF: 0
+INFO LD
+INFO Tick 59	PC: 18	Registers: [0, 108, 0, 0, 111, 0, 200, 11]	SrcA: 0 | SrcB: 111 | Result: 111	A1: 0 | A2: 4 | A3: 4PF: 0 | ZF: 0
+INFO Saved: 111
+INFO SW
+INFO Tick 63	PC: 19	Registers: [0, 108, 0, 0, 111, 0, 200, 11]	SrcA: 0 | SrcB: 111 | Result: 111	A1: 0 | A2: 4 | A3: 1PF: 0 | ZF: 0
+INFO LD
+INFO Tick 67	PC: 20	Registers: [0, 108, 0, 0, 32, 0, 200, 11]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 5 | A3: 4PF: 0 | ZF: 0
+INFO Saved: 32
+INFO SW
+INFO Tick 71	PC: 21	Registers: [0, 108, 0, 0, 32, 0, 200, 11]	SrcA: 0 | SrcB: 32 | Result: 32	A1: 0 | A2: 4 | A3: 1PF: 0 | ZF: 0
+INFO LD
+INFO Tick 75	PC: 22	Registers: [0, 108, 0, 0, 119, 0, 200, 11]	SrcA: 0 | SrcB: 200 | Result: 200	A1: 0 | A2: 6 | A3: 4PF: 0 | ZF: 0
+INFO Saved: 119
+INFO SW
+INFO Tick 79	PC: 23	Registers: [0, 108, 0, 0, 119, 0, 200, 11]	SrcA: 0 | SrcB: 119 | Result: 119	A1: 0 | A2: 4 | A3: 1PF: 0 | ZF: 0
+INFO LD
+INFO Tick 83	PC: 24	Registers: [0, 108, 0, 0, 111, 0, 200, 11]	SrcA: 0 | SrcB: 111 | Result: 111	A1: 0 | A2: 4 | A3: 4PF: 0 | ZF: 0
+INFO Saved: 111
+INFO SW
+INFO Tick 87	PC: 25	Registers: [0, 108, 0, 0, 111, 0, 200, 11]	SrcA: 0 | SrcB: 111 | Result: 111	A1: 0 | A2: 4 | A3: 1PF: 0 | ZF: 0
+INFO LD
+INFO Tick 91	PC: 26	Registers: [0, 108, 0, 0, 114, 0, 200, 11]	SrcA: 0 | SrcB: 11 | Result: 11	A1: 0 | A2: 7 | A3: 4PF: 0 | ZF: 0
+INFO Saved: 114
+INFO SW
+INFO Tick 95	PC: 27	Registers: [0, 108, 0, 0, 114, 0, 200, 11]	SrcA: 0 | SrcB: 114 | Result: 114	A1: 0 | A2: 4 | A3: 1PF: 0 | ZF: 0
+INFO LD
+INFO Tick 99	PC: 28	Registers: [0, 108, 0, 0, 108, 0, 200, 11]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 3 | A3: 4PF: 0 | ZF: 0
+INFO Readed: 111
+INFO LD
+WARNING (Int) Tick 104	PC: 201	Registers: [0, 111, 0, 0, 108, 0, 200, 28]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 0 | A3: 1PF: 0 | ZF: 0
+INFO Saved: 108
+INFO SW
+INFO Tick 108	PC: 29	Registers: [0, 111, 0, 0, 108, 0, 200, 28]	SrcA: 0 | SrcB: 108 | Result: 108	A1: 0 | A2: 4 | A3: 1PF: 0 | ZF: 0
+INFO LD
+INFO Tick 112	PC: 30	Registers: [0, 111, 0, 0, 100, 0, 200, 28]	SrcA: 0 | SrcB: 0 | Result: 0	A1: 0 | A2: 0 | A3: 4PF: 0 | ZF: 0
+INFO Saved: 100
+INFO SW
+INFO Tick 116	PC: 31	Registers: [0, 111, 0, 0, 100, 0, 200, 28]	SrcA: 0 | SrcB: 100 | Result: 100	A1: 0 | A2: 4 | A3: 1PF: 0 | ZF: 0
