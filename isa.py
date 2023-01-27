@@ -34,6 +34,7 @@ class Opcode(int, Enum):
 class Term(namedtuple('Term', 'line pos symbol')):
     """Описание выражения из исходного текста программы."""
 
+
 def write_logs(filename, instrs: List[str], terms: List[Term]):
     """Записать машинный код в файл."""
     logs: List[Dict] = []
