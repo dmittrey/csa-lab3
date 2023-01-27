@@ -346,10 +346,10 @@ def simulation(program: List[int], text_start_adr: int = 0, is_interrupts_allowe
 
 
 def main(args):
-    logging.basicConfig(level=logging.INFO,
-                        filename="py_log.log", filemode="w", format="%(levelname)s %(message)s")
+    filename, start_code, is_interrupts_enabled, logs_file_name = args
 
-    filename, start_code, is_interrupts_enabled = args
+    logging.basicConfig(level=logging.INFO,
+                        filename=logs_file_name, filemode="w", format="%(levelname)s %(message)s")
 
     codes = read_code(filename)
 
