@@ -313,7 +313,6 @@ class ControlUnit(CircuitComponent):
     def __get_op_transitions(self, op: int) -> None | List[Dict[str, int]]:
         skip_transitions = [{'ALUSrcA': 1, 'ALUSrcB': 2, 'ALUControl': 0},
                             {'PCWrite': 1}]
-
         match op:
             case Opcode.JG:
                 if self.get_register('PositiveFlag') == 1:
@@ -350,7 +349,7 @@ def main(args):
     logging.basicConfig(level=logging.INFO,
                         filename="py_log.log", filemode="w", format="%(levelname)s %(message)s")
 
-    filename, start_code, is_interrupts_enabled = ['examples/prob5.out', 0, False]
+    filename, start_code, is_interrupts_enabled = args
 
     codes = read_code(filename)
 
